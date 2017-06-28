@@ -1,7 +1,7 @@
 
-local lx, _M, mt = oo{
+local lx, _M = oo{
     _cls_ = '',
-    _ext_ = 'eloquent',
+    _ext_ = {path = 'lxlib.db.orm.model'},
     _mix_ = 'rememberable'
 }
 

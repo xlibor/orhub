@@ -1,20 +1,19 @@
 
-local lx, _M, mt = oo{
+local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'model',
-    _mix_ = 'presentableTrait'
+    _mix_ = 'presentableMix'
 }
 
 local app, lf, tb, str = lx.kit()
 
-function _M:new()
+function _M:ctor()
 
-    local this = {
-        presenter = 'Phphub\\Presenters\\NotificationPresenter',
-        fillable = {'from_user_id', 'user_id', 'topic_id', 'reply_id', 'body', 'type'}
+    self.presenter = '.lxhub.presenters.notificationPresenter'
+    self.fillable = {
+        'from_user_id', 'user_id', 'topic_id',
+        'reply_id', 'body', 'type'
     }
-    
-    return oo(this, mt)
 end
 
 -- Don't forget to fill this table
@@ -54,20 +53,19 @@ function _M.s__.batchNotify(type, fromUser, users, topic, reply, content)
     local nowTimestamp = Carbon.now():toDateTimeString()
     local data = {}
     for _, toUser in pairs(users) do
-        if fromUser.id == toUser.id then
-            continue
+        if fromUser.id ~= toUser.id then
+            tapd(data, {
+                from_user_id = fromUser.id,
+                user_id = toUser.id,
+                topic_id = topic.id,
+                reply_id = content or (reply and reply.id or ''),
+                body = content or (reply and reply.body or ''),
+                type = type,
+                created_at = nowTimestamp,
+                updated_at = nowTimestamp
+            })
+            toUser:increment('notification_count', 1)
         end
-        tapd(data, {)
-            from_user_id = fromUser.id,
-            user_id = toUser.id,
-            topic_id = topic.id,
-            reply_id = content or (reply and reply.id or ''),
-            body = content or (reply and reply.body or ''),
-            type = type,
-            created_at = nowTimestamp,
-            updated_at = nowTimestamp
-        }
-        toUser:increment('notification_count', 1)
     end
     if #data then
         Notification.insert(data)

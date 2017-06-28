@@ -1,18 +1,14 @@
 
-local lx, _M, mt = oo{
+local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'model'
 }
 
 local app, lf, tb, str = lx.kit()
 
-function _M:new()
+function _M:ctor()
 
-    local this = {
-        fillable = {'topic_id', 'content'}
-    }
-    
-    return oo(this, mt)
+    self.fillable = {'topic_id', 'content'}
 end
 
 function _M:topic()

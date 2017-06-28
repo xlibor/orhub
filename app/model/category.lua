@@ -1,20 +1,15 @@
 
-local lx, _M, mt = oo{
+local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'model',
-    _mix_ = 'revisionableTrait, SoftDeletes'
+    _mix_ = {'revisionableMix', 'softDelete'}
 }
 
 local app, lf, tb, str = lx.kit()
 
-function _M:new()
+function _M:ctor()
 
-    local this = {
-        keepRevisionOf = {'deleted_at'},
-        fillable = {}
-    }
-    
-    return oo(this, mt)
+    self.keepRevisionOf = {'deleted_at'}
 end
 
 -- For admin log

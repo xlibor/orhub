@@ -60,16 +60,16 @@ local conf = {
         Validator   = 'validator',
         View        = 'view',
         Schema      = 'db.schema',
-        Post        = '.app.model.post',
-        User        = '.app.model.user',
-        Comment     = '.app.model.comment',
-        Tag         = '.app.model.tag',
-        Category    = '.app.model.category',
-        Page        = '.app.model.page',
-        File        = '.app.model.file',
-        Map         = '.app.model.map',
-        Config      = '.app.model.config',
-        Ip          = '.app.model.ip'
+        -- Post        = '.app.model.post',
+        -- User        = '.app.model.user',
+        -- Comment     = '.app.model.comment',
+        -- Tag         = '.app.model.tag',
+        -- Category    = '.app.model.category',
+        -- Page        = '.app.model.page',
+        -- File        = '.app.model.file',
+        -- Map         = '.app.model.map',
+        -- Config      = '.app.model.config',
+        -- Ip          = '.app.model.ip'
     }
 }
 

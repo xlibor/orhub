@@ -1,28 +1,24 @@
 
-local lx, _M, mt = oo{
+local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'model',
-    _mix_ = 'presentableTrait'
+    _mix_ = 'presentableMix'
 }
 
 local app, lf, tb, str = lx.kit()
 
-function _M:new()
+function _M:ctor()
 
-    local this = {
-        presenter = SitePresenter.class,
-        guarded = {'id'}
-    }
-    
-    return oo(this, mt)
+    self.presenter = SitePresenter.class,
+    self.guarded = {'id'}
 end
 
 function _M.s__.boot()
 
-    parent.boot()
-    static.saving(function(model)
-        Cache.forget('phphub_sites')
-    end)
+    self:__super(_M, 'boot')
+    -- static.saving(function(model)
+    --     Cache.forget('phphub_sites')
+    -- end)
 end
 
 function _M.s__.allFromCache(expire)

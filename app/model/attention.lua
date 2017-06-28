@@ -1,18 +1,13 @@
 
-local lx, _M, mt = oo{
+local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'model'
 }
 
 local app, lf, tb, str = lx.kit()
 
-function _M:new()
+function _M:ctor()
 
-    local this = {
-        fillable = {}
-    }
-    
-    return oo(this, mt)
 end
 
 function _M:post()

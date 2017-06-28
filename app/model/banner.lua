@@ -1,29 +1,25 @@
 
-local lx, _M, mt = oo{
+local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'model',
-    _mix_ = 'revisionableTrait, SoftDeletes'
+    _mix_ = {'revisionableMix', 'softDelete'}
 }
 
 local app, lf, tb, str = lx.kit()
 
-function _M:new()
+function _M:ctor()
 
-    local this = {
-        keepRevisionOf = {'deleted_at'}
-    }
-    
-    return oo(this, mt)
+    self.keepRevisionOf = {'deleted_at'}
 end
 
 -- For admin log
 
-function _M.s__.boot()
+function _M:boot()
 
-    parent.boot()
-    static.saving(function(article)
-        Cache.forget('phphub_banner')
-    end)
+    self:__super(_M, 'boot')
+    -- static.saving(function(article)
+    --     Cache.forget('phphub_banner')
+    -- end)
 end
 
 function _M:setImageUrlAttribute(file_name)
@@ -31,7 +27,7 @@ function _M:setImageUrlAttribute(file_name)
     local parser_url
     if str.startWith(file_name, 'http') then
         parser_url = str.split(file_name, '/')
-        file_name = end(parser_url)
+        file_name = tb.last(parser_url)
     end
     self.attributes['image_url'] = 'uploads/banners/' .. file_name
 end
@@ -49,13 +45,13 @@ end
 function _M.s__.allByPosition()
 
     local data = Cache.remember('phphub_banner', 60, function()
-        return = {}
-        data = Banner.orderBy('position', 'DESC'):orderBy('order', 'ASC'):get()
+        local ret = {}
+        local data = Banner.orderBy('position', 'DESC'):orderBy('order', 'ASC'):get()
         for _, banner in pairs(data) do
-            tapd(return[banner.position], banner)
+            tapd(ret[banner.position], banner)
         end
         
-        return return
+        return ret
     end)
     
     return data

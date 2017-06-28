@@ -1,39 +1,48 @@
 
-local lx, _M, mt = oo{
-    _cls_ = '',
-    _ext_ = 'model',
-    _bond_ = 'authenticatableContract, AuthorizableContract',
-    _mix_ = 'traits\UserRememberTokenHelper, Traits\UserSocialiteHelper, Traits\UserAvatarHelper, Traits\UserActivityHelper, Messagable, PresentableTrait, SearchableTrait, RevisionableTrait, EntrustUserTrait, SoftDeletes, FollowTrait'
+local lx, _M = oo{
+    _cls_   = '',
+    _ext_   = 'model',
+    _bond_  = {'auth.authenticatable', 'auth.authorizable'},
+    _mix_   = {
+        '.db.mixin.userRememberTokenHelper',
+        '.db.minxin.userSocialiteHelper',
+        '.db.mixin.userAvatarHelper',
+        '.db.mixin.userActivityHelper',
+        'messagable', 'presentableTrait', 'searchableTrait',
+        'revisionableTrait', 'entrustUserTrait',
+        'softDelete', 'followTrait'
+    }
 }
 
 local app, lf, tb, str = lx.kit()
 
-function _M:new()
+function _M:ctor()
 
-    local this = {
-        presenter = 'Phphub\\Presenters\\UserPresenter',
-        searchable = {columns = {['users.name'] = 10, ['users.real_name'] = 10, ['users.introduction'] = 10}},
-        keepRevisionOf = {'is_banned'},
-        dates = {'deleted_at'},
-        table = 'users',
-        guarded = {'id', 'is_banned'}
+    self.presenter = '.lxhub.presenter.user'
+    self.searchable = {
+        columns = {
+            ['users.name'] = 10, ['users.real_name'] = 10,
+            ['users.introduction'] = 10
+        }
     }
-    
-    return oo(this, mt)
+    self.keepRevisionOf = {'is_banned'}
+    self.dates = {'deleted_at'}
+    self.table = 'users'
+    self.guarded = {'id', 'is_banned'}
 end
 
 -- For admin log
-function _M.s__.boot()
+function _M:boot()
 
-    parent.boot()
+    self:__super(_M, 'boot')
     static.created(function(user)
         driver = user['github_id'] and 'github' or 'wechat'
         SiteStatus.newUser(driver)
         dispatch(new('sendActivateMail', user))
     end)
-    static.deleted(function(user)
-        \Artisan.call('phphub:clear-user-data', {user_id = user.id})
-    end)
+    -- static.deleted(function(user)
+    --     \Artisan.call('phphub:clear-user-data', {user_id = user.id})
+    -- end)
 end
 
 function _M:scopeIsRole(query, role)
@@ -153,7 +162,7 @@ end
 function _M:recordLastActivedAt()
 
     local now = Carbon.now():toDateTimeString()
-    local update_key = config('phphub.actived_time_for_update')
+    local update_key = app:conf('phphub.actived_time_for_update')
     local update_data = Cache.get(update_key)
     update_data[self.id] = now
     Cache.forever(update_key, update_data)

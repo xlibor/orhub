@@ -1,27 +1,24 @@
 
-local lx, _M, mt = oo{
+local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'entrustRole'
 }
 
 local app, lf, tb, str = lx.kit()
 
-function _M:new()
+function _M:ctor()
 
-    local this = {
-        fillable = {'name', 'display_name', 'description'}
-    }
-    
-    return oo(this, mt)
+    self.fillable = {'name', 'display_name', 'description'}
 end
 
 function _M.s__.boot()
 
-    parent.boot()
-    static.saving(function(model)
-        Cache.forget('all_assigned_roles')
-        Cache.forget('all_roles')
-    end)
+    self:__super(_M, 'boot')
+    
+    -- static.saving(function(model)
+    --     Cache.forget('all_assigned_roles')
+    --     Cache.forget('all_roles')
+    -- end)
 end
 
 function _M.s__.addRole(name, display_name, description)

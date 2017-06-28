@@ -1,5 +1,5 @@
 
-local lx, _M, mt = oo{
+local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'model',
     _mix_ = 'traits\TopicFilterable, Traits\TopicApiHelper, Traits\TopicImageHelper, RevisionableTrait, SearchableTrait, PresentableTrait, SoftDeletes'
@@ -7,18 +7,23 @@ local lx, _M, mt = oo{
 
 local app, lf, tb, str = lx.kit()
 
-function _M:new()
+function _M:ctor()
 
-    local this = {
-        timestamps = false,
-        keepRevisionOf = {'deleted_at', 'is_excellent', 'is_blocked', 'order'},
-        searchable = {columns = {['topics.title'] = 10, ['topics.body'] = 5}},
-        presenter = 'Phphub\\Presenters\\TopicPresenter',
-        dates = {'deleted_at'},
-        fillable = {'title', 'slug', 'body', 'excerpt', 'is_draft', 'source', 'body_original', 'user_id', 'category_id', 'created_at', 'updated_at'}
+    self.timestamps = false
+    self.keepRevisionOf = {
+        'deleted_at', 'is_excellent', 'is_blocked', 'order'
     }
-    
-    return oo(this, mt)
+    self.searchable = {
+        columns = {
+            ['topics.title'] = 10, ['topics.body'] = 5
+        }
+    }
+    self.presenter = '.lxhub.presenter.topicPresenter'
+    self.dates = {'deleted_at'}
+    self.fillable = {
+        'title', 'slug', 'body', 'excerpt', 'is_draft', 'source',
+        'body_original', 'user_id', 'category_id', 'created_at', 'updated_at'
+    }
 end
 
 -- manually maintian

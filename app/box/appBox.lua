@@ -15,19 +15,15 @@ function _M:reg()
 
 	app:single('.app.http.bar.verifyCsrfToken')
 	app:single('.app.http.bar.redirectIfAuthenticated')
-
-	app:bindNs('.app.mod', lx.dir('app', 'mod'), {
-		except = {'nocache', 'file'}, name = true
-	})
  
 end
 
 function _M:boot()
 
-	Dt.setLocale('zh')
+	-- Dt.setLocale('zh')
 
 	if app:isCmdMode() then
-		app:reg('laralib.l5scaffold.generatorBox')
+		-- app:reg('laralib.l5scaffold.generatorBox')
 	end
 end
 

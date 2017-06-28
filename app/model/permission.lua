@@ -1,18 +1,14 @@
 
-local lx, _M, mt = oo{
+local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'entrustPermission'
 }
 
 local app, lf, tb, str = lx.kit()
 
-function _M:new()
+function _M:ctor()
 
-    local this = {
-        fillable = {'name', 'display_name', 'description'}
-    }
-    
-    return oo(this, mt)
+    self.fillable = {'name', 'display_name', 'description'}
 end
 
 function _M.s__.addPermission(name, display_name, description)

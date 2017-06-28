@@ -1,30 +1,26 @@
 
-local lx, _M, mt = oo{
+local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'model',
-    _mix_ = 'revisionableTrait, SoftDeletes'
+    _mix_ = {'revisionableMix', 'softDelete'}
 }
 
 local app, lf, tb, str = lx.kit()
 
 function _M:new()
 
-    local this = {
-        guarded = {'id'},
-        keepRevisionOf = {'deleted_at'}
-    }
-    
-    return oo(this, mt)
+    self.guarded = {'id'}
+    self.keepRevisionOf = {'deleted_at'}
 end
 
 -- For admin log
 
-function _M.s__.boot()
+function _M:boot()
 
-    parent.boot()
-    static.saving(function(model)
-        Cache.forget('phphub_links')
-    end)
+    self:__super(_M, 'boot')
+    -- static.saving(function(model)
+    --     Cache.forget('phphub_links')
+    -- end)
 end
 
 function _M:setCoverAttribute(file_name)
@@ -32,7 +28,7 @@ function _M:setCoverAttribute(file_name)
     local parser_url
     if str.startWith(file_name, 'http') then
         parser_url = str.split(file_name, '/')
-        file_name = end(parser_url)
+        file_name = tb.last(parser_url)
     end
     self.attributes['cover'] = 'uploads/banners/' .. file_name
 end
