@@ -1,0 +1,95 @@
+@extends('layouts.default')
+
+@section('title')
+{{ lang('My Notifications') }} @parent
+@stop
+
+@section('content')
+
+<div class="messages">
+
+<div class="col-md-3 main-col">
+    @include('notifications._nav')
+</div>
+
+<div class="col-md-9  left-col ">
+
+    <div class="panel panel-default padding-sm">
+
+        <div class="panel-heading">
+          <h1>{{ lang('My Notifications') }}</h1>
+        </div>
+
+        @if(#notifications)
+
+            <div class="panel-body remove-padding-horizontal notification-index">
+
+                <ul class="list-group row">
+                    @foreach(notifications as notification)
+                     <li class="list-group-item media" style="margin-top: 0px;">
+
+                        @if((#notification.topic or notification.type == 'follow') and #notification.fromUser)
+                            <div class="avatar pull-left">
+                                <a href="{{ route('users.show', {notification.from_user_id}) }}">
+                                    <img class="media-object img-thumbnail avatar" alt="{{{ notification.fromUser.name }}}" src="{{ notification.fromUser:present().gravatar }}"  style="width:38px;height:38px;"/>
+                                </a>
+                            </div>
+
+                            <div class="infos">
+
+                              <div class="media-heading">
+
+                                <a href="{{ route('users.show', {notification.from_user_id}) }}">
+                                    {{{ notification.fromUser.name }}}
+                                </a>
+                                 •
+                                 @if(notification.type ~= 'follow' and notification.topic:isArticle())
+                                     {{ str.replace(notification:present().lableUp, '话题', '文章') }}
+                                     <a href="{{ notification.topic:link() }}{{{ not lf.isEmpty(notification.reply_id) and '#reply' .. notification.reply_id or '' }}}" title="{{{ notification.topic.title }}}">
+                                         {{{ str.limit(notification.topic.title, '100') }}}
+                                     </a>
+                                 @else
+                                    {{ notification:present().lableUp }}
+                                    @if(notification.type ~= 'follow')
+                                        <a href="{{ notification.topic:link() }}{{{ not lf.isEmpty(notification.reply_id) and '#reply' .. notification.reply_id or '' }}}" title="{{{ notification.topic.title }}}">
+                                            {{{ str.limit(notification.topic.title, '100') }}}
+                                        </a>
+                                    @endif
+                                 @endif
+
+                                <span class="meta">
+                                     • {{ lang('at') }} • <span class="timeago">{{ notification.created_at }}</span>
+                                </span>
+                              </div>
+                              <div class="media-body markdown-reply content-body">
+                                    {!! notification.body !!}
+                              </div>
+
+                            </div>
+                        @else
+                          <div class="deleted text-center">{{ lang('Data has been deleted.') }}</div>
+                        @endif
+                    </li>
+                    @endforeach
+                </ul>
+
+
+            </div>
+
+            <div class="panel-footer text-right remove-padding-horizontal pager-footer">
+                <!-- Pager -->
+                {!! notifications:render() !!}
+            </div>
+
+        @else
+            <div class="panel-body">
+                <div class="empty-block">{{ lang('You dont have any notice yet!') }}</div>
+            </div>
+        @endif
+
+    </div>
+</div>
+</div>
+
+
+@stop
