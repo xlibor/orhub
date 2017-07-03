@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{{ user.name }}} {{ lang('Access Tokens') }}_@parent
+{{ user.name }} {{ Ah.lang('Access Tokens') }}_@parent
 @stop
 
 @section('content')
@@ -34,7 +34,7 @@
           @endforeach
         </ul>
       @else
-        <div class="empty-block">{{ lang('Dont have any access_token yet') }}~~</div>
+        <div class="empty-block">{{ Ah.lang('Dont have any access_token yet') }}~~</div>
       @endif
 
     </div>

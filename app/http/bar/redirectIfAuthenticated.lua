@@ -1,43 +1,18 @@
 
-local lx, _M, mt = oo{
-    _cls_ = ''
+local lx, _M = oo{
+	_cls_ = ''
 }
 
-local app, lf, tb, str = lx.kit()
+local redirect = lx.h.redirect
 
-function _M:new()
+function _M:handle(ctx, next, guard)
 
-    local this = {
-        auth = nil
-    }
-    
-    return oo(this, mt)
-end
-
--- The Guard implementation.
--- @var Guard
--- Create a new filter instance.
--- @param  Guard  auth
-
-
-function _M:ctor(auth)
-
-    self.auth = auth
-end
-
--- Handle an incoming request.
--- @param  \Illuminate\Http\Request  request
--- @param  \Closure  next
--- @return mixed
-
-function _M:handle(request, next)
-
-    if self.auth:check() then
+    if Auth.guard(guard):check() then
         
-        return redirect('/')
+        return redirect():route('post.index')
     end
     
-    return next(request)
+    return next(ctx)
 end
 
 return _M

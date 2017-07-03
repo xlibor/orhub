@@ -51,7 +51,7 @@ function _M:performUpdate(blog)
     blog.description = self:input("description")
     local file = self:file('cover')
     if file then
-        upload_status = app('Phphub\\Handler\\ImageUploadHandler'):uploadImage(file)
+        upload_status = app('.app.lxhub.handler.imageUploadHandler'):uploadImage(file)
         blog.cover = upload_status['filename']
     end
     

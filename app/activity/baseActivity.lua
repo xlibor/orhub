@@ -14,7 +14,7 @@ function _M:addTopicActivity(user, topic, extra_data, indentifier)
 
     extra_data = extra_data or {}
     -- 站务不显示
-    if topic.category_id == config('phphub.admin_board_cid') then
+    if topic.category_id ==Conf('lxhub.adminBoardCid') then
         
         return
     end
@@ -24,8 +24,8 @@ function _M:addTopicActivity(user, topic, extra_data, indentifier)
         topic_type = topic:isArticle() and 'article' or 'topic',
         topic_link = topic:link(),
         topic_title = topic.title,
-        topic_category_id = topic.category.id,
-        topic_category_name = topic.category.name
+        topic_category_id = topic('category').id,
+        topic_category_name = topic('category').name
     }, extra_data)
     self:addActivity(causer, user, indentifier, data)
 end

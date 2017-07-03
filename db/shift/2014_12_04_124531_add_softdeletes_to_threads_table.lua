@@ -1,5 +1,5 @@
 
-local lx, _M, mt = oo{
+local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'migration'
 }
@@ -11,7 +11,7 @@ local app, lf, tb, str = lx.kit()
 
 function _M:up(schema)
 
-    schema:table(Models.table('threads'), function(table)
+    schema:table('threads', function(table)
         table:softDeletes()
     end)
 end
@@ -21,7 +21,7 @@ end
 
 function _M:down(schema)
 
-    schema:table(Models.table('threads'), function(table)
+    schema:table('threads', function(table)
         table:dropSoftDeletes()
     end)
 end

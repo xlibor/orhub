@@ -2,7 +2,10 @@
 local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'model',
-    _mix_ = {'revisionableMix', 'softDelete'}
+    _mix_ = {
+        -- 'revisionableMix',
+        'softDelete'
+    }
 }
 
 local app, lf, tb, str = lx.kit()

@@ -2,13 +2,13 @@
 <ul class="list">
     @foreach(sidebarTopics as index, sidebarTopic)
         <li>
-            <a href="{{ sidebarTopic:link() }}" title="{{{ sidebarTopic.title }}}">
+            <a href="{{ sidebarTopic:link() }}" title="{{ sidebarTopic.title }}">
 
                 @if(numbered)
                     {{ index }}.
                 @endif
 
-                 {{{ sidebarTopic.title }}}
+                 {{ sidebarTopic.title }}
             </a>
         </li>
     @endforeach

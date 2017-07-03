@@ -14,6 +14,7 @@ function _M:reg()
 	app:listen('db.query', 	'.db.event.queryListener')
 
 	app:bindNs('.app.model', lx.dir('app', 'model'))
+    app:bindNs('.app.model.mix', lx.dir('app', 'model/mix'))
 
 	app:listen('.app.model.post',	'.db.event.modelListener')
 

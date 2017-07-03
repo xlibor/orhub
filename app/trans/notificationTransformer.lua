@@ -19,7 +19,7 @@ function _M:transformData(model)
 
     return {
         ['"id"'] = model.id,
-        ['"type_msg"'] = model:present().lableUp,
+        ['"type_msg"'] = model:present('lableUp'),
         ['"message"'] = model:present():message(),
         ['"created_at"'] = model.created_at:toDateTimeString()
     }

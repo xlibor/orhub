@@ -16,35 +16,35 @@ end
 
 function _M:topicUpVote(topic)
 
-    if topic:votes():ByWhom(Auth.id()):WithType('upvote'):count() then
+    if topic:votes():byWhom(Auth.id()):withType('upvote'):count() then
         -- click twice for remove upvote
-        topic:votes():ByWhom(Auth.id()):WithType('upvote'):delete()
+        topic:votes():byWhom(Auth.id()):withType('upvote'):delete()
         topic:decrement('vote_count', 1)
-        app(UserUpvotedTopic.class):remove(Auth.user(), topic)
-    elseif topic:votes():ByWhom(Auth.id()):WithType('downvote'):count() then
+        app(UserUpvotedTopic.class):remove(Auth().user, topic)
+    elseif topic:votes():byWhom(Auth.id()):withType('downvote'):count() then
         -- user already clicked downvote once
-        topic:votes():ByWhom(Auth.id()):WithType('downvote'):delete()
+        topic:votes():byWhom(Auth.id()):withType('downvote'):delete()
         topic:votes():create({user_id = Auth.id(), is = 'upvote'})
         topic:increment('vote_count', 2)
-        app(UserUpvotedTopic.class):generate(Auth.user(), topic)
+        app(UserUpvotedTopic.class):generate(Auth().user, topic)
     else 
         -- first time click
         topic:votes():create({user_id = Auth.id(), is = 'upvote'})
         topic:increment('vote_count', 1)
-        app(UserUpvotedTopic.class):generate(Auth.user(), topic)
-        Notification.notify('topic_upvote', Auth.user(), topic.user, topic)
+        app(UserUpvotedTopic.class):generate(Auth().user, topic)
+        Notification.notify('topic_upvote', Auth().user, topic.user, topic)
     end
 end
 
 function _M:topicDownVote(topic)
 
-    if topic:votes():ByWhom(Auth.id()):WithType('downvote'):count() then
+    if topic:votes():byWhom(Auth.id()):withType('downvote'):count() then
         -- click second time for remove downvote
-        topic:votes():ByWhom(Auth.id()):WithType('downvote'):delete()
+        topic:votes():byWhom(Auth.id()):withType('downvote'):delete()
         topic:increment('vote_count', 1)
-    elseif topic:votes():ByWhom(Auth.id()):WithType('upvote'):count() then
+    elseif topic:votes():byWhom(Auth.id()):withType('upvote'):count() then
         -- user already clicked upvote once
-        topic:votes():ByWhom(Auth.id()):WithType('upvote'):delete()
+        topic:votes():byWhom(Auth.id()):withType('upvote'):delete()
         topic:votes():create({user_id = Auth.id(), is = 'downvote'})
         topic:decrement('vote_count', 2)
     else 
@@ -61,26 +61,26 @@ function _M:replyUpVote(reply)
         return \Flash.warning(lang('Can not vote your feedback'))
     end
     local return = {}
-    if reply:votes():ByWhom(Auth.id()):WithType('upvote'):count() then
+    if reply:votes():byWhom(Auth.id()):withType('upvote'):count() then
         -- click twice for remove upvote
-        reply:votes():ByWhom(Auth.id()):WithType('upvote'):delete()
+        reply:votes():byWhom(Auth.id()):withType('upvote'):delete()
         reply:decrement('vote_count', 1)
         return['action_type'] = 'sub'
-        app(UserUpvotedReply.class):remove(Auth.user(), reply)
-    elseif reply:votes():ByWhom(Auth.id()):WithType('downvote'):count() then
+        app(UserUpvotedReply.class):remove(Auth().user, reply)
+    elseif reply:votes():byWhom(Auth.id()):withType('downvote'):count() then
         -- user already clicked downvote once
-        reply:votes():ByWhom(Auth.id()):WithType('downvote'):delete()
+        reply:votes():byWhom(Auth.id()):withType('downvote'):delete()
         reply:votes():create({user_id = Auth.id(), is = 'upvote'})
         reply:increment('vote_count', 2)
         return['action_type'] = 'add'
-        app(UserUpvotedReply.class):generate(Auth.user(), reply)
+        app(UserUpvotedReply.class):generate(Auth().user, reply)
     else 
         -- first time click
         reply:votes():create({user_id = Auth.id(), is = 'upvote'})
         reply:increment('vote_count', 1)
         return['action_type'] = 'add'
-        Notification.notify('reply_upvote', Auth.user(), reply.user, reply.topic, reply)
-        app(UserUpvotedReply.class):generate(Auth.user(), reply)
+        Notification.notify('reply_upvote', Auth().user, reply.user, reply.topic, reply)
+        app(UserUpvotedReply.class):generate(Auth().user, reply)
     end
     
     return return

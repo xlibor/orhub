@@ -9,7 +9,7 @@ local app, lf, tb, str = lx.kit()
 function _M:new()
 
     local this = {
-        signature = 'phphub:calculate-maintainer-works {--send-mail=no}',
+        signature = 'lxhub:calculate-maintainer-works {--send-mail=no}',
         description = 'Calculate maintainer works'
     }
     
@@ -46,7 +46,7 @@ function _M:handle()
         MaintainerLog.create(data)
     end
     if self:option('send-mail') == 'yes' then
-        \Artisan.call('phphub:send-maintainer-works-mail', {start_time = start_time, end_time = end_time})
+        \Artisan.call('lxhub:send-maintainer-works-mail', {start_time = start_time, end_time = end_time})
     end
     self:info('Done')
 end

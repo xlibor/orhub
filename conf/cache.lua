@@ -2,7 +2,7 @@
 local lx = require('lxlib')
 
 local conf = {
-    driver          = 'db',
+    driver          = 'file',
     enable          = false,
     prefix          = 'lxblog',
     lock            = {

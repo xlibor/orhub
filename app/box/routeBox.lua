@@ -20,7 +20,7 @@ function _M:map()
  	local route = self.router
  	local namespace = app:conf('app.namespace')
  	
- 	route:prefix('/'):bar('restrict_web_access')
+ 	route:prefix('/'):bar('web')
  		:namespace(namespace)
  		:group(require('.map.web'))
 

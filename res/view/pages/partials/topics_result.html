@@ -5,9 +5,9 @@
 
     <small>by</small>
 
-    <a href="{{ route('users.show', {topic.user_id}) }}" title="{{ topic.user.name }}">
-        <img class="avatar avatar-small" alt="{{ topic.user.name }}" src="{{ topic.user:present().gravatar }}"/>
-        <small>{{ topic.user.name }}</small>
+    <a href="{{ route('users.show', {topic.user_id}) }}" title="{{ topic('user').name }}">
+        <img class="avatar avatar-small" alt="{{ topic('user').name }}" src="{{ topic.user:present('gravatar') }}"/>
+        <small>{{ topic('user').name }}</small>
     </a>
 
 </h2>

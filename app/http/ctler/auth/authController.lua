@@ -73,7 +73,7 @@ function _M:create()
     end
     local oauthData = tb.merge(Session.get('oauthData'), Session.get('_old_input', {}))
     
-    return view('auth.signupconfirm', compact('oauthData'))
+    return view('auth.signupconfirm', Compact('oauthData'))
 end
 
 -- Actually creates the new user account
@@ -88,12 +88,12 @@ function _M:createNewUser(request)
     local userData = array_only(oauthUser, tb.keys(request:rules()))
     userData['register_source'] = oauthUser['driver']
     
-    return app(\Phphub\Creators\UserCreator.class):create(self, userData)
+    return app(\lxhub\Creators\UserCreator.class):create(self, userData)
 end
 
 function _M:userBanned()
 
-    if Auth.check() and Auth.user().is_banned == 'no' then
+    if Auth.check() and Auth().user.is_banned == 'no' then
         
         return redirect(route('home'))
     end
@@ -116,7 +116,7 @@ function _M:userCreated(user)
     Session.forget('oauthData')
     Flash.success(lang('Congratulations and Welcome!'))
     
-    return redirect(route('users.edit', Auth.user().id))
+    return redirect(route('users.edit', Auth().user.id))
 end
 
 ------------------------------------------
@@ -152,7 +152,7 @@ function _M:userFound(user)
     Session.forget('oauthData')
     Flash.success(lang('Login Successfully.'))
     
-    return redirect(route('users.edit', Auth.user().id))
+    return redirect(route('users.edit', Auth().user.id))
 end
 
 -- 用户屏蔽

@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ topic and '编辑话题' or lang('Create New Topic') }}_@parent
+{{ topic and '编辑话题' or Ah.lang('Create New Topic') }}_@parent
 @stop
 
 @section('content')
@@ -13,7 +13,7 @@
     <div class="reply-box form box-block">
 
       <div class="alert alert-warning">
-          {!! lang('be_nice') !!}
+          {!! Ah.lang('be_nice') !!}
       </div>
 
       @include('layouts.partials.errors')
@@ -28,12 +28,12 @@
         <div class="form-group">
             <select class="selectpicker form-control" name="category_id" id="category-select" required="require">
 
-              <option value="" disabled {{ #category ~= 0 or 'selected' }}>{{ lang('Pick a category') }}</option>
+              <option value="" disabled {{ #category ~= 0 or 'selected' }}>{{ Ah.lang('Pick a category') }}</option>
 
               @foreach(categories as value)
                   {{-- 如果用户可以发布公告，并且是 id == 3 的话 --}}
-                  @if(value.id ~= 3 or Auth.user():can('compose_announcement'))
-                      @if(value.id ~= config('phphub.admin_board_cid') or Auth.user():can('access_board'))
+                  @if(value.id ~= 3 or Auth().user:can('compose_announcement'))
+                      @if(value.id ~=Conf('lxhub.adminBoardCid') or Auth().user:can('access_board'))
                           <option value="{{ value.id }}" {{ #category ~= 0 and value.id == category.id and 'selected' or '' }} >{{ value.name }}</option>
                       @endif
                   @endif
@@ -49,17 +49,17 @@
         @endforeach
 
         <div class="form-group">
-            <input class="form-control" id="topic-title" placeholder="{{ lang('Please write down a topic') }}" name="title" type="text" value="{{ not topic and '' or topic.title }}" required="require">
+            <input class="form-control" id="topic-title" placeholder="{{ Ah.lang('Please write down a topic') }}" name="title" type="text" value="{{ not topic and '' or topic.title }}" required="require">
         </div>
 
         @include('topics.partials.composing_help_block')
 
         <div class="form-group">
-            <textarea required="require" class="form-control" rows="20" style="overflow:hidden" id="reply_content" placeholder="{{ lang('Please using markdown.') }}" name="body" cols="50">{{ not topic and '' or topic.body_original }}</textarea>
+            <textarea required="require" class="form-control" rows="20" style="overflow:hidden" id="reply_content" placeholder="{{ Ah.lang('Please using markdown.') }}" name="body" cols="50">{{ not topic and '' or topic.body_original }}</textarea>
         </div>
 
         <div class="form-group status-post-submit">
-            <button class="btn btn-primary submit-btn" id="topic-submit" type="submit">{{ lang('Publish') }}</button>
+            <button class="btn btn-primary submit-btn" id="topic-submit" type="submit">{{ Ah.lang('Publish') }}</button>
         </div>
 
     </form>
@@ -71,7 +71,7 @@
 
     <div class="panel panel-default corner-radius help-box">
       <div class="panel-heading text-center">
-        <h3 class="panel-title">{{ lang('This kind of topic is not allowed.') }}</h3>
+        <h3 class="panel-title">{{ Ah.lang('This kind of topic is not allowed.') }}</h3>
       </div>
       <div class="panel-body">
         <ul class="list">
@@ -83,7 +83,7 @@
 
     <div class="panel panel-default corner-radius help-box">
       <div class="panel-heading text-center">
-        <h3 class="panel-title">{{ lang('We can benefit from it.') }}</h3>
+        <h3 class="panel-title">{{ Ah.lang('We can benefit from it.') }}</h3>
       </div>
       <div class="panel-body">
         <ul class="list">
@@ -108,8 +108,8 @@
 
 @section('scripts')
 
-<link rel="stylesheet" href="{{ cdn(elixir('assets/css/editor.css')) }}">
-<script src="{{ cdn(elixir('assets/js/editor.js')) }}"></script>
+<link rel="stylesheet" href="{{ Ah.cdn(elixir('assets/css/editor.css')) }}">
+<script src="{{ Ah.cdn(elixir('assets/js/editor.js')) }}"></script>
 
 <script type="text/javascript">
 

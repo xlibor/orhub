@@ -26,7 +26,7 @@
 
                 <div>
                     <a href="{{ route('users.show', {recipient.id}) }}" title="{{ recipient.name }}">
-                        <img class="avatar avatar-small" alt="{{ recipient.name }}" src="{{ recipient:present().gravatar }}"/>
+                        <img class="avatar avatar-small" alt="{{ recipient.name }}" src="{{ recipient:present('gravatar') }}"/>
                         {{ recipient.name }}
                     </a>
                 </div>

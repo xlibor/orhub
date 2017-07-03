@@ -10,7 +10,7 @@ local app, lf, tb, str = lx.kit()
 function _M:indexByTopicId(topic_id)
 
     local topic = Topic.find(topic_id)
-    local replies = topic:getRepliesWithLimit(config('phphub.replies_perpage'))
+    local replies = topic:getRepliesWithLimit(config('lxhub.repliesPerpage'))
     
     return self:response():paginator(replies, new('replyTransformer'))
 end
@@ -25,17 +25,17 @@ end
 
 function _M:store(request)
 
-    if not Auth.user().verified then
+    if not Auth().user.verified then
         lx.throw(StoreResourceFailedException, '创建评论失败，请验证用户邮箱')
     end
     
-    return app('Phphub\\Creators\\ReplyCreator'):create(self, request:except('_token'))
+    return app('lxhub\\Creators\\ReplyCreator'):create(self, request:except('_token'))
 end
 
 function _M:indexWebViewByTopic(topic_id)
 
     local topic = Topic.find(topic_id)
-    local replies = topic:getRepliesWithLimit(config('phphub.replies_perpage'))
+    local replies = topic:getRepliesWithLimit(config('lxhub.repliesPerpage'))
     
     return view('api.replies.index', compact('replies'))
 end

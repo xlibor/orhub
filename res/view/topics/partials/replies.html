@@ -16,11 +16,11 @@
 
     <div class="avatar avatar-container pull-left">
       <a href="{{ route('users.show', {reply.user_id}) }}">
-        <img class="media-object img-thumbnail avatar avatar-middle" alt="{{{ reply.user.name }}}" src="{{ reply.user:present().gravatar }}"  style="width:55px;height:55px;"/>
+        <img class="media-object img-thumbnail avatar avatar-middle" alt="{{ reply.user.name }}" src="{{ reply.user:present('gravatar') }}"  style="width:55px;height:55px;"/>
       </a>
       @if(reply.user:present():hasBadge())
           <div>
-              <a class="label label-success role" href="{{ route('roles.show', {reply.user:present():badgeID()}) }}">{{{ reply.user:present():badgeName() }}}</a>
+              <a class="label label-success role" href="{{ route('roles.show', {reply.user:present():badgeID()}) }}">{{ reply.user:present():badgeName() }}</a>
           </div>
       @endif
     </div>
@@ -29,8 +29,8 @@
 
       <div class="media-heading">
 
-        <a href="{{ route('users.show', {reply.user_id}) }}" title="{{{ reply.user.name }}}" class="remove-padding-left author">
-            {{{ reply.user.name }}}
+        <a href="{{ route('users.show', {reply.user_id}) }}" title="{{ reply.user.name }}" class="remove-padding-left author">
+            {{ reply.user.name }}
         </a>
 
         @if(reply.user:present():isAdmin())
@@ -39,14 +39,14 @@
 
         @if(reply.user.introduction)
         <span class="introduction">
-            {{{ reply.user.introduction }}}
+            {{ reply.user.introduction }}
         </span>
         @endif
 
         <span class="operate pull-right">
 
           @if(currentUser and reply.user_id ~= currentUser.id)
-          <a class="comment-vote" data-ajax="post" id="reply-up-vote-{{ reply.id }}" href="javascript:void(0);" data-url="{{ route('replies.vote', reply.id) }}" title="{{ lang('Vote Up') }}">
+          <a class="comment-vote" data-ajax="post" id="reply-up-vote-{{ reply.id }}" href="javascript:void(0);" data-url="{{ route('replies.vote', reply.id) }}" title="{{ Ah.lang('Vote Up') }}">
              <i class="fa fa-thumbs-o-up" style="font-size:14px;"></i> <span class="vote-count">{{ reply.vote_count or '' }}</span>
           </a>
           <span> ⋅  </span>
@@ -58,7 +58,7 @@
             </a>
             <span> ⋅  </span>
           @endif
-          <a class="fa fa-reply" href="javascript:void(0)" onclick="replyOne('{{{reply.user.name}}}');" title="回复 {{{reply.user.name}}}"></a>
+          <a class="fa fa-reply" href="javascript:void(0)" onclick="replyOne('{{reply.user.name}}');" title="回复 {{reply.user.name}}"></a>
         </span>
 
         <div class="meta">

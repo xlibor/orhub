@@ -2,13 +2,25 @@
 local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'model',
-    _mix_ = 'traits\TopicFilterable, Traits\TopicApiHelper, Traits\TopicImageHelper, RevisionableTrait, SearchableTrait, PresentableTrait, SoftDeletes'
+    _mix_ = {
+        '.app.model.mix.topicFilterable',
+        '.app.model.mix.topicApiHelper',
+        '.app.model.mix.topicImageHelper',
+        -- 'revisionableMix',
+        -- 'searchableMix',
+        'presentableMix',
+        'softDelete'
+    },
+    _static_ = {}
 }
 
 local app, lf, tb, str = lx.kit()
+local route = lx.h.route
+local env = lx.env
 
 function _M:ctor()
 
+    self.table = 'topics'
     self.timestamps = false
     self.keepRevisionOf = {
         'deleted_at', 'is_excellent', 'is_blocked', 'order'
@@ -18,7 +30,7 @@ function _M:ctor()
             ['topics.title'] = 10, ['topics.body'] = 5
         }
     }
-    self.presenter = '.lxhub.presenter.topicPresenter'
+    self.presenter = '.app.lxhub.presenter.topic'
     self.dates = {'deleted_at'}
     self.fillable = {
         'title', 'slug', 'body', 'excerpt', 'is_draft', 'source',
@@ -31,69 +43,69 @@ end
 -- For admin log
 -- Don't forget to fill this table
 
-function _M.s__.boot()
+function _M:boot()
 
-    parent.boot()
-    static.created(function(topic)
-        SiteStatus.newTopic()
-    end)
-    static.deleted(function(topic)
-        for _, reply in pairs(topic.replies) do
-            app(UserRepliedTopic.class):remove(reply.user, reply)
-        end
-    end)
+    self:__super(_M, 'boot')
+    -- static.created(function(topic)
+    --     SiteStatus.newTopic()
+    -- end)
+    -- static.deleted(function(topic)
+    --     for _, reply in pairs(topic.replies) do
+    --         app(UserRepliedTopic):remove(reply.user, reply)
+    --     end
+    -- end)
 end
 
 function _M:votes()
 
-    return self:morphMany(Vote.class, 'votable')
+    return self:morphMany(Vote, 'votable')
 end
 
 function _M:attentedUsers()
 
-    return self:belongsToMany(User.class, 'attentions'):get()
+    return self:belongsToMany(User, 'attentions'):get()
 end
 
 function _M:votedUsers()
 
-    local user_ids = Vote.where('votable_type', Topic.class):where('votable_id', self.id):where('is', 'upvote'):lists('user_id'):toArray()
+    local user_ids = Vote.where('votable_type', Topic):where('votable_id', self.id):where('is', 'upvote'):lists('user_id'):toArray()
     
     return User.whereIn('id', user_ids):get()
 end
 
-function _M:Category()
+function _M:category()
 
-    return self:belongsTo(Category.class)
+    return self:belongsTo(Category)
 end
 
-function _M:Tag()
+function _M:tag()
 
-    return self:hasMany(Tag.class)
+    return self:hasMany(Tag)
 end
 
 function _M:user()
 
-    return self:belongsTo(User.class)
+    return self:belongsTo(User)
 end
 
 function _M:lastReplyUser()
 
-    return self:belongsTo(User.class, 'last_reply_user_id')
+    return self:belongsTo(User, 'last_reply_user_id')
 end
 
 function _M:replies()
 
-    return self:hasMany(Reply.class)
+    return self:hasMany(Reply)
 end
 
 function _M:blogs()
 
-    return self:belongsToMany(Blog.class, 'blog_topics')
+    return self:belongsToMany(Blog, 'blog_topics')
 end
 
 function _M:appends()
 
-    return self:hasMany(Append.class)
+    return self:hasMany(Append)
 end
 
 function _M:generateLastReplyUserInfo()
@@ -109,7 +121,7 @@ function _M:getRepliesWithLimit(limit, order)
     limit = limit or 30
     local pageName = 'page'
     -- Default display the latest reply
-    local latest_page = not \Input.get(pageName) and ceil(self.reply_count / limit) or 1
+    local latest_page = not Req.get(pageName) and math.ceil(self.reply_count / limit) or 1
     local query = self:replies():with('user')
     query = order == 'vote_count' and query:orderBy('vote_count', 'desc') or query:orderBy('created_at', 'asc')
     
@@ -118,7 +130,7 @@ end
 
 function _M:getSameCategoryTopics()
 
-    local data = Cache.remember('phphub_hot_topics_' .. self.category_id, 30, function()
+    local data = Cache.remember('lxhub_hot_topics_' .. self.category_id, 30, function()
         
         return Topic.where('category_id', '=', self.category_id):recent():with('user'):take(3):get()
     end)
@@ -161,7 +173,7 @@ end
 
 function _M:getRandomExcellent()
 
-    local data = Cache.remember('phphub_random_topics', 10, function()
+    local data = Cache.remember('lxhub_random_topics', 10, function()
         topic = new('topic')
         
         return topic:getTopicsWithFilter('random-excellent', 5)
@@ -172,7 +184,7 @@ end
 
 function _M:isArticle()
 
-    return self.category_id == config('phphub.blog_category_id')
+    return self.category_id == app:conf('lxhub.blogCategoryId')
 end
 
 function _M:link(params)
@@ -180,8 +192,8 @@ function _M:link(params)
     params = params or {}
     params = tb.merge({self.id, self.slug}, params)
     local name = self:isArticle() and 'articles.show' or 'topics.show'
-    
-    return str.replace(route(name, params), env('API_DOMAIN'), env('APP_DOMAIN'))
+
+    return str.replace(route(name, params), env('apiDomain'), env('apiDomain'))
 end
 
 return _M

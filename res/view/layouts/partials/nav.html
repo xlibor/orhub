@@ -10,34 +10,34 @@
         </button>
 
       <a href="/" class="navbar-brand">
-          <img src="{{ cdn('assets/images/logo4.png') }}" alt="Laravel China" />
+          <img src="{{ Ah.cdn('assets/images/logo4.png') }}" alt="Laravel China" />
       </a>
     </div>
 
     <div id="top-navbar-collapse" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li class="{{ Request.is('topics*') and not Request.is('categories*') and ' active' or '' }}"><a href="{{ route('topics.index') }}">{{ lang('Topics') }}</a></li>
-        <li class="{{ Request.is('categories/' .. config('phphub.blog_category_id')) and ' active' or '' }}"><a href="{{ route('categories.show', config('phphub.blog_category_id')) }}">专栏</a></li>
-        <li class="{{ Request.is('categories/1') and ' active' or '' }}"><a href="{{ route('categories.show', 1) }}">{{ lang('Jobs') }}</a></li>
-        <li class="{{ Request.is('categories/' .. config('phphub.qa_category_id')) and ' active' or '' }}"><a href="{{ route('categories.show', config('phphub.qa_category_id')) }}">问答</a></li>
+        <li class="{{ Req.is('topics*') and not Req.is('categories*') and ' active' or '' }}"><a href="{{ route('topics.index') }}">{{ Ah.lang('Topics') }}</a></li>
+        <li class="{{ Req.is('categories/' ..Conf('lxhub.blogCategoryId')) and ' active' or '' }}"><a href="{{ route('categories.show',Conf('lxhub.blogCategoryId')) }}">专栏</a></li>
+        <li class="{{ Req.is('categories/1') and ' active' or '' }}"><a href="{{ route('categories.show', 1) }}">{{ Ah.lang('Jobs') }}</a></li>
+        <li class="{{ Req.is('categories/' ..Conf('lxhub.qaCategoryId')) and ' active' or '' }}"><a href="{{ route('categories.show',Conf('lxhub.qaCategoryId')) }}">问答</a></li>
         <li ><a href="https://laravel-china.org/news" class="no-pjax">资讯</a></li>
-        <li class="{{ Request.is('wiki') and ' active' or '' }} hidden-sm"><a href="{{ route('wiki') }}">Wiki</a></li>
+        <li class="{{ Req.is('wiki') and ' active' or '' }} hidden-sm"><a href="{{ route('wiki') }}">Wiki</a></li>
         <li class="nav-docs hidden-sm"><a href="http://d.laravel-china.org" class="no-pjax" target="_blank">文档</a></li>
         <li class="hidden-sm"><a href="https://fsdhub.com/books/laravel-essential-training-5.1" class="no-pjax" target="_blank">教程</a></li>
       </ul>
 
       <div class="navbar-right">
 
-          @if(Request.is('users*') and user or Request.is('search*') and user.id > 0)
+          @if(Req.is('users*') and user or Req.is('search*') and user.id > 0)
 
               <form method="GET" action="{{ route('search') }}" accept-charset="UTF-8" class="navbar-form navbar-left hidden-sm hidden-md">
                   <div class="form-group">
-                  <input class="form-control search-input mac-style" placeholder="搜索范围：{{ user.name }}" name="q" type="text" value="{{ Request.is('search*') and query and query or '' }}">
+                  <input class="form-control search-input mac-style" placeholder="搜索范围：{{ user.name }}" name="q" type="text" value="{{ Req.is('search*') and query and query or '' }}">
                   <input class="form-control search-input mac-style"  name="user_id" type="hidden" value="{{ user.id }}">
           @else
               <form method="GET" action="{{ route('search') }}" accept-charset="UTF-8" class="navbar-form navbar-left hidden-sm hidden-md">
                   <div class="form-group">
-                  <input class="form-control search-input mac-style" placeholder="搜索" name="q" type="text" value="{{ Request.is('search*') and query and query or '' }}">
+                  <input class="form-control search-input mac-style" placeholder="搜索" name="q" type="text" value="{{ Req.is('search*') and query and query or '' }}">
           @endif
 
             </div>
@@ -57,7 +57,7 @@
                         </li>
 
                         <li>
-                            <a class="button no-pjax" href="{{ category and URL.route('topics.create', {category_id = category.id}) or URL.route('topics.create') }}">
+                            <a class="button no-pjax" href="{{ category and Url.route('topics.create', {category_id = category.id}) or Url.route('topics.create') }}">
                                 <i class="fa fa-comment text-md"></i> 发起讨论
                             </a>
                         </li>
@@ -74,14 +74,14 @@
 
               <li>
                   <a href="#" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dLabel" >
-                      <img class="avatar-topnav" alt="Summer" src="{{ currentUser:present().gravatar }}" />
-                       {{{ currentUser.name }}}
+                      <img class="avatar-topnav" alt="Summer" src="{{ currentUser:present('gravatar') }}" />
+                       {{ currentUser.name }}
                        <span class="caret"></span>
                   </a>
 
                   <ul class="dropdown-menu" aria-labelledby="dLabel">
 
-                      @if(Auth.user():can('visit_admin'))
+                      @if(Auth().user:can('visit_admin'))
                         <li>
                             <a href="/admin" class="no-pjax">
                                 <i class="fa fa-tachometer text-md"></i> 管理后台
@@ -89,16 +89,16 @@
                         </li>
                       @endif
 
-                        @if(Auth.user():can('access_board'))
+                        @if(Auth().user:can('access_board'))
                             <li>
-                                <a class="button" href="{{ route('categories.show', config('phphub.admin_board_cid')) }}">
+                                <a class="button" href="{{ route('categories.show',Conf('lxhub.adminBoardCid')) }}">
                                     <i class="fa fa-users "></i> 站务
                                 </a>
                             </li>
                         @endif
 
                       <li>
-                          <a class="button" href="{{ route('users.show', currentUser.id) }}" data-lang-loginout="{{ lang('Are you sure want to logout?') }}">
+                          <a class="button" href="{{ route('users.show', currentUser.id) }}" data-lang-loginout="{{ Ah.lang('Are you sure want to logout?') }}">
                               <i class="fa fa-user text-md"></i> 个人中心
                           </a>
                       </li>
@@ -108,17 +108,17 @@
                           </a>
                       </li>
                       <li>
-                          <a id="login-out" class="button" href="{{ URL.route('logout') }}" data-lang-loginout="{{ lang('Are you sure want to logout?') }}">
-                              <i class="fa fa-sign-out text-md"></i> {{ lang('Logout') }}
+                          <a id="login-out" class="button" href="{{ Url.route('logout') }}" data-lang-loginout="{{ Ah.lang('Are you sure want to logout?') }}">
+                              <i class="fa fa-sign-out text-md"></i> {{ Ah.lang('Logout') }}
                           </a>
                       </li>
                   </ul>
               </li>
 
           @else
-              <a href="{{ URL.route('auth.login') }}" class="btn btn-primary login-btn">
+              <a href="{{ Url.route('auth.login') }}" class="btn btn-primary login-btn">
                 <i class="fa fa-user"></i>
-                {{ lang('Login') }}
+                {{ Ah.lang('Login') }}
               </a>
           @endif
         </ul>

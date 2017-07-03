@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{{ user.name }}} {{ lang('Following User') }}_@parent
+{{ user.name }} {{ Ah.lang('Following User') }}_@parent
 @stop
 
 @section('content')
@@ -30,7 +30,7 @@
 	        {!! users:render() !!}
 	    </div>
       @else
-        <div class="empty-block">{{ lang('Dont have any data Yet') }}~~</div>
+        <div class="empty-block">{{ Ah.lang('Dont have any data Yet') }}~~</div>
       @endif
 
     </div>

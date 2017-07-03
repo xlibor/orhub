@@ -21,8 +21,8 @@ function _M:newTopicNotify(fromUser, mentionParser, topic)
     -- Notify user follower
     Notification.batchNotify('new_topic_from_following', fromUser, self:removeDuplication(fromUser.followers), topic)
     -- Notify blog subscriber
-    if #topic.user.blogs then
-        Notification.batchNotify('new_topic_from_subscribe', fromUser, self:removeDuplication(topic.user.blogs:first().subscribers), topic)
+    if #topic('user').blogs then
+        Notification.batchNotify('new_topic_from_subscribe', fromUser, self:removeDuplication(topic('user').blogs:first().subscribers), topic)
     end
 end
 

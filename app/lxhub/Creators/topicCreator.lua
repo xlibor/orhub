@@ -49,18 +49,18 @@ function _M:create(observer, data, blog)
             blog:authors():attach(topic.user_id)
         end
     end
-    if topic.is_draft ~= 'yes' and topic.category_id ~= config('phphub.admin_board_cid') then
-        app('Phphub\\Notification\\Notifier'):newTopicNotify(Auth.user(), self.mentionParser, topic)
-        app(UserPublishedNewTopic.class):generate(Auth.user(), topic)
+    if topic.is_draft ~= 'yes' and topic.category_id ~=Conf('lxhub.adminBoardCid') then
+        app('lxhub\\Notification\\Notifier'):newTopicNotify(Auth().user, self.mentionParser, topic)
+        app(UserPublishedNewTopic.class):generate(Auth().user, topic)
     end
     if topic:isArticle() and topic.is_draft == 'yes' then
-        Auth.user():increment('draft_count', 1)
+        Auth().user:increment('draft_count', 1)
     elseif topic:isArticle() then
-        Auth.user():increment('article_count', 1)
+        Auth().user:increment('article_count', 1)
         blog:increment('article_count', 1)
-        app(BlogHasNewArticle.class):generate(Auth.user(), topic, topic:blogs():first())
+        app(BlogHasNewArticle.class):generate(Auth().user, topic, topic:blogs():first())
     else 
-        Auth.user():increment('topic_count', 1)
+        Auth().user:increment('topic_count', 1)
     end
     topic:collectImages()
     

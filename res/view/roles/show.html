@@ -19,24 +19,24 @@
             <div class="card {{ index % 2 == 0 and 'add-margin-right' or 'add-margin-left' }}">
 
                 @if(currentUser and currentUser.id == user.id)
-                <a class="pull-right popover-with-html text-lg animated rubberBand edit-btn" href="{{ route('users.edit', user.id) }}" data-content="{{ lang('Edit Profile') }}">
+                <a class="pull-right popover-with-html text-lg animated rubberBand edit-btn" href="{{ route('users.edit', user.id) }}" data-content="{{ Ah.lang('Edit Profile') }}">
                     <i class="fa fa-cog"></i>
                 </a>
                 @endif
 
               <div class="media-left">
                 <a href="{{ route('users.show', user.id) }}">
-                  <img src="{{ user:present().gravatar }}" class="img-thumbnail avatar" />
+                  <img src="{{ user:present('gravatar') }}" class="img-thumbnail avatar" />
                 </a>
               </div>
               <div class="media-body padding-top-sm">
                 <div class="media-heading">
-                    <a href="{{ route('users.show', {user.id}) }}" title="{{{ user.name }}}" class="remove-padding-left author">
-                        {{{ user.name }}}
+                    <a href="{{ route('users.show', {user.id}) }}" title="{{ user.name }}" class="remove-padding-left author">
+                        {{ user.name }}
                     </a>
                     @if(user.introduction)
                     <span class="introduction">
-                         ，{{{ user.introduction }}}
+                         ，{{ user.introduction }}
                     </span>
                     @endif
                 </div>
@@ -48,7 +48,7 @@
                 <ul class="list-inline">
 
                   @if(user.real_name)
-                    <li class="popover-with-html" data-content="{{ lang('Real Name') }}"><span class="org"><i class="fa fa-user"></i> {{{ user.real_name }}}</span></li>
+                    <li class="popover-with-html" data-content="{{ Ah.lang('Real Name') }}"><span class="org"><i class="fa fa-user"></i> {{ user.real_name }}</span></li>
                   @endif
 
                   @if(user.github_name)

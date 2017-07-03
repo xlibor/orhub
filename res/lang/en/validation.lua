@@ -1,6 +1,6 @@
 return {
     ['"accepted"'] = "The :attribute must be accepted.",
-    ['"active_url"'] = "The :attribute is not a valid URL.",
+    ['"active_url"'] = "The :attribute is not a valid Url.",
     ['"after"'] = "The :attribute must be a date after :date.",
     ['"alpha"'] = "The :attribute may only contain letters.",
     ['"alpha_dash"'] = "The :attribute may only contain letters, numbers, and dashes.",

@@ -52,7 +52,7 @@ function _M.__:saveImageToLocal(type, resize, filename)
 
     filename = filename or ''
     local img
-    local folderName = type == 'avatar' and 'uploads/avatars' or 'uploads/images/' .. date("Ym", time()) .. '/' .. date("d", time()) .. '/' .. Auth.user().id
+    local folderName = type == 'avatar' and 'uploads/avatars' or 'uploads/images/' .. date("Ym", time()) .. '/' .. date("d", time()) .. '/' .. Auth().user.id
     local destinationPath = public_path() .. '/' .. folderName
     local extension = self.file:getClientOriginalExtension() or 'png'
     local safeName = filename or str.random(10) .. '.' .. extension

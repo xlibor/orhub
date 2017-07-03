@@ -11,7 +11,7 @@ local app, lf, tb, str = lx.kit()
 
 function _M:run()
 
-    \Artisan.call('phphub:calculate-hot-topic', {})
+    \Artisan.call('lxhub:calculate-hot-topic', {})
 end
 
 return _M

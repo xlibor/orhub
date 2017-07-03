@@ -32,12 +32,12 @@ end
 
 function _M:store(request)
 
-    if not Auth.user().verified then
+    if not Auth().user.verified then
         lx.throw(StoreResourceFailedException, '创建话题失败，请验证用户邮箱')
     end
     local data = tb.merge(request:except('_token'), {category_id = request.category_id})
     
-    return app('Phphub\\Creators\\TopicCreator'):create(self, data)
+    return app('lxhub\\Creators\\TopicCreator'):create(self, data)
 end
 
 function _M:show(id)
@@ -75,8 +75,8 @@ function _M:destroy(id)
         lx.throw(AccessDeniedHttpException)
     end
     topic:delete()
-    app(UserPublishedNewTopic.class):remove(Auth.user(), topic)
-    app(BlogHasNewArticle.class):remove(Auth.user(), topic, topic:blogs():first())
+    app(UserPublishedNewTopic.class):remove(Auth().user, topic)
+    app(BlogHasNewArticle.class):remove(Auth().user, topic, topic:blogs():first())
     
     return {status = 'ok'}
 end
@@ -84,7 +84,7 @@ end
 function _M:voteUp(id)
 
     local topic = Topic.find(id)
-    app('Phphub\\Vote\\Voter'):topicUpVote(topic)
+    app('lxhub\\Vote\\Voter'):topicUpVote(topic)
     
     return response({['vote-up'] = true, vote_count = topic.vote_count})
 end
@@ -92,7 +92,7 @@ end
 function _M:voteDown(id)
 
     local topic = Topic.find(id)
-    app('Phphub\\Vote\\Voter'):topicDownVote(topic)
+    app('lxhub\\Vote\\Voter'):topicDownVote(topic)
     
     return response({['vote-down'] = true, vote_count = topic.vote_count})
 end

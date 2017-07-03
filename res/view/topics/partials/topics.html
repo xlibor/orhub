@@ -1,6 +1,6 @@
 
 
-@if(#topics)
+@if(topics)
 
 <ul class="list-group row topic-list">
     @foreach(topics as topic)
@@ -8,7 +8,7 @@
          <li class="list-group-item ">
 
              <a class="reply_count_area hidden-xs pull-right" href="{{ topic:link() }}">
-                 <div class="count_set">
+                 <div cass="count_set">
                      <span class="count_of_votes" title="投票数">
                        {{ topic.vote_count }}
                     </span>
@@ -22,7 +22,7 @@
                     <span class="count_seperator">/</span>
 
                      <span class="count_of_visits" title="查看数">
-                       {{ number_shorten(topic.view_count) }}
+                       {{ Ah.number_shorten(topic.view_count) }}
                      </span>
                      <span class="count_seperator">|</span>
 
@@ -31,8 +31,8 @@
              </a>
 
             <div class="avatar pull-left">
-                <a href="{{ route('users.show', {topic.user_id}) }}" title="{{{ topic.user.name }}}">
-                    <img class="media-object img-thumbnail avatar avatar-middle" alt="{{{ topic.user.name }}}" src="{{ topic.user:present().gravatar }}"/>
+                <a href="{{ route('users.show', {topic.user_id}) }}" title="{{ topic('user').name }}">
+                    <img class="media-object img-thumbnail avatar avatar-middle" alt="{{ topic('user').name }}" src="{{ topic('user'):present('gravatar') }}"/>
                 </a>
             </div>
 
@@ -41,16 +41,14 @@
 
               <div class="media-heading">
 
-                @if(topic.order > 0 and not Input.get('filter') and Route.currentRouteName() ~= 'home')
-                    <span class="hidden-xs label label-warning">{{ lang('Stick') }}</span>
+                @if(topic.order > 0 and not Req('filter') and Route.currentRouteName() ~= 'home')
+                    <span class="hidden-xs label label-warning">{{ Ah.lang('Stick') }}</span>
                 @else
-                    {{-- @if(not Request.is('categories/' .. config('phphub.blog_category_id'))) --}}
-                        <span class="hidden-xs label label-{{ topic.is_excellent == 'yes' and Route.currentRouteName() ~= 'home' and 'success' or 'default' }}">{{{ topic.category.name }}}</span>
-                    {{-- @endif --}}
+                    <span class="hidden-xs label label-{{ topic.is_excellent == 'yes' and Route.currentRouteName() ~= 'home' and 'success' or 'default' }}">{{ topic('category').name }}</span>
                 @endif
 
-                <a href="{{ topic:link() }}" title="{{{ topic.title }}}">
-                    {{{ topic.title }}}
+                <a href="{{ topic:link() }}" title="{{ topic.title }}">
+                    {{ topic.title }}
                 </a>
 
               </div>
@@ -62,5 +60,5 @@
 </ul>
 
 @else
-   <div class="empty-block">{{ lang('Dont have any data Yet') }}~~</div>
+   <div class="empty-block">{{ Ah.lang('Dont have any data Yet') }}~~</div>
 @endif

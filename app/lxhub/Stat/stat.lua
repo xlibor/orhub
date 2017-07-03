@@ -5,12 +5,14 @@ local lx, _M, mt = oo{
 
 local app, lf, tb, str = lx.kit()
 
-const CACHE_KEY = 'site_stat'
-const CACHE_MINUTES = 10
+local cache_key = 'site_stat'
+local cache_minutes = 10
+
 function _M:getSiteStat()
 
-    return Cache.remember(self.CACHE_KEY, self.CACHE_MINUTES, function()
-        entity = new('statEntity')
+    return Cache.remember(cache_key, cache_minutes, function()
+
+        local entity = {}
         entity.topic_count = Topic.count()
         entity.reply_count = Reply.count()
         entity.user_count = User.count()

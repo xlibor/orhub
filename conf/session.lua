@@ -2,7 +2,7 @@
 local lx = require('lxlib')
 
 local conf = {
-    driver          = 'db',
+    driver          = 'file',
     lifetime        = 1,
     expireOnClose   = true,
     encrypt         = false,

@@ -11,13 +11,13 @@
 
     @if(filterd_noresult)
         <h3 class="panel-title ">
-          <i class="fa fa-search"></i> 关键词 “{{ query }}” 搜索范围：{{ user.name }} <a class="popover-with-html" data-content="清除搜索范围" href="{{ route('search', {q = Input.get('q')}) }}"><i class="fa fa-times" aria-hidden="true"></i></a> 的结果为空。以下展示全局的搜索 {{ #users + topics:total() }} 条：
+          <i class="fa fa-search"></i> 关键词 “{{ query }}” 搜索范围：{{ user.name }} <a class="popover-with-html" data-content="清除搜索范围" href="{{ route('search', {q = Req('q')}) }}"><i class="fa fa-times" aria-hidden="true"></i></a> 的结果为空。以下展示全局的搜索 {{ #users + topics:total() }} 条：
         </h3>
     @else
         <h3 class="panel-title ">
          <i class="fa fa-search"></i> 关于 “{{ query }}” 的搜索结果, 共 {{ #users + topics:total() }} 条
           @if(user.id > 0)
-              。当前搜索范围：{{ user.name }} <a class="popover-with-html" data-content="清除搜索范围" href="{{ route('search', {q = Input.get('q')}) }}"><i class="fa fa-times" aria-hidden="true"></i></a>
+              。当前搜索范围：{{ user.name }} <a class="popover-with-html" data-content="清除搜索范围" href="{{ route('search', {q = Req('q')}) }}"><i class="fa fa-times" aria-hidden="true"></i></a>
           @endif
         </h3>
     @endif
@@ -39,13 +39,13 @@
         @endif
 
         @if(#topics + #users <= 0)
-            <div class="empty-block">{{ lang('Dont have any data Yet') }}~~</div>
+            <div class="empty-block">{{ Ah.lang('Dont have any data Yet') }}~~</div>
         @endif
 
   </div>
 
   <div class="panel-footer">
-      {!! topics:appends(Request.except('page', '_pjax')):render() !!}
+      {!! topics:appends(Req.except('page', '_pjax')):render() !!}
   </div>
 </div>
 

@@ -17,15 +17,15 @@ end
 
 function _M:register()
 
-    app:single('Phphub\\Markdown\\Markdown', function(app)
+    app:single('lxhub\\Markdown\\Markdown', function(app)
         
-        return new('\Phphub\Markdown\Markdown')
+        return new('\lxhub\Markdown\Markdown')
     end)
 end
 
 function _M:provides()
 
-    return {'Phphub\\Markdown\\Markdown'}
+    return {'lxhub\\Markdown\\Markdown'}
 end
 
 return _M

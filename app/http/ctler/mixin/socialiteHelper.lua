@@ -11,7 +11,7 @@ function _M:oauth(request)
 
     local driver = request:input('driver')
     driver = not self.oauthDrivers[driver] and 'github' or self.oauthDrivers[driver]
-    if Auth.check() and Auth.user().register_source == driver then
+    if Auth.check() and Auth().user.register_source == driver then
         
         return redirect('/')
     end
@@ -22,7 +22,7 @@ end
 function _M:callback(request)
 
     local driver = request:input('driver')
-    if not self.oauthDrivers[driver] or Auth.check() and Auth.user().register_source == driver then
+    if not self.oauthDrivers[driver] or Auth.check() and Auth().user.register_source == driver then
         
         return redirect():intended('/')
     end
@@ -49,7 +49,7 @@ end
 
 function _M:bindSocialiteUser(oauthUser, driver)
 
-    local currentUser = Auth.user()
+    local currentUser = Auth().user
     if driver == 'github' then
         currentUser.github_id = oauthUser.id
         currentUser.github_url = oauthUser.user['url']

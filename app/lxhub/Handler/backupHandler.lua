@@ -26,7 +26,7 @@ function _M:send()
     data['text'] = self.subject
     data['color'] = '#E65128'
     tapd(data['attachments'], {text = self.message})
-    self.client:request('POST', config('services.bearychat.hook'), {form_params = {payload = lf.jsen(data)}})
+    self.client:request('POST',Conf('services.bearychat.hook'), {form_params = {payload = lf.jsen(data)}})
 end
 
 return _M

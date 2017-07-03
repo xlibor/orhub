@@ -2,7 +2,7 @@
   <div class="media">
     <div class="avatar media-left">
       <div class="image"><a title="{{ user_result.name }}" href="{{ route('users.show', user_result.id) }}">
-          <img class="media-object img-thumbnail avatar avatar-66" src="{{ user_result:present().gravatar }}" alt="96"></a>
+          <img class="media-object img-thumbnail avatar avatar-66" src="{{ user_result:present('gravatar') }}" alt="96"></a>
       </div>
     </div>
     <div class="media-body user-info">
@@ -15,7 +15,7 @@
         </a>
         @if(user_result:present():hasBadge())
             <div class="role-label">
-                <a class="label label-success role" href="{{ route('roles.show', {user_result:present():badgeID()}) }}">{{{ user_result:present():badgeName() }}}</a>
+                <a class="label label-success role" href="{{ route('roles.show', {user_result:present():badgeID()}) }}">{{ user_result:present():badgeName() }}</a>
             </div>
         @endif
 

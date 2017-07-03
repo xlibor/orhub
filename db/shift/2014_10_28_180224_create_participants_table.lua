@@ -1,5 +1,5 @@
 
-local lx, _M, mt = oo{
+local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'migration'
 }
@@ -11,7 +11,7 @@ local app, lf, tb, str = lx.kit()
 
 function _M:up(schema)
 
-    schema:create(Models.table('participants'), function(table)
+    schema:create('participants', function(table)
         table:increments('id')
         table:integer('thread_id'):unsigned()
         table:integer('user_id'):unsigned()
@@ -25,7 +25,7 @@ end
 
 function _M:down(schema)
 
-    schema:drop(Models.table('participants'))
+    schema:drop('participants')
 end
 
 return _M

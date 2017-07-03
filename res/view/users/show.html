@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{{ user.name }}} {{ lang('Basic Info') }}_@parent
+{{ user.name }} {{ Ah.lang('Basic Info') }}_@parent
 @stop
 
 @section('content')
@@ -15,11 +15,11 @@
   <div class="main-col col-md-9 left-col">
 
     @if(user.introduction)
-      <div class="box text-center">{{{ user.introduction }}}</div>
+      <div class="box text-center">{{ user.introduction }}</div>
     @endif
 
     @if(user.is_banned == 'yes')
-      <div class="text-center alert alert-info"><b>{{ lang('This user is banned!') }}</b></div>
+      <div class="text-center alert alert-info"><b>{{ Ah.lang('This user is banned!') }}</b></div>
     @endif
 
     <div class="panel panel-default">
@@ -37,21 +37,21 @@
                       </a>
                  </div>
             @else
-                <div class="empty-block">{{ lang('Dont have any data Yet') }}~~</div>
+                <div class="empty-block">{{ Ah.lang('Dont have any data Yet') }}~~</div>
             @endif
         </div>
     </div>
 
     <div class="panel panel-default">
         <div class="panel-heading">
-          {{ lang('Recent Topics') }}
+          {{ Ah.lang('Recent Topics') }}
         </div>
 
         <div class="panel-body">
             @if(#topics)
               @include('users.partials.topics')
             @else
-              <div class="empty-block">{{ lang('Dont have any data Yet') }}~~</div>
+              <div class="empty-block">{{ Ah.lang('Dont have any data Yet') }}~~</div>
             @endif
         </div>
     </div>
@@ -59,14 +59,14 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-          {{ lang('Recent Replies') }}
+          {{ Ah.lang('Recent Replies') }}
         </div>
 
         <div class="panel-body">
             @if(#replies)
               @include('users.partials.replies')
             @else
-              <div class="empty-block">{{ lang('Dont have any comment yet') }}~~</div>
+              <div class="empty-block">{{ Ah.lang('Dont have any comment yet') }}~~</div>
             @endif
         </div>
     </div>

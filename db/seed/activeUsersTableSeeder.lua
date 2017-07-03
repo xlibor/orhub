@@ -11,7 +11,7 @@ local app, lf, tb, str = lx.kit()
 
 function _M:run()
 
-    \Artisan.call('phphub:calculate-active-user', {})
+    \Artisan.call('lxhub:calculate-active-user', {})
 end
 
 return _M

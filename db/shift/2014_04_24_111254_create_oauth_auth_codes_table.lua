@@ -3,7 +3,7 @@
 
 
 
-local lx, _M, mt = oo{
+local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'migration'
 }

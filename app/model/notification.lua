@@ -9,7 +9,7 @@ local app, lf, tb, str = lx.kit()
 
 function _M:ctor()
 
-    self.presenter = '.lxhub.presenters.notificationPresenter'
+    self.presenter = '.app.lxhub.presenters.notification'
     self.fillable = {
         'from_user_id', 'user_id', 'topic_id',
         'reply_id', 'body', 'type'
@@ -20,23 +20,23 @@ end
 
 function _M:user()
 
-    return self:belongsTo(User.class)
+    return self:belongsTo(User)
 end
 
 function _M:topic()
 
-    return self:belongsTo(Topic.class)
+    return self:belongsTo(Topic)
 end
 
 function _M:fromUser()
 
-    return self:belongsTo(User.class, 'from_user_id')
+    return self:belongsTo(User, 'from_user_id')
 end
 
 -- for api
 function _M:from_user()
 
-    return self:belongsTo(User.class, 'from_user_id')
+    return self:belongsTo(User, 'from_user_id')
 end
 
 -- Create a notification
@@ -70,7 +70,7 @@ function _M.s__.batchNotify(type, fromUser, users, topic, reply, content)
     if #data then
         Notification.insert(data)
         for _, toUser in pairs(users) do
-            job = (new('sendNotifyMail', type, fromUser, toUser, topic, reply, content)):delay(config('phphub.notify_delay'))
+            job = (new('sendNotifyMail', type, fromUser, toUser, topic, reply, content)):delay(config('lxhub.notifyDelay'))
             dispatch(job)
         end
     end
@@ -107,7 +107,7 @@ function _M.s__.notify(type, fromUser, toUser, topic, reply)
     }
     toUser:increment('notification_count', 1)
     Notification.insert({data})
-    local job = (new('sendNotifyMail', type, fromUser, toUser, topic, reply)):delay(config('phphub.notify_delay'))
+    local job = (new('sendNotifyMail', type, fromUser, toUser, topic, reply)):delay(config('lxhub.notifyDelay'))
     dispatch(job)
     static.pushNotification(data)
 end

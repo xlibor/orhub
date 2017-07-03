@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{{ user.name }}} 的关注者_@parent
+{{ user.name }} 的关注者_@parent
 @stop
 
 @section('content')
@@ -31,7 +31,7 @@
 	        {!! users:render() !!}
 	    </div>
       @else
-        <div class="empty-block">{{ lang('Dont have any data Yet') }}~~</div>
+        <div class="empty-block">{{ Ah.lang('Dont have any data Yet') }}~~</div>
       @endif
 
     </div>

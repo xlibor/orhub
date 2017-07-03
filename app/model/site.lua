@@ -9,7 +9,7 @@ local app, lf, tb, str = lx.kit()
 
 function _M:ctor()
 
-    self.presenter = SitePresenter.class,
+    self.presenter = '.app.lxhub.presenter.site',
     self.guarded = {'id'}
 end
 
@@ -17,14 +17,14 @@ function _M.s__.boot()
 
     self:__super(_M, 'boot')
     -- static.saving(function(model)
-    --     Cache.forget('phphub_sites')
+    --     Cache.forget('lxhub_sites')
     -- end)
 end
 
 function _M.s__.allFromCache(expire)
 
     expire = expire or 1440
-    local data = Cache.remember('phphub_sites', 60, function()
+    local data = Cache.remember('lxhub_sites', 60, function()
         raw_sites = static.orderBy('order', 'desc'):orderBy('created_at', 'desc'):get()
         sorted = {}
         sorted['site'] = raw_sites:filter(function(item)

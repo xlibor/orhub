@@ -1,45 +1,53 @@
--- 申请 access_token 或者刷新 access_token.
 
-router:post('oauth/access_token', 'OauthController@issueAccessToken')
---  此分组下路由 需要通过 login-token 方式认证的 access token
+return function(route)
+    
+    local lx = require('lxlib')
+    local app = lx.app()
 
-router:group({middleware = 'oauth2:user'}, function(router)
-    -- 发布内容单独设置频率限制
-    router:group({middleware = 'api.throttle', limit = config('api.rate_limits.publish.limits'), expires = config('api.rate_limits.publish.expires')}, function(router)
-        router:post('topics', 'TopicsController@store')
-        router:post('replies', 'RepliesController@store')
+    -- 申请 access_token 或者刷新 access_token.
+
+    route:post('oauth/access_token', 'oauth@issueAccessToken')
+    --  此分组下路由 需要通过 login-token 方式认证的 access token
+
+    route:group({bar = 'oauth2:user'}, function(route)
+        -- 发布内容单独设置频率限制
+        route:group({bar = 'api.throttle', limit = app:conf('api.rate_limits.publish.limits'), expires = app:conf('api.rate_limits.publish.expires')}, function(route)
+            route:post('topics', 'topics@store')
+            route:post('replies', 'replies@store')
+        end)
+        route:group({bar = 'api.throttle', limit = app:conf('api.rate_limits.access.limits'), expires = app:conf('api.rate_limits.access.expires')}, function(route)
+            -- Users
+            route:get('me', 'users@me')
+            route:put('users/{id}', 'users@update')
+            -- Topics
+            route:delete('topics/{id}', 'topics@destroy')
+            route:post('topics/{id}/vote-up', 'topics@voteUp')
+            route:post('topics/{id}/vote-down', 'topics@voteDown')
+            -- Notifications
+            route:get('me/notifications', 'notification@index')
+            route:get('me/notifications/count', 'notification@unreadMessagesCount')
+        end)
     end)
-    router:group({middleware = 'api.throttle', limit = config('api.rate_limits.access.limits'), expires = config('api.rate_limits.access.expires')}, function(router)
-        -- Users
-        router:get('me', 'UsersController@me')
-        router:put('users/{id}', 'UsersController@update')
-        -- Topics
-        router:delete('topics/{id}', 'TopicsController@destroy')
-        router:post('topics/{id}/vote-up', 'TopicsController@voteUp')
-        router:post('topics/{id}/vote-down', 'TopicsController@voteDown')
-        -- Notifications
-        router:get('me/notifications', 'NotificationController@index')
-        router:get('me/notifications/count', 'NotificationController@unreadMessagesCount')
-    end)
-end)
--- 此分组下路由 同时支持两种认证方式获取的 access_token
+    -- 此分组下路由 同时支持两种认证方式获取的 access_token
 
-router:group({middleware = {'oauth2', 'api.throttle'}, limit = config('api.rate_limits.access.limits'), expires = config('api.rate_limits.access.expires')}, function(router)
-    router:get('topics/{id}', 'TopicsController@show')
-    --Topics
-    router:get('topics', 'TopicsController@index')
-    router:get('user/{id}/votes', 'TopicsController@indexByUserVotes')
-    router:get('user/{id}/topics', 'TopicsController@indexByUserId')
-    --Web Views
-    router:get('topics/{id}/web_view', {as = 'topic.web_view', uses = 'TopicsController@showWebView'})
-    router:get('topics/{id}/replies/web_view', {as = 'replies.web_view', uses = 'RepliesController@indexWebViewByTopic'})
-    router:get('users/{id}/replies/web_view', {as = 'users.replies.web_view', uses = 'RepliesController@indexWebViewByUser'})
-    router:get('categories', 'CategoriesController@index')
-    --Replies
-    router:get('topics/{id}/replies', 'RepliesController@indexByTopicId')
-    router:get('users/{id}/replies', 'RepliesController@indexByUserId')
-    --Users
-    router:get('users/{id}', 'UsersController@show')
-    --Adverts
-    router:get('adverts/launch_screen', 'LaunchScreenAdvertsController@index')
-end)
+    route:group({bar = {'oauth2', 'api.throttle'}, limit = app:conf('api.rate_limits.access.limits'), expires = app:conf('api.rate_limits.access.expires')}, function(route)
+        route:get('topics/{id}', 'topics@show')
+        --Topics
+        route:get('topics', 'topics@index')
+        route:get('user/{id}/votes', 'topics@indexByUserVotes')
+        route:get('user/{id}/topics', 'topics@indexByUserId')
+        --Web Views
+        route:get('topics/{id}/web_view', {as = 'topic.web_view', uses = 'topics@showWebView'})
+        route:get('topics/{id}/replies/web_view', {as = 'replies.web_view', uses = 'replies@indexWebViewByTopic'})
+        route:get('users/{id}/replies/web_view', {as = 'users.replies.web_view', uses = 'replies@indexWebViewByUser'})
+        route:get('categories', 'categories@index')
+        --Replies
+        route:get('topics/{id}/replies', 'replies@indexByTopicId')
+        route:get('users/{id}/replies', 'replies@indexByUserId')
+        --Users
+        route:get('users/{id}', 'users@show')
+        --Adverts
+        route:get('adverts/launch_screen', 'launchScreenAdverts@index')
+    end)
+
+end

@@ -8,7 +8,7 @@ local app, lf, tb, str = lx.kit()
 
 function _M:user()
 
-    return self:belongsTo(User.class)
+    return self:belongsTo(User)
 end
 
 return _M

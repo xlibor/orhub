@@ -13,14 +13,18 @@ end
 
 function _M:user()
 
-    return self:belongsTo(User.class)
+    return self:belongsTo(User)
 end
 
-function _M.s__.fetchAll()
+function _M:fetchAll()
 
-    local data = Cache.remember('phphub_active_users', 30, function()
+    local data = Cache.remember('lxhub_active_users', 30, function()
         
-        return static.with('user'):orderBy('weight', 'DESC'):limit(8):get():pluck('user')
+        return self:with('user')
+            :orderBy('weight', 'desc')
+            :limit(8):get():col():pluck(function(item)
+                return item('user')
+            end)
     end)
     
     return data

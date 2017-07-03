@@ -2,12 +2,15 @@
 local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'model',
-    _mix_ = {'revisionableMix', 'softDelete'}
+    _mix_ = {
+        -- 'revisionableMix',
+        'softDelete'
+    }
 }
 
 local app, lf, tb, str = lx.kit()
 
-function _M:new()
+function _M:ctor()
 
     self.guarded = {'id'}
     self.keepRevisionOf = {'deleted_at'}
@@ -19,7 +22,7 @@ function _M:boot()
 
     self:__super(_M, 'boot')
     -- static.saving(function(model)
-    --     Cache.forget('phphub_links')
+    --     Cache.forget('lxhub_links')
     -- end)
 end
 
@@ -40,16 +43,16 @@ function _M:getCoverAttribute(file_name)
         return file_name
     end
     
-    return cdn(file_name)
+    return Ah.cdn(file_name)
 end
 
-function _M.s__.allFromCache(expire)
+function _M:allFromCache(expire)
 
     expire = expire or 1440
     
-    return Cache.remember('phphub_links', expire, function()
+    return Cache.remember('lxhub_links', expire, function()
         
-        return static.where('is_enabled', 'yes'):get()
+        return self:where('is_enabled', 'yes'):get()
     end)
 end
 

@@ -2,23 +2,25 @@
 local lx, _M = oo{
     _cls_   = '',
     _ext_   = 'model',
-    _bond_  = {'auth.authenticatable', 'auth.authorizable'},
+    -- _bond_  = {'authenticatableBond', 'authorizableBond'},
     _mix_   = {
-        '.db.mixin.userRememberTokenHelper',
-        '.db.minxin.userSocialiteHelper',
-        '.db.mixin.userAvatarHelper',
-        '.db.mixin.userActivityHelper',
-        'messagable', 'presentableTrait', 'searchableTrait',
-        'revisionableTrait', 'entrustUserTrait',
-        'softDelete', 'followTrait'
-    }
+        '.app.model.mix.userRememberTokenHelper',
+        '.app.model.mix.userSocialiteHelper',
+        '.app.model.mix.userAvatarHelper',
+        '.app.model.mix.userActivityHelper',
+        'presentableMix',
+        -- 'messagable', 'searchableMix',
+        -- 'revisionableMix', 'entrustUserMix',
+        -- 'softDelete', 'followMix'
+    },
+    _static_ = {}
 }
 
 local app, lf, tb, str = lx.kit()
 
 function _M:ctor()
 
-    self.presenter = '.lxhub.presenter.user'
+    self.presenter = '.app.lxhub.presenter.user'
     self.searchable = {
         columns = {
             ['users.name'] = 10, ['users.real_name'] = 10,
@@ -35,13 +37,13 @@ end
 function _M:boot()
 
     self:__super(_M, 'boot')
-    static.created(function(user)
-        driver = user['github_id'] and 'github' or 'wechat'
-        SiteStatus.newUser(driver)
-        dispatch(new('sendActivateMail', user))
-    end)
+    -- static.created(function(user)
+    --     driver = user['github_id'] and 'github' or 'wechat'
+    --     SiteStatus.newUser(driver)
+    --     dispatch(new('sendActivateMail', user))
+    -- end)
     -- static.deleted(function(user)
-    --     \Artisan.call('phphub:clear-user-data', {user_id = user.id})
+    --     \Artisan.call('lxhub:clear-user-data', {user_id = user.id})
     -- end)
 end
 
@@ -54,7 +56,7 @@ end
 
 function _M.s__.byRolesName(name)
 
-    local data = Cache.remember('phphub_roles_' .. name, 60, function()
+    local data = Cache.remember('lxhub_roles_' .. name, 60, function()
         
         return User.isRole(name):orderBy('last_actived_at', 'desc'):get()
     end)
@@ -64,7 +66,7 @@ end
 
 function _M:managedBlogs()
 
-    return self:belongsToMany(Blog.class, 'blog_managers')
+    return self:belongsToMany(Blog, 'blog_managers')
 end
 
 -- For EntrustUserTrait and SoftDeletes conflict
@@ -77,42 +79,42 @@ end
 
 function _M:votedTopics()
 
-    return self:morphedByMany(Topic.class, 'votable', 'votes'):withPivot('created_at')
+    return self:morphedByMany(Topic, 'votable', 'votes'):withPivot('created_at')
 end
 
 function _M:topics()
 
-    return self:hasMany(Topic.class)
+    return self:hasMany(Topic)
 end
 
 function _M:blogs()
 
-    return self:hasMany(Blog.class)
+    return self:hasMany(Blog)
 end
 
 function _M:replies()
 
-    return self:hasMany(Reply.class)
+    return self:hasMany(Reply)
 end
 
 function _M:subscribes()
 
-    return self:belongsToMany(Blog.class, 'blog_subscribers')
+    return self:belongsToMany(Blog, 'blog_subscribers')
 end
 
 function _M:attentTopics()
 
-    return self:belongsToMany(Topic.class, 'attentions'):withTimestamps()
+    return self:belongsToMany(Topic, 'attentions'):withTimestamps()
 end
 
 function _M:notifications()
 
-    return self:hasMany(Notification.class):recent():with('topic', 'fromUser'):paginate(20)
+    return self:hasMany(Notification):recent():with('topic', 'fromUser'):paginate(20)
 end
 
 function _M:revisions()
 
-    return self:hasMany(Revision.class)
+    return self:hasMany(Revision)
 end
 
 function _M:scopeRecent(query)
@@ -162,11 +164,11 @@ end
 function _M:recordLastActivedAt()
 
     local now = Carbon.now():toDateTimeString()
-    local update_key = app:conf('phphub.actived_time_for_update')
+    local update_key = app:conf('lxhub.activedTimeForUpdate')
     local update_data = Cache.get(update_key)
     update_data[self.id] = now
     Cache.forever(update_key, update_data)
-    local show_key = config('phphub.actived_time_data')
+    local show_key =Conf('lxhub.actived_time_data')
     local show_data = Cache.get(show_key)
     show_data[self.id] = now
     Cache.forever(show_key, show_data)

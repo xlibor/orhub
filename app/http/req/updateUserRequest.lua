@@ -49,13 +49,13 @@ function _M:performUpdate(user)
     local file = self:file('payment_qrcode')
     -- 微信支付二维码
     if file then
-        upload_status = app('Phphub\\Handler\\ImageUploadHandler'):uploadImage(file)
+        upload_status = app('.app.lxhub.handler.imageUploadHandler'):uploadImage(file)
         data['payment_qrcode'] = upload_status['filename']
     end
     local file = self:file('wechat_qrcode')
     -- 微信二维码
     if file then
-        upload_status = app('Phphub\\Handler\\ImageUploadHandler'):uploadImage(file)
+        upload_status = app('.app.lxhub.handler.imageUploadHandler'):uploadImage(file)
         data['wechat_qrcode'] = upload_status['filename']
     end
     user:update(data)

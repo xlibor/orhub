@@ -2,7 +2,10 @@
 local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'model',
-    _mix_ = {'revisionableMix', 'softDelete'}
+    _mix_ = {
+        -- 'revisionableMix',
+        'softDelete'
+    }
 }
 
 local app, lf, tb, str = lx.kit()
@@ -14,7 +17,7 @@ function _M:ctor()
 end
 
 -- For admin log
-function _M.s__.boot()
+function _M:boot()
 
     self:__super(_M, 'boot')
     -- static.created(function(topic)
@@ -24,17 +27,17 @@ end
 
 function _M:votes()
 
-    return self:morphMany(Vote.class, 'votable')
+    return self:morphMany(Vote, 'votable')
 end
 
 function _M:user()
 
-    return self:belongsTo(User.class)
+    return self:belongsTo(User)
 end
 
 function _M:topic()
 
-    return self:belongsTo(Topic.class):withoutBoardTopics()
+    return self:belongsTo(Topic):withoutBoardTopics()
 end
 
 function _M:scopeWhose(query, user_id)

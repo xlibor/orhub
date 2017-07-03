@@ -9,7 +9,7 @@ local app, lf, tb, str = lx.kit()
 function _M:new()
 
     local this = {
-        signature = 'phphub:calculate-hot-topic',
+        signature = 'lxhub:calculate-hot-topic',
         description = 'Calculate hot topic'
     }
     

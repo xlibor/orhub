@@ -25,24 +25,24 @@
             @endif
                 {!! csrf_field() !!}
 
-                <input name="category_id" type="hidden" value="{{ config('phphub.blog_category_id') }}">
+                <input name="category_id" type="hidden" value="{{Conf('lxhub.blogCategoryId') }}">
 
                 @if(blog)
                     <input name="blog_id" type="hidden" value="{{ blog.id }}">
                 @endif
 
                 <div class="form-group">
-                    <input class="form-control" id="article-title" placeholder="{{ lang('Please write down a topic') }}" name="title" type="text" value="{{ old('title') or topic.title }}" required="require">
+                    <input class="form-control" id="article-title" placeholder="{{ Ah.lang('Please write down a topic') }}" name="title" type="text" value="{{ old('title') or topic.title }}" required="require">
                 </div>
 
                 @include('topics.partials.composing_help_block', {without_box = false})
 
                 <div class="form-group">
-                  <textarea required="require" class="form-control" rows="20" style="overflow:hidden" id="reply_content" placeholder="{{ lang('Please using markdown.') }}" name="body" cols="50">{{ old('body') or topic.body_original }}</textarea>
+                  <textarea required="require" class="form-control" rows="20" style="overflow:hidden" id="reply_content" placeholder="{{ Ah.lang('Please using markdown.') }}" name="body" cols="50">{{ old('body') or topic.body_original }}</textarea>
                 </div>
 
                 <div class="form-group status-post-submit">
-                  <button class="btn btn-primary submit-btn" type="submit" name="subject" value="publish" id="{{ topic.is_draft == 'yes' and 'publish-hint' or '' }}">{{ lang('Publish') }}</button>
+                  <button class="btn btn-primary submit-btn" type="submit" name="subject" value="publish" id="{{ topic.is_draft == 'yes' and 'publish-hint' or '' }}">{{ Ah.lang('Publish') }}</button>
 
                     @if(topic.is_draft == 'yes' or lf.isEmpty(topic.id))
                         &nbsp;&nbsp;or&nbsp;&nbsp;
@@ -63,8 +63,8 @@
 
 @section('scripts')
 
-<link rel="stylesheet" href="{{ cdn(elixir('assets/css/editor.css')) }}">
-<script src="{{ cdn(elixir('assets/js/editor.js')) }}"></script>
+<link rel="stylesheet" href="{{ Ah.cdn(elixir('assets/css/editor.css')) }}">
+<script src="{{ Ah.cdn(elixir('assets/js/editor.js')) }}"></script>
 
 <script type="text/javascript">
 

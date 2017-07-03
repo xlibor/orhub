@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ lang('My Notifications') }} @parent
+{{ Ah.lang('My Notifications') }} @parent
 @stop
 
 @section('content')
@@ -17,7 +17,7 @@
     <div class="panel panel-default padding-sm">
 
         <div class="panel-heading">
-          <h1>{{ lang('My Notifications') }}</h1>
+          <h1>{{ Ah.lang('My Notifications') }}</h1>
         </div>
 
         @if(#notifications)
@@ -31,7 +31,7 @@
                         @if((#notification.topic or notification.type == 'follow') and #notification.fromUser)
                             <div class="avatar pull-left">
                                 <a href="{{ route('users.show', {notification.from_user_id}) }}">
-                                    <img class="media-object img-thumbnail avatar" alt="{{{ notification.fromUser.name }}}" src="{{ notification.fromUser:present().gravatar }}"  style="width:38px;height:38px;"/>
+                                    <img class="media-object img-thumbnail avatar" alt="{{ notification.fromUser.name }}" src="{{ notification.fromUser:present('gravatar') }}"  style="width:38px;height:38px;"/>
                                 </a>
                             </div>
 
@@ -40,25 +40,25 @@
                               <div class="media-heading">
 
                                 <a href="{{ route('users.show', {notification.from_user_id}) }}">
-                                    {{{ notification.fromUser.name }}}
+                                    {{ notification.fromUser.name }}
                                 </a>
                                  •
                                  @if(notification.type ~= 'follow' and notification.topic:isArticle())
-                                     {{ str.replace(notification:present().lableUp, '话题', '文章') }}
-                                     <a href="{{ notification.topic:link() }}{{{ not lf.isEmpty(notification.reply_id) and '#reply' .. notification.reply_id or '' }}}" title="{{{ notification.topic.title }}}">
-                                         {{{ str.limit(notification.topic.title, '100') }}}
+                                     {{ str.replace(notification:present('lableUp'), '话题', '文章') }}
+                                     <a href="{{ notification.topic:link() }}{{ not lf.isEmpty(notification.reply_id) and '#reply' .. notification.reply_id or '' }}" title="{{ notification.topic.title }}">
+                                         {{ str.limit(notification.topic.title, '100') }}
                                      </a>
                                  @else
-                                    {{ notification:present().lableUp }}
+                                    {{ notification:present('lableUp') }}
                                     @if(notification.type ~= 'follow')
-                                        <a href="{{ notification.topic:link() }}{{{ not lf.isEmpty(notification.reply_id) and '#reply' .. notification.reply_id or '' }}}" title="{{{ notification.topic.title }}}">
-                                            {{{ str.limit(notification.topic.title, '100') }}}
+                                        <a href="{{ notification.topic:link() }}{{ not lf.isEmpty(notification.reply_id) and '#reply' .. notification.reply_id or '' }}" title="{{ notification.topic.title }}">
+                                            {{ str.limit(notification.topic.title, '100') }}
                                         </a>
                                     @endif
                                  @endif
 
                                 <span class="meta">
-                                     • {{ lang('at') }} • <span class="timeago">{{ notification.created_at }}</span>
+                                     • {{ Ah.lang('at') }} • <span class="timeago">{{ notification.created_at }}</span>
                                 </span>
                               </div>
                               <div class="media-body markdown-reply content-body">
@@ -67,7 +67,7 @@
 
                             </div>
                         @else
-                          <div class="deleted text-center">{{ lang('Data has been deleted.') }}</div>
+                          <div class="deleted text-center">{{ Ah.lang('Data has been deleted.') }}</div>
                         @endif
                     </li>
                     @endforeach
@@ -83,7 +83,7 @@
 
         @else
             <div class="panel-body">
-                <div class="empty-block">{{ lang('You dont have any notice yet!') }}</div>
+                <div class="empty-block">{{ Ah.lang('You dont have any notice yet!') }}</div>
             </div>
         @endif
 

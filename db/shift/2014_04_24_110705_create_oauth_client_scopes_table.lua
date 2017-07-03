@@ -3,7 +3,7 @@
 
 
 
-local lx, _M, mt = oo{
+local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'migration'
 }
@@ -28,7 +28,6 @@ function _M:up(schema)
 end
 
 -- Reverse the migrations.
-
 
 function _M:down(schema)
 

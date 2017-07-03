@@ -16,7 +16,7 @@
     continue
 end ?}
         <li class="list-comment-item">
-            <a class="avatar" href="{{ schema_url('users', {id = reply.topic.user.id}) }}">
+            <a class="avatar" href="{{ schema_url('users', {id = reply.topic('user').id}) }}">
                 <img class="avatar" src="{{  reply.user:present():gravatar() }}">
             </a>
             <div class="info">

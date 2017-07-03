@@ -17,8 +17,8 @@ function _M:boot()
 	local view = app.view
  
     view:gather('*',    function(context)
-        context.currentUser = Auth.user
-        context.siteStat = app('lxhub.stat.stat'):getSiteStat()
+        context.currentUser = Auth().user
+        context.siteStat = app('.app.lxhub.stat.stat'):getSiteStat()
     end)
 end
 

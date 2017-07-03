@@ -16,6 +16,10 @@ function _M:reg()
 	app:single('.app.http.bar.verifyCsrfToken')
 	app:single('.app.http.bar.redirectIfAuthenticated')
  
+ 	app:bind('.app.lxhub.stat.stat')
+ 	app:single('appHelper', '.app.mod.appHelper')
+
+	app:bindNs('.app.lxhub.presenter', lx.dir('app', 'lxhub/presenter'))
 end
 
 function _M:boot()

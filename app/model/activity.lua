@@ -14,7 +14,7 @@ end
 
 function _M:user()
 
-    return self:belongsTo(User.class)
+    return self:belongsTo(User)
 end
 
 function _M:scopeRecent(query)

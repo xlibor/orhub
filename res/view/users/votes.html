@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{{ user.name }}} {{ lang('Voted Topics') }}_@parent
+{{ user.name }} {{ Ah.lang('Voted Topics') }}_@parent
 @stop
 
 @section('content')
@@ -28,7 +28,7 @@
 	      @include('users.partials.topics', {is_article = true})
 	      <div class="pull-right add-padding-vertically"> {!! topics:render() !!} </div>
       @else
-        <div class="empty-block">{{ lang('Dont have any votes yet') }}~~</div>
+        <div class="empty-block">{{ Ah.lang('Dont have any votes yet') }}~~</div>
       @endif
 
     </div>

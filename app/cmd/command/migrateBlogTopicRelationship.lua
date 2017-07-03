@@ -30,7 +30,7 @@ end
 
 function _M:handle()
 
-    Topic.where('category_id', config('phphub.blog_category_id')):chunk(200, function(topics)
+    Topic.where('category_id',Conf('lxhub.blogCategoryId')):chunk(200, function(topics)
         for _, topic in pairs(topics) do
             blog = topic.user:blogs():first()
             if not blog:topics():where('topic_id', topic.id):exists() then

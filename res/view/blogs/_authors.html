@@ -8,8 +8,8 @@
 
           @foreach(authors as index, author)
               @if(author.is_banned ~= 'yes')
-                 <a class="" href="{{ route('users.show', {author.id}) }}" title="{{{ author.name .. (author.introduction and ' - ' .. author.introduction or '')}}}">
-                    <img class=" img-thumbnail avatar avatar-middle" alt="{{{ author.name }}}" src="{{ author:present().gravatar }}"/>
+                 <a class="" href="{{ route('users.show', {author.id}) }}" title="{{ author.name .. (author.introduction and ' - ' .. author.introduction or '')}}">
+                    <img class=" img-thumbnail avatar avatar-middle" alt="{{ author.name }}" src="{{ author:present('gravatar') }}"/>
                 </a>
               @endif
           @endforeach

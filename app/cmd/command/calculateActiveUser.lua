@@ -9,7 +9,7 @@ local app, lf, tb, str = lx.kit()
 function _M:new()
 
     local this = {
-        signature = 'phphub:calculate-active-user',
+        signature = 'lxhub:calculate-active-user',
         description = 'Calculate active user'
     }
     

@@ -45,7 +45,7 @@ end ?}
 
                 @if(activities:total() / activities:perPage() > 1)
                     <div class="panel-footer text-right remove-padding-horizontal pager-footer">
-                        {!! activities:appends(Request.except('page', '_pjax')):render() !!}
+                        {!! activities:appends(Req.except('page', '_pjax')):render() !!}
                     </div>
                 @else
                 <div class="panel-footer text-center remove-padding-horizontal pager-footer">

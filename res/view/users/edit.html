@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ lang('Edit Profile') }} | @parent
+{{ Ah.lang('Edit Profile') }} | @parent
 @stop
 
 @section('content')
@@ -18,7 +18,7 @@
 
       <div class="panel-body ">
 
-        <h2><i class="fa fa-cog" aria-hidden="true"></i> {{ lang('Edit Profile') }}</h2>
+        <h2><i class="fa fa-cog" aria-hidden="true"></i> {{ Ah.lang('Edit Profile') }}</h2>
         <hr>
 
         @include('layouts.partials.errors')
@@ -41,7 +41,7 @@
             </div>
 
             <div class="form-group">
-                <label for="" class="col-sm-2 control-label">{{ lang('GitHub Name') }}</label>
+                <label for="" class="col-sm-2 control-label">{{ Ah.lang('GitHub Name') }}</label>
                 <div class="col-sm-6">
                     <input class="form-control" name="github_name" type="text" value="{{ user.github_name }}">
                 </div>
@@ -52,22 +52,22 @@
             </div>
 
             <div class="form-group">
-                <label for="" class="col-sm-2 control-label">{{ lang('Email') }}</label>
+                <label for="" class="col-sm-2 control-label">{{ Ah.lang('Email') }}</label>
                 <div class="col-sm-6">
                     <input class="form-control" name="email" type="text" value="{{ user.email }}">
                 </div>
                 <div class="col-sm-4 help-block">
-                    {{ lang('Email example: name@website }}
+                    {{ Ah.lang('Email example: name@website }}
                 </div>
             </div>
 
           <div class="form-group">
-              <label for="" class="col-sm-2 control-label">{{ lang('Real Name') }}</label>
+              <label for="" class="col-sm-2 control-label">{{ Ah.lang('Real Name') }}</label>
               <div class="col-sm-6">
                   <input class="form-control" name="real_name" type="text" value="{{ user.real_name }}">
               </div>
               <div class="col-sm-4 help-block">
-                {{ lang('Real Name example: 李小明') }}
+                {{ Ah.lang('Real Name example: 李小明') }}
               </div>
           </div>
 
@@ -82,22 +82,22 @@
           </div>
 
           <div class="form-group">
-              <label for="" class="col-sm-2 control-label">{{ lang('Company') }}</label>
+              <label for="" class="col-sm-2 control-label">{{ Ah.lang('Company') }}</label>
               <div class="col-sm-6">
                   <input class="form-control" name="company" type="text" value="{{ user.company }}">
               </div>
               <div class="col-sm-4 help-block">
-                {{ lang('Company example: Alibaba') }}
+                {{ Ah.lang('Company example: Alibaba') }}
               </div>
           </div>
 
           <div class="form-group">
-              <label for="" class="col-sm-2 control-label">{{ lang('Weibo Username') }}</label>
+              <label for="" class="col-sm-2 control-label">{{ Ah.lang('Weibo Username') }}</label>
               <div class="col-sm-6">
                   <input class="form-control" name="weibo_name" type="text" value="{{ user.weibo_name}}">
               </div>
               <div class="col-sm-4 help-block">
-                    {{ lang('Weibo Username example: PHPHub') }}
+                    {{ Ah.lang('Weibo Username example: PHPHub') }}
               </div>
           </div>
 
@@ -112,17 +112,17 @@
           </div>
 
           <div class="form-group">
-              <label for="" class="col-sm-2 control-label">{{ lang('twitter_placeholder') }}</label>
+              <label for="" class="col-sm-2 control-label">{{ Ah.lang('twitter_placeholder') }}</label>
               <div class="col-sm-6">
                   <input class="form-control" name="twitter_account" type="text" value="{{ user.twitter_account}}">
               </div>
               <div class="col-sm-4 help-block">
-                {{ lang('twitter_placeholder_hint') }}
+                {{ Ah.lang('twitter_placeholder_hint') }}
               </div>
           </div>
 
           <div class="form-group">
-              <label for="" class="col-sm-2 control-label">{{ lang('LinkedIn') }}</label>
+              <label for="" class="col-sm-2 control-label">{{ Ah.lang('LinkedIn') }}</label>
               <div class="col-sm-6">
                   <input class="form-control" name="linkedin" type="text" value="{{ user.linkedin}}">
               </div>
@@ -132,12 +132,12 @@
           </div>
 
           <div class="form-group">
-              <label for="" class="col-sm-2 control-label">{{ lang('personal_website_placebolder') }}</label>
+              <label for="" class="col-sm-2 control-label">{{ Ah.lang('personal_website_placebolder') }}</label>
               <div class="col-sm-6">
                   <input class="form-control" name="personal_website" type="text" value="{{ user.personal_website }}">
               </div>
               <div class="col-sm-4 help-block">
-                    {{ lang('personal_website_placebolder_hint') }}
+                    {{ Ah.lang('personal_website_placebolder_hint') }}
               </div>
           </div>
 
@@ -169,12 +169,12 @@
             </div>
 
           <div class="form-group">
-              <label for="" class="col-sm-2 control-label">{{ lang('introduction_placeholder') }}</label>
+              <label for="" class="col-sm-2 control-label">{{ Ah.lang('introduction_placeholder') }}</label>
               <div class="col-sm-6">
                   <textarea class="form-control" rows="3" name="introduction" cols="50">{{ user.introduction }}</textarea>
               </div>
               <div class="col-sm-4 help-block">
-                    {{ lang('introduction_placeholder_hint') }}，大部分情况下会在你的头像和名字旁边显示
+                    {{ Ah.lang('introduction_placeholder_hint') }}，大部分情况下会在你的头像和名字旁边显示
               </div>
           </div>
 
@@ -190,7 +190,7 @@
 
           <div class="form-group">
               <div class="col-sm-offset-2 col-sm-6">
-                <input class="btn btn-primary" id="user-edit-submit" type="submit" value="{{ lang('Apply Changes') }}">
+                <input class="btn btn-primary" id="user-edit-submit" type="submit" value="{{ Ah.lang('Apply Changes') }}">
               </div>
             </div>
       </form>

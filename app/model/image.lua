@@ -11,7 +11,7 @@ function _M:ctor()
     self.fillable = {'topic_id', 'link'}
 end
 
-function _M.s__.fromActivities(activities)
+function _M:fromActivities(activities)
 
     local images = {}
     for _, activity in pairs(activities) do

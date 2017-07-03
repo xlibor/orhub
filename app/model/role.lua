@@ -36,7 +36,7 @@ end
 
 function _M:allUsers()
 
-    return self:belongsToMany(User.class)
+    return self:belongsToMany(User)
 end
 
 function _M.s__.relationArrayWithCache()

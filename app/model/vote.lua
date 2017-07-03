@@ -19,7 +19,7 @@ end
 
 function _M:user()
 
-    return self:belongsTo(User.class)
+    return self:belongsTo(User)
 end
 
 function _M:scopeByWhom(query, user_id)

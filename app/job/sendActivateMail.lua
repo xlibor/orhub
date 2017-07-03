@@ -24,7 +24,7 @@ end
 
 function _M:handle()
 
-    return app('Phphub\\Handler\\EmailHandler'):sendActivateMail(self.user)
+    return app('.app.lxhub.handler.emailHandler'):sendActivateMail(self.user)
 end
 
 return _M

@@ -24,10 +24,10 @@ end
 -- The sitemap generator instance.
 -- @var \Roumen\Sitemap\Sitemap
 -- The data provider instance.
--- @var \Phphub\Sitemap\DataProvider
+-- @var \lxhub\Sitemap\DataProvider
 -- Create a new sitemap builder instance.
 -- @param  \Roumen\Sitemap\Sitemap                sitemap
--- @param  \Phphub\Sitemap\DataProvider  provider
+-- @param  \lxhub\Sitemap\DataProvider  provider
 -- @param  \Illuminate\Config\Repository          config
 
 

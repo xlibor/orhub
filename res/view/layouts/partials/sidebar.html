@@ -1,8 +1,8 @@
 <div class="col-md-3 side-bar">
 
-    @if(Auth.check() and Auth.user().draft_count > 0)
+    @if(Auth.check() and Auth().user.draft_count > 0)
         <div class="text-center alert alert-warning">
-            <a href="{{ route('users.drafts') }}" style="color:inherit;"><i class="fa fa-file-text-o"></i> 草稿 {{ Auth.user().draft_count }} 篇</a>
+            <a href="{{ route('users.drafts') }}" style="color:inherit;"><i class="fa fa-file-text-o"></i> 草稿 {{ Auth().user.draft_count }} 篇</a>
         </div>
     @endif
 
@@ -11,22 +11,22 @@
   <div class="panel panel-default corner-radius">
 
       <div class="panel-heading text-center">
-        <h3 class="panel-title">作者：{{ topic.user.name }}</h3>
+        <h3 class="panel-title">作者：{{ topic('user').name }}</h3>
       </div>
 
     <div class="panel-body text-center topic-author-box">
         @include('topics.partials.topic_author_box')
 
 
-        @if(Auth.check() and currentUser.id ~= topic.user.id)
+        @if(Auth.check() and currentUser.id ~= topic('user').id)
             <span class="text-white">
-                {? isFollowing = currentUser and currentUser:isFollowing(topic.user.id) ?}
+                {? isFollowing = currentUser and currentUser:isFollowing(topic('user').id) ?}
                 <hr>
-                <a data-method="post" class="btn btn-{{ not isFollowing and 'warning' or 'default' }} btn-block" href="javascript:void(0);" data-url="{{ route('users.doFollow', topic.user.id) }}" id="user-edit-button">
+                <a data-method="post" class="btn btn-{{ not isFollowing and 'warning' or 'default' }} btn-block" href="javascript:void(0);" data-url="{{ route('users.doFollow', topic('user').id) }}" id="user-edit-button">
                    <i class="fa {{!isFollowing and 'fa-plus' or 'fa-minus'}}"></i> {{ not isFollowing and '关注 Ta' or '已关注' }}
                 </a>
 
-                <a class="btn btn-default btn-block" href="{{ route('messages.create', topic.user.id) }}" >
+                <a class="btn btn-default btn-block" href="{{ route('messages.create', topic('user').id) }}" >
                    <i class="fa fa-envelope-o"></i> 发私信
                 </a>
             </span>
@@ -40,7 +40,7 @@
   @if(userTopics and #userTopics)
   <div class="panel panel-default corner-radius">
     <div class="panel-heading text-center">
-      <h3 class="panel-title">{{ topic.user.name }} 的其他话题</h3>
+      <h3 class="panel-title">{{ topic('user').name }} 的其他话题</h3>
     </div>
     <div class="panel-body">
       @include('layouts.partials.sidebar_topics', {sidebarTopics = userTopics})
@@ -52,7 +52,7 @@
   @if(categoryTopics and #categoryTopics)
   <div class="panel panel-default corner-radius">
     <div class="panel-heading text-center">
-      <h3 class="panel-title">{{ lang('Same Category Topics') }}</h3>
+      <h3 class="panel-title">{{ Ah.lang('Same Category Topics') }}</h3>
     </div>
     <div class="panel-body">
       @include('layouts.partials.sidebar_topics', {sidebarTopics = categoryTopics})
@@ -66,7 +66,7 @@
     border: none;
 ">
 <a href="https://laravel-china.org/topics/3383" rel="nofollow" title="" style="">
-      <img src="https://dn-phphub.qbox.me/uploads/images/201612/09/1/qASrRyKNj0.jpg" style="width: 100%;border-radius: 0px;box-shadow: none;border: 1px solid #ffafaf;"></a>
+      <img src="https://dn-lxhub.qbox.me/uploads/images/201612/09/1/qASrRyKNj0.jpg" style="width: 100%;border-radius: 0px;box-shadow: none;border: 1px solid #ffafaf;"></a>
 </div>
 
 @if(Route.currentRouteName() == 'topics.index')
@@ -76,7 +76,7 @@
 @if(active_users and #active_users)
     <div class="panel panel-default corner-radius panel-active-users">
       <div class="panel-heading text-center">
-        <h3 class="panel-title">{{ lang('Active Users') }}（<a href="{{ route('hall_of_fames') }}"><i class="fa fa-star" aria-hidden="true"></i> {{ lang('Hall of Fame') }}</a>）</h3>
+        <h3 class="panel-title">{{ Ah.lang('Active Users') }}（<a href="{{ route('hall_of_fames') }}"><i class="fa fa-star" aria-hidden="true"></i> {{ Ah.lang('Hall of Fame') }}</a>）</h3>
       </div>
       <div class="panel-body">
         @include('topics.partials.active_users')
@@ -84,7 +84,7 @@
     </div>
 @endif
 
-@if(hot_topics and #hot_topics)
+@if(hot_topics and #hot_topics > 0)
 <div class="panel panel-default corner-radius panel-hot-topics">
   <div class="panel-heading text-center">
     <h3 class="panel-title">七天内最热</h3>
@@ -113,7 +113,7 @@
   @if(links and #links)
     <div class="panel panel-default corner-radius">
       <div class="panel-heading text-center">
-        <h3 class="panel-title">{{ lang('Links') }}</h3>
+        <h3 class="panel-title">{{ Ah.lang('Links') }}</h3>
       </div>
       <div class="panel-body text-center" style="padding-top: 5px;">
         @foreach(links as link)
@@ -130,11 +130,11 @@
 
 <div class="panel panel-default corner-radius">
   <div class="panel-heading text-center">
-    <h3 class="panel-title">{{ lang('App Download') }}</h3>
+    <h3 class="panel-title">{{ Ah.lang('App Download') }}</h3>
   </div>
   <div class="panel-body text-center" style="padding: 7px;">
     <a href="https://laravel-china.org/topics/1531" target="_blank" rel="nofollow" title="">
-      <img src="https://dn-phphub.qbox.me/uploads/images/201512/08/1/cziZFHqkm8.png" style="width:240px;">
+      <img src="https://dn-lxhub.qbox.me/uploads/images/201512/08/1/cziZFHqkm8.png" style="width:240px;">
     </a>
   </div>
 </div>
@@ -148,7 +148,7 @@
 <div class="panel panel-default corner-radius" style="color:#a5a5a5">
   <div class="panel-body text-center">
       <a href="http://estgroupe.com/" style="color:#a5a5a5">
-          <img src="https://dn-phphub.qbox.me/uploads/images/201612/12/1/iq7WQc2iuW.png" style="width: 20px;margin-right: 4px;margin-top: -4px;">
+          <img src="https://dn-lxhub.qbox.me/uploads/images/201612/12/1/iq7WQc2iuW.png" style="width: 20px;margin-right: 4px;margin-top: -4px;">
           <span style="margin-top: 7px;display: inline-block;">
               优帆远扬 - 创造不息，交付不止
           </span>

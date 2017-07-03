@@ -1,8 +1,12 @@
 
 local lx, _M = oo{
-    _cls_ = '',
-    _ext_ = 'model',
-    _mix_ = {'revisionableMix', 'softDelete'}
+    _cls_       = '',
+    _ext_       = 'model',
+    _mix_       = {
+        -- 'revisionableMix',
+        'softDelete'
+    },
+    _static_    = {}
 }
 
 local app, lf, tb, str = lx.kit()
@@ -18,7 +22,7 @@ function _M:boot()
 
     self:__super(_M, 'boot')
     -- static.saving(function(article)
-    --     Cache.forget('phphub_banner')
+    --     Cache.forget('lxhub_banner')
     -- end)
 end
 
@@ -39,16 +43,17 @@ function _M:getImageUrlAttribute(file_name)
         return file_name
     end
     
-    return cdn(file_name)
+    return Ah.cdn(file_name)
 end
 
 function _M.s__.allByPosition()
 
-    local data = Cache.remember('phphub_banner', 60, function()
+    local data = Cache.remember('lxhub_banner', 60, function()
         local ret = {}
-        local data = Banner.orderBy('position', 'DESC'):orderBy('order', 'ASC'):get()
-        for _, banner in pairs(data) do
-            tapd(ret[banner.position], banner)
+        local data = Banner.orderBy({'position', 'desc'}, {'order', 'ASC'}):get()
+
+        for _, banner in ipairs(data) do
+            tb.mapd(ret, banner.position, banner)
         end
         
         return ret

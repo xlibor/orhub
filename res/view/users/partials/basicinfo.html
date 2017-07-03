@@ -17,7 +17,7 @@
 
             @if(user:present():hasBadge())
                 <div class="role-label">
-                    <a class="label label-success role" href="{{ route('roles.show', {user:present():badgeID()}) }}">{{{ user:present():badgeName() }}}</a>
+                    <a class="label label-success role" href="{{ route('roles.show', {user:present():badgeID()}) }}">{{ user:present():badgeName() }}</a>
                 </div>
             @endif
 
@@ -118,17 +118,17 @@
               @if(user.personal_website)
               <li class="popover-with-html" data-content="{{ user.personal_website }}">
                 <a href="http://{{ user.personal_website }}" rel="nofollow" target="_blank" class="url">
-                  <i class="fa fa-globe"></i> {{ lang('Website') }}
+                  <i class="fa fa-globe"></i> {{ Ah.lang('Website') }}
                 </a>
             </li>
               @endif
 
             @if(user.company)
-              <li class="popover-with-html" data-content="{{ user.company }}"><i class="fa fa-users"></i> {{{ lang('Company') }}}</li>
+              <li class="popover-with-html" data-content="{{ user.company }}"><i class="fa fa-users"></i> {{ Ah.lang('Company') }}</li>
             @endif
 
             @if(user.city)
-              <li class="popover-with-html" data-content="{{ user.city }}"><i class="fa fa-map-marker"></i> {{{ lang('City') }}}</li>
+              <li class="popover-with-html" data-content="{{ user.city }}"><i class="fa fa-map-marker"></i> {{ Ah.lang('City') }}</li>
             @endif
 
           </ul>
@@ -141,7 +141,7 @@
 
         @if(currentUser and currentUser.id == user.id)
           <a class="btn btn-primary btn-block" href="{{ route('users.edit', user.id) }}" id="user-edit-button">
-            <i class="fa fa-edit"></i> {{ lang('Edit Profile') }}
+            <i class="fa fa-edit"></i> {{ Ah.lang('Edit Profile') }}
           </a>
         @endif
 
@@ -158,8 +158,8 @@
         @endif
 {{--
         @if(currentUser and Entrust.can('manage_users') and currentUser.id ~= user.id and currentUser.roles:count() < 5)
-          <a data-method="post" class="btn btn-{{ user.is_banned == 'yes' and 'warning' or 'danger' }} btn-block" href="javascript:void(0);" data-url="{{ route('users.blocking', user.id) }}" id="user-edit-button" onclick=" return confirm('{{ lang('Are you sure want to ' .. (user.is_banned == 'yes' and 'unblock' or 'block') .. ' this User?') }}')">
-            <i class="fa fa-times"></i> {{ user.is_banned == 'yes' and lang('Unblock User') or lang('Block User') }}
+          <a data-method="post" class="btn btn-{{ user.is_banned == 'yes' and 'warning' or 'danger' }} btn-block" href="javascript:void(0);" data-url="{{ route('users.blocking', user.id) }}" id="user-edit-button" onclick=" return confirm('{{ Ah.lang('Are you sure want to ' .. (user.is_banned == 'yes' and 'unblock' or 'block') .. ' this User?') }}')">
+            <i class="fa fa-times"></i> {{ user.is_banned == 'yes' and Ah.lang('Unblock User') or Ah.lang('Block User') }}
           </a>
           <a class="btn btn-info btn-block" href="{{ url('admin/users/' .. user.id) }}" >
             <i class="fa fa-eye"></i> 后台管理
@@ -170,9 +170,9 @@
 
 </div>
 
-@if(currentUser and currentUser.id == user.id and Auth.user().draft_count > 0)
+@if(currentUser and currentUser.id == user.id and Auth().user.draft_count > 0)
     <div class="text-center alert alert-warning">
-        <a href="{{ route('users.drafts') }}" style="color:inherit;"><i class="fa fa-file-text-o"></i> 草稿 {{ Auth.user().draft_count }} 篇</a>
+        <a href="{{ route('users.drafts') }}" style="color:inherit;"><i class="fa fa-file-text-o"></i> 草稿 {{ Auth().user.draft_count }} 篇</a>
     </div>
 @endif
 

@@ -8,8 +8,8 @@ local app, lf, tb, str = lx.kit()
 function _M:getDataFromUserName(username)
 
     local client = new('client', {base_uri = 'https://api.github.com/users/'})
-    query['client_id'] = config('services.github.client_id')
-    query['client_secret'] = config('services.github.client_secret')
+    query['client_id'] =Conf('services.github.client_id')
+    query['client_secret'] =Conf('services.github.client_secret')
     local data = client:get(username, query):getBody():getContents()
     
     return lf.jsde(data, true)

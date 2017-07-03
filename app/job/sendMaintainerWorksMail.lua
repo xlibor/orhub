@@ -28,7 +28,7 @@ end
 
 function _M:handle()
 
-    return app('Phphub\\Handler\\EmailHandler'):sendMaintainerWorksMail(self.user, self.timeFrame, self.content)
+    return app('.app.lxhub.handler.emailHandler'):sendMaintainerWorksMail(self.user, self.timeFrame, self.content)
 end
 
 return _M

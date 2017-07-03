@@ -60,7 +60,7 @@
         </div>
 
 
-        @if(topic.user.payment_qrcode)
+        @if(topic('user').payment_qrcode)
             @include('topics.partials.payment_qrcode_modal')
         @endif
 
@@ -72,21 +72,21 @@
                 <div class="panel panel-default corner-radius">
 
                   <div class="panel-heading text-center">
-                    <h3 class="panel-title">作者：{{ topic.user.name }}</h3>
+                    <h3 class="panel-title">作者：{{ topic('user').name }}</h3>
                   </div>
 
                     <div class="panel-body text-center topic-author-box">
                         @include('topics.partials.topic_author_box')
 
-                        @if(Auth.check() and currentUser.id ~= topic.user.id)
+                        @if(Auth.check() and currentUser.id ~= topic('user').id)
                             <span class="text-white">
-                                {? isFollowing = currentUser and currentUser:isFollowing(topic.user.id) ?}
+                                {? isFollowing = currentUser and currentUser:isFollowing(topic('user').id) ?}
                                 <hr>
-                                <a data-method="post" class="btn btn-{{ not isFollowing and 'warning' or 'default' }} btn-block" href="javascript:void(0);" data-url="{{ route('users.doFollow', topic.user.id) }}" id="user-edit-button">
+                                <a data-method="post" class="btn btn-{{ not isFollowing and 'warning' or 'default' }} btn-block" href="javascript:void(0);" data-url="{{ route('users.doFollow', topic('user').id) }}" id="user-edit-button">
                                    <i class="fa {{!isFollowing and 'fa-plus' or 'fa-minus'}}"></i> {{ not isFollowing and '关注 Ta' or '已关注' }}
                                 </a>
 
-                                <a class="btn btn-default btn-block" href="{{ route('messages.create', topic.user.id) }}" >
+                                <a class="btn btn-default btn-block" href="{{ route('messages.create', topic('user').id) }}" >
                                    <i class="fa fa-envelope-o"></i> 发私信
                                 </a>
                             </span>
@@ -124,7 +124,7 @@
     $(document).ready(function()
     {
         var $config = {
-            title               : '{{{ topic.title }}} | from LC #laravel-china# {{ topic.user.id ~= 1 and '@summer_charlie' or '' }} {{ topic.user.weibo_name and '@' .. topic.user.weibo_name or '' }}',
+            title               : '{{ topic.title }} | from LC #laravel-china# {{ topic('user').id ~= 1 and '@summer_charlie' or '' }} {{ topic('user').weibo_name and '@' .. topic('user').weibo_name or '' }}',
             wechatQrcodeTitle   : "微信扫一扫：分享", // 微信二维码提示文字
             wechatQrcodeHelper  : '<p>微信里点“发现”，扫一下</p><p>二维码便可将本文分享至朋友圈。</p>',
             image               : "{{ cover and cover.link or blog.cover }}",

@@ -1,35 +1,40 @@
 
-local lx, _M, mt = oo{
+local _M = {
     _cls_ = '',
-    _ext_ = 'httpKernel'
+    _ext_ = {
+        path = 'lxlib.http.kernel'
+    },
+    bars = {
+    },
+    routeBars = {
+        {'auth',        'lxlib.auth.bar.authenticate'},
+        {'auth.basic',  'lxlib.auth.bar.authenticateWithBasicAuth'},
+        {'can',         'lxlib.auth.bar.authorize'},
+        {'guest',       '.app.http.bar.redirectIfAuthenticated'},
+        -- {'adminAuth',       '.app.http.bar.adminAuth'},
+        -- {'verifiedEmail',   '.app.http.bar.RequireVerifiedEmail'},
+        -- {'oauth2',          '.app.http.bar.oauth2'},
+        -- {'check-authorization-params', 'LucaDegasperi.OAuth2Server.Middleware.CheckAuthCodeRequest',
+        -- {'restrict_web_access', '.app.http.bar.restrictWebAccess'}
+    },
+    barGroup = {
+        web = {
+            'lxlib.cookie.bar.addToResponse',
+            'lxlib.session.bar.startSession',
+            'lxlib.view.bar.shareErrorsFromSession',
+            '.app.http.bar.verifyCsrfToken',
+            -- '.app.http.bar.CheckUserIsItBanned',
+            -- '.app.http.bar.RecordLastActivedTime',
+            -- 'spatie.pjax.bar.filterIfPjax',
+            -- 'lucaDegasperi.oAuth2Server.bar.oAuthExceptionHandler',
+        }
+    }
 }
 
-local app, lf, tb, str = lx.kit()
+function _M:ctor()
 
-function _M:new()
-
-    local this = {
-        middleware = {\Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode.class, \App\Http\Middleware\EncryptCookies.class, \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse.class, \Illuminate\Session\Middleware\StartSession.class, \Illuminate\View\Middleware\ShareErrorsFromSession.class, \App\Http\Middleware\VerifyCsrfToken.class, \App\Http\Middleware\CheckUserIsItBanned.class, \App\Http\Middleware\RecordLastActivedTime.class, \Spatie\Pjax\Middleware\FilterIfPjax.class, \LucaDegasperi\OAuth2Server\Middleware\OAuthExceptionHandlerMiddleware.class},
-        routeMiddleware = {
-        auth = \App\Http\Middleware\Authenticate.class,
-        ['auth.basic'] = \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth.class,
-        guest = \App\Http\Middleware\RedirectIfAuthenticated.class,
-        admin_auth = \App\Http\Middleware\AdminAuth.class,
-        verified_email = \App\Http\Middleware\RequireVerifiedEmail.class,
-        oauth2 = \App\Http\Middleware\OAuthMiddleware.class,
-        ['check-authorization-params'] = \LucaDegasperi\OAuth2Server\Middleware\CheckAuthCodeRequestMiddleware.class,
-        ['api.throttle'] = \Dingo\Api\Http\Middleware\RateLimit.class,
-        restrict_web_access = \App\Http\Middleware\RestrictWebAccess.class
-    }
-    }
-    
-    return oo(this, mt)
+    self:initBars()
 end
-
--- The application's global HTTP middleware stack.
--- @var table
--- The application's route middleware.
--- @var table
 
 return _M
 

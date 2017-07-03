@@ -20,22 +20,31 @@ ______                            _              _                              
 
 		<meta charset="UTF-8">
 
-		<title>@section('title')Laravel China 社区 - 高品质的 Laravel 和 PHP 开发者社区@show - Powered by PHPHub</title>
+		<title>
+        @section('title')
+        Laravel China 社区 - 高品质的 Laravel 和 PHP 开发者社区
+        @show
+        - Powered by PHPHub
+        </title>
 
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
 		<meta name="keywords" content="php,laravel,php论坛,laravel论坛,php社区,laravel社区,laravel教程,php教程,laravel视频,php开源,php新手,php7,laravel5" />
 		<meta name="author" content="PHPHub" />
-		<meta name="description" content="@section('description') Laravel China 是国内最大的 Laravel 和 PHP 中文社区，致力于推动 Laravel，PHP7、php-fig 等 PHP 新技术，新理念在中国的发展，是国内最靠谱的 PHP 论坛。 @show" />
+		<meta name="description" content="
+        @section('description')
+            Laravel China 是国内最大的 Laravel 和 PHP 中文社区，致力于推动 Laravel，PHP7、php-fig 等 PHP 新技术，新理念在中国的发展，是国内最靠谱的 PHP 论坛。 
+        @show
+        " />
         <meta name="_token" content="{{ csrf_token() }}">
 
-        <link rel="stylesheet" href="{{ cdn(elixir('assets/css/styles.css')) }}">
+        <link rel="stylesheet" href="{{ Ah.cdn(elixir('css/styles-cb09ac39c5.css')) }}">
 
-        <link rel="shortcut icon" href="{{ cdn('favicon1.png') }}"/>
+        <link rel="shortcut icon" href="{{ Ah.cdn('favicon1.png') }}"/>
 
         <script>
             Config = {
-                'cdnDomain': '{{ get_cdn_domain() }}',
+                'cdnDomain': '{{ Ah.get_cdn_domain() }}',
                 'user_id': {{ currentUser and currentUser.id or 0 }},
                 'user_avatar': {!! currentUser and '"' .. currentUser:present():gravatar() .. '"' or '""' !!},
                 'user_link': {!! currentUser and '"' .. route('users.show', currentUser.id) .. '"' or '""' !!},
@@ -46,9 +55,9 @@ ______                            _              _                              
                     'upload_image' : '{{ route('upload_image') }}'
                 },
                 'token': '{{ csrf_token() }}',
-                'environment': '{{ app():environment() }}',
+                'environment': '{{ App:getEnv() }}',
                 'following_users': [],
-                'qa_category_id': '{{ config('phphub.qa_category_id') }}'
+                'qa_category_id': '{{Conf('lxhub.qaCategoryId') }}'
             };
 
 			var ShowCrxHint = '{{show_crx_hint and show_crx_hint or 'no'}}';
@@ -59,13 +68,13 @@ ______                            _              _                              
 		<meta http-equiv="x-pjax-version" content="{{ elixir('assets/css/styles.css') }}">
 
 	</head>
-	<body id="body" class="{{ route_class() }}">
+	<body id="body" class="{{ Ah.route_class() }}">
 
         {{-- Wechat share cover --}}
         <div style="display: none;"
         　　document.getElementById("typediv1").style.display="none";>
             @section('wechat_icon')
-            <img src="https://dn-phphub.qbox.me/uploads/images/201701/29/1/pQimFCe1r5.png">
+            <img src="https://dn-lxhub.qbox.me/uploads/images/201701/29/1/pQimFCe1r5.png">
             @show
 
         </div>
@@ -74,21 +83,21 @@ ______                            _              _                              
 
 			@include('layouts.partials.nav')
 
-			<div class="container main-container {{ Request.is('blogs*') or Request.is('articles*') or is_route('wildcard') and 'blog-container' or '' }}">
+			<div class="container main-container {{ Req.is('blogs*') or Req.is('articles*') or Ah.is_route('wildcard') and 'blog-container' or '' }}">
 
-				@if(Auth.check() and not Auth.user().verified and not Request.is('email-verification-required'))
+				@if(Auth.check() and not Auth().user.verified and not Req.is('email-verification-required'))
     				<div class="alert alert-warning">
     		            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-    		            邮箱未激活，请前往 {{ Auth.user().email }} 查收激活邮件，激活后才能完整地使用社区功能，如发帖和回帖。未收到邮件？请前往 <a href="{{ route('email-verification-required') }}">重发邮件</a> 。
+    		            邮箱未激活，请前往 {{ Auth().user.email }} 查收激活邮件，激活后才能完整地使用社区功能，如发帖和回帖。未收到邮件？请前往 <a href="{{ route('email-verification-required') }}">重发邮件</a> 。
     		        </div>
-                @elseif(Auth.check() and lf.isEmpty(Auth.user().password))
+                @elseif(Auth.check() and lf.isEmpty(Auth().user.password))
                     <div class="alert alert-warning">
     		            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
     		            未设置登录密码，请前往 <a href="{{ route('users.edit_password', {Auth.id()}) }}">修改密码</a> 页面进行设置。设置后将可以在移动设备上使用邮箱登录网站。
     		        </div>
 				@endif
 
-				@include('flash::message')
+				{{-- include('flash::message') --}}
 
 				@yield('content')
 
@@ -100,11 +109,11 @@ ______                            _              _                              
 
 
 
-        <script src="{{ cdn(elixir('assets/js/scripts.js')) }}"></script>
+        <script src="{{ Ah.cdn(elixir('js/scripts-7524e7da5f.js')) }}"></script>
 
 	    @yield('scripts')
 
-        @if(App.environment() == 'production')
+        @if(App:getEnv() == 'production')
 		<script>
           ga('create', '{{ getenv('GA_Tracking_ID') }}', 'auto');
           ga('send', 'pageview');

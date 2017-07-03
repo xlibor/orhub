@@ -11,7 +11,7 @@ function _M:handle(request, next)
     -- 这样做是为了防止网站出现双入口，混淆用户和 SEO 优化。
     if is_request_from_api() then
         
-        return response('Bad Request.', 400)
+        return response('Bad Req.', 400)
     end
     
     return next(request)
