@@ -25,7 +25,7 @@ local _M = {
             '.app.http.bar.verifyCsrfToken',
             -- '.app.http.bar.CheckUserIsItBanned',
             -- '.app.http.bar.RecordLastActivedTime',
-            -- 'spatie.pjax.bar.filterIfPjax',
+            'lxlib.http.bar.filterIfPjax',
             -- 'lucaDegasperi.oAuth2Server.bar.oAuthExceptionHandler',
         }
     }

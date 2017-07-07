@@ -19,7 +19,6 @@ function _M:index(c)
     local topics = new(Topic):getTopicsWithFilter(request:get('filter', 'index'), 40)
 
     local links = Link.allFromCache()
-    local banners = Banner.allByPosition()
     local active_users = ActiveUser.fetchAll()
     local hot_topics = HotTopic.fetchAll()
     
@@ -80,14 +79,13 @@ function _M:show(c, id, fromCode)
         end)
     -- local revisionHistory = topic:revisionHistory():orderBy('created_at', 'desc'):first()
     topic:increment('view_count', 1)
-    local banners = Banner.allByPosition()
     local cover = topic:cover()
     if topic:isArticle() then
-        if UserReq.is('topics*') then
+        if request:is('topics*') then
             
             return redirect():to(topic:link())
         end
-        user = topic.user
+        user = topic('user')
         blog = topic:blogs():first()
         userTopics = blog:topics():withoutDraft():onlyArticle():orderBy('vote_count', 'desc'):limit(5):get()
         

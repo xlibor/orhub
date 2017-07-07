@@ -17,7 +17,7 @@ function _M:run()
         id = 1,
         title = 'Ruby China',
         link = 'https://ruby-china.org',
-        cover = 'https://dn-lxhub.qbox.me/assets/images/friends/ruby-china.png',
+        cover = 'https://dn-phphub.qbox.me/assets/images/friends/ruby-china.png',
         created_at = '2014-10-12 08:29:15',
         updated_at = '2014-10-31 06:01:20'
     },
@@ -25,7 +25,7 @@ function _M:run()
         id = 2,
         title = 'Golang 中国',
         link = 'http://golangtc.com/',
-        cover = 'https://dn-lxhub.qbox.me/assets/images/friends/golangcn.png',
+        cover = 'https://dn-phphub.qbox.me/assets/images/friends/golangcn.png',
         created_at = '2014-10-12 08:29:15',
         updated_at = '2014-10-31 06:04:39'
     },
@@ -33,7 +33,7 @@ function _M:run()
         id = 3,
         title = 'CNode：Node.js 中文社区',
         link = 'http://cnodejs.org/',
-        cover = 'https://dn-lxhub.qbox.me/assets/images/friends/cnodejs.png',
+        cover = 'https://dn-phphub.qbox.me/assets/images/friends/cnodejs.png',
         created_at = '2014-10-12 08:29:15',
         updated_at = '2014-10-31 06:05:03'
     },
@@ -41,7 +41,7 @@ function _M:run()
         id = 4,
         title = 'ElixirChina (ElixirCN) ',
         link = 'http://elixir-cn.com/',
-        cover = 'https://dn-lxhub.qbox.me/f65fb5a10d3392a1db841c85716dd8f6.png',
+        cover = 'https://dn-phphub.qbox.me/f65fb5a10d3392a1db841c85716dd8f6.png',
         created_at = '2014-10-12 08:29:15',
         updated_at = '2015-01-15 00:07:38'
     },
@@ -49,7 +49,7 @@ function _M:run()
         id = 5,
         title = 'Ionic China',
         link = 'http://ionichina.com/',
-        cover = 'https://dn-lxhub.qbox.me/assets/images/friends/ionic.png',
+        cover = 'https://dn-phphub.qbox.me/assets/images/friends/ionic.png',
         created_at = '0000-00-00 00:00:00',
         updated_at = '0000-00-00 00:00:00'
     },
@@ -57,7 +57,7 @@ function _M:run()
         id = 6,
         title = 'Tester Home',
         link = 'https://testerhome.com',
-        cover = 'https://dn-lxhub.qbox.me/testerhome-logo.png',
+        cover = 'https://dn-phphub.qbox.me/testerhome-logo.png',
         created_at = '2015-05-17 11:37:40',
         updated_at = '2015-05-17 11:37:40'
     },

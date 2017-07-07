@@ -9,7 +9,6 @@ local app, lf, tb, str = lx.kit()
 function _M:index()
 
     local sites = Site.allFromCache()
-    local banners = Banner.allByPosition()
     
     return view('sites.index', Compact('sites', 'banners'))
 end

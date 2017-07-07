@@ -6,40 +6,41 @@ local lx, _M, mt = oo{
 
 local app, lf, tb, str, new = lx.kit()
 
+local use = lx.ns('.app.http.ctler')
+local ActivityCtler, TopicsCtler, BlogsCtler = use('activity', 'topics', 'blogs')
+
 function _M:home(c)
     
- 
     local request = c.req
 
     if Auth.check() then
         
-        return app(ActivityController.class):index(request)
+        return new(ActivityCtler):index(c)
     else
         local topics = new(Topic):getTopicsWithFilter('excellent')
-        local banners = Banner.allByPosition()
 
         return c:view('pages.home', Compact('topics', 'banners'))
     end
 end
 
-function _M:about()
+function _M:about(c)
 
-    return view('pages.about')
+    return c:view('pages.about')
 end
 
-function _M:composer(request)
+function _M:composer(c)
 
-    return app(TopicsController.class):show(4484, request, true)
+    return new(TopicsCtler):show(c, 4484, true)
 end
 
-function _M:wildcard(name, request)
+function _M:wildcard(c, name)
 
-    return app(BlogsController.class):show(name)
+    return new(BlogsCtler):show(c, name)
 end
 
-function _M:wiki(request)
+function _M:wiki(c)
 
-    return app(TopicsController.class):show(config('lxhub.wikiTopicId'), request, true)
+    return new(TopicsCtler):show(c, app:conf('lxhub.wikiTopicId'), true)
 end
 
 function _M:search(request)

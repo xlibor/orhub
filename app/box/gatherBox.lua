@@ -18,6 +18,11 @@ function _M:boot()
  
     view:gather('*',    function(context)
         context.currentUser = Auth().user
+    end)
+
+    view:gather({'layouts.partials.footer', 'users.index'}, function(context)
+
+        context.banners = Banner.allByPosition()
         context.siteStat = app('.app.lxhub.stat.stat'):getSiteStat()
     end)
 end

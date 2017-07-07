@@ -1,24 +1,24 @@
 
 
 <ul class="nav nav-tabs user-info-nav" role="tablist">
-  <li class="{{ navViewActive('users.show') }}">
+  <li class="{{ Ah.navViewActive('users.show') }}">
   	<a href="{{ route('users.show', user.id) }}" >{{ Ah.lang('GitHub Info') }}</a>
   </li>
-  <li class="{{ navViewActive('users.following') }}">
+  <li class="{{ Ah.navViewActive('users.following') }}">
   	<a href="{{ route('users.following', user.id) }}" >{{ Ah.lang('Following User') }}</a>
   </li>
-  <li class="{{ navViewActive('users.topics') }}">
+  <li class="{{ Ah.navViewActive('users.topics') }}">
   	<a href="{{ route('users.topics', user.id) }}" >{{ Ah.lang('Posted Topics') }}</a>
   </li>
-  <li class="{{ navViewActive('users.replies') }}">
+  <li class="{{ Ah.navViewActive('users.replies') }}">
   	<a href="{{ route('users.replies', user.id) }}" >{{ Ah.lang('Replies') }}</a>
   </li>
-  <li class="{{ navViewActive('users.votes') }}">
+  <li class="{{ Ah.navViewActive('users.votes') }}">
   	<a href="{{ route('users.votes', user.id) }}" >{{ Ah.lang('Voted Topics') }}</a>
   </li>
 
   @if(Auth.check() and Auth.id() == user.id)
-  <!-- <li class="{{ navViewActive('users.access_tokens') }}">
+  <!-- <li class="{{ Ah.navViewActive('users.access_tokens') }}">
     <a href="{{ route('users.access_tokens', user.id) }}" >{{ Ah.lang('Access Tokens') }}</a>
   </li> -->
   @endif

@@ -17,6 +17,28 @@ function _M.insanity_check()
     end
 end
 
+function _M.if_query(key, value)
+
+    local queryValue = Req.get(key)
+
+    if queryValue == value or
+        (queryValue and not value) or
+        (lf.isTbl(queryValue) and tb.inList(queryValue, value)) then
+
+        return true
+    end
+
+    return false
+end
+
+function _M.active_class(condition, activeClass, inactiveClass)
+
+    activeClass = activeClass or 'active'
+    inactiveClass = inactiveClass or ''
+
+    return condition and activeClass or inactiveClass
+end
+
 function _M.cdn(filepath)
 
     do return filepath end
@@ -42,7 +64,7 @@ end
 function _M.lang(text, parameters)
 
     parameters = parameters or {}
-    
+
     return str.replace(trans('lxhub.' .. text, parameters), 'lxhub.', '')
 end
 
@@ -124,7 +146,7 @@ end
 
 function _M.route_class()
 
-    return str.replace(Route.currentRouteName(), '.', '-')
+    return str.replace(Route.currentRouteName(), '%.', '-')
 end
 
 -- 见：https://developer.qiniu.com/dora/api/basic-processing-images-imageview2

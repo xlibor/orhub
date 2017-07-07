@@ -4,11 +4,13 @@ local lx, _M, mt = oo{
     _ext_ = 'controller'
 }
 
-local app, lf, tb, str = lx.kit()
+local app, lf, tb, str, new = lx.kit()
+local try = lx.try
+local redirect, lang = lx.h.redirect, lx.h.lang
 
 function _M:ctor()
 
-    self:middleware('auth', {except = {'index', 'show'}})
+    self:setBar('auth', {except = {'index', 'show'}})
 end
 
 function _M:create()
@@ -19,7 +21,7 @@ function _M:create()
     return view('blogs.create_edit', Compact('user', 'blog'))
 end
 
-function _M:show(name)
+function _M:show(c, name)
 
     local blog = Blog.where('slug', name):firstOrFail()
     local user = blog.user
@@ -27,18 +29,18 @@ function _M:show(name)
     local authors = blog.authors
     blog:update({article_count = topics:total()})
     
-    return view('blogs.show', Compact('user', 'blog', 'topics', 'authors'))
+    return c:view('blogs.show', Compact('user', 'blog', 'topics', 'authors'))
 end
 
 function _M:store(request)
 
     local blog = new('blog')
-    try(function()
+    lx.try(function()
         request:performUpdate(blog)
         Flash.success(lang('Operation succeeded.'))
     end)
-    :catch(function(ImageUploadException exception) 
-        Flash.error(lang(exception:getMessage()))
+    :catch('imageUploadException', function(e) 
+        Flash.error(lang(e:getMsg()))
         
         return redirect():back():withInput(request:input())
     end)
@@ -63,8 +65,8 @@ function _M:update(request, id)
         request:performUpdate(blog)
         Flash.success(lang('Operation succeeded.'))
     end)
-    :catch(function(ImageUploadException exception) 
-        Flash.error(lang(exception:getMessage()))
+    :catch('ImageUploadException', function(e) 
+        Flash.error(lang(e:getMsg()))
         
         return redirect():back():withInput(request:input())
     end)

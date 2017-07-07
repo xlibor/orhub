@@ -1,7 +1,8 @@
 @extends('layouts.default')
 
 @section('title')
-{{ topic.title }} | @parent
+{{ topic.title }} | 
+  @parent
 @stop
 
 @section('description')
@@ -11,7 +12,7 @@
 {? local cover = topic:cover() ?}
 @section('wechat_icon')
   @if(cover)
-    <img src="{{ img_crop(cover.link, 512, 512) }}" alt="">
+    <img src="{{ Ah.img_crop(cover.link, 512, 512) }}" alt="">
   @else
     @parent
   @endif
@@ -100,7 +101,7 @@
             title               : '{{ topic.title }} | from LC #laravel-china# {{ topic('user').id ~= 1 and 'summer_charlie' or '' }} {{ topic('user').weibo_name and '@' .. topic('user').weibo_name or '' }}',
             wechatQrcodeTitle   : "微信扫一扫：分享", // 微信二维码提示文字
             wechatQrcodeHelper  : '<p>微信里点“发现”，扫一下</p><p>二维码便可将本文分享至朋友圈。</p>',
-            image               : "{{ cover and cover.link or 'https://dn-lxhub.qbox.me/uploads/images/201701/29/1/pQimFCe1r5.png' }}",
+            image               : "{{ cover and cover.link or 'https://dn-phphub.qbox.me/uploads/images/201701/29/1/pQimFCe1r5.png' }}",
             sites               : ['weibo','wechat',  'facebook', 'twitter', 'google','qzone', 'qq', 'douban'],
         };
 

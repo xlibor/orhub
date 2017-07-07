@@ -16,11 +16,11 @@
 
     <div class="avatar avatar-container pull-left">
       <a href="{{ route('users.show', {reply.user_id}) }}">
-        <img class="media-object img-thumbnail avatar avatar-middle" alt="{{ reply.user.name }}" src="{{ reply.user:present('gravatar') }}"  style="width:55px;height:55px;"/>
+        <img class="media-object img-thumbnail avatar avatar-middle" alt="{{ reply('user').name }}" src="{{ reply('user'):present('gravatar') }}"  style="width:55px;height:55px;"/>
       </a>
-      @if(reply.user:present():hasBadge())
+      @if(reply('user'):present():hasBadge())
           <div>
-              <a class="label label-success role" href="{{ route('roles.show', {reply.user:present():badgeID()}) }}">{{ reply.user:present():badgeName() }}</a>
+              <a class="label label-success role" href="{{ route('roles.show', {reply('user'):present():badgeID()}) }}">{{ reply('user'):present():badgeName() }}</a>
           </div>
       @endif
     </div>
@@ -29,17 +29,17 @@
 
       <div class="media-heading">
 
-        <a href="{{ route('users.show', {reply.user_id}) }}" title="{{ reply.user.name }}" class="remove-padding-left author">
-            {{ reply.user.name }}
+        <a href="{{ route('users.show', {reply.user_id}) }}" title="{{ reply('user').name }}" class="remove-padding-left author">
+            {{ reply('user').name }}
         </a>
 
-        @if(reply.user:present():isAdmin())
-            <a class="label label-success mod-label popover-with-html" data-content="管理员" href="{{ route('roles.show', {reply.user:present():badgeID()}) }}">MOD</a>
+        @if(reply('user'):present():isAdmin())
+            <a class="label label-success mod-label popover-with-html" data-content="管理员" href="{{ route('roles.show', {reply('user'):present():badgeID()}) }}">MOD</a>
         @endif
 
-        @if(reply.user.introduction)
+        @if(reply('user').introduction)
         <span class="introduction">
-            {{ reply.user.introduction }}
+            {{ reply('user').introduction }}
         </span>
         @endif
 
@@ -53,12 +53,12 @@
           @endif
 
           @if(currentUser and (manage_topics or currentUser.id == reply.user_id))
-            <a id="reply-delete-{{ reply.id }}" data-ajax="delete"  href="javascript:void(0);" data-url="{{route('replies.destroy', {reply.id})}}" title="{{lang('Delete')}}">
+            <a id="reply-delete-{{ reply.id }}" data-ajax="delete"  href="javascript:void(0);" data-url="{{route('replies.destroy', {reply.id})}}" title="{{Ah.lang('Delete')}}">
                 <i class="fa fa-trash-o"></i>
             </a>
             <span> ⋅  </span>
           @endif
-          <a class="fa fa-reply" href="javascript:void(0)" onclick="replyOne('{{reply.user.name}}');" title="回复 {{reply.user.name}}"></a>
+          <a class="fa fa-reply" href="javascript:void(0)" onclick="replyOne('{{reply('user').name}}');" title="回复 {{reply('user').name}}"></a>
         </span>
 
         <div class="meta">

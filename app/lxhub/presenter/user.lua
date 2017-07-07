@@ -46,7 +46,7 @@ end
 function _M:hasBadge()
 
     local relations = Role.relationArrayWithCache()
-    local user_ids = array_pluck(relations, 'user_id')
+    local user_ids = tb.pluck(relations, 'user_id')
     
     return tb.inList(user_ids, self.id)
 end
@@ -77,12 +77,9 @@ function _M:getBadge()
 
     local relations = Role.relationArrayWithCache()
     -- 用户所在的用户组，显示 role_id 最小的名称
-    relations = array_sort(relations, function(value)
-        
-        return value.role_id
-    end)
-    local relation = array_first(relations, function(key, value)
-        
+    relations = tb.sortBy(relations, 'role_id')
+    local relation = tb.first(relations, function(value, key)
+
         return value.user_id == self.id
     end)
     if not relation then
@@ -90,7 +87,7 @@ function _M:getBadge()
         return false
     end
     local roles = Role.rolesArrayWithCache()
-    local role = array_first(roles, function(key, value)
+    local role = tb.first(roles, function(value, key)
         
         return value.id == relation.role_id
     end)
@@ -101,7 +98,7 @@ end
 function _M:isAdmin()
 
     local relations = Role.relationArrayWithCache()
-    relations = array_where(relations, function(key, value)
+    relations = tb.where(relations, function(key, value)
         
         return value.user_id == self.id and value.role_id <= 2
     end)

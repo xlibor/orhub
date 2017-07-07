@@ -1,18 +1,3 @@
-<!--
-______                            _              _                                     _
-| ___ \                          | |            | |                                   | |
-| |_/ /___ __      __ ___  _ __  | |__   _   _  | |      __ _  _ __  __ _ __   __ ___ | |
-|  __// _ \\ \ /\ / // _ \| '__| | '_ \ | | | | | |     / _` || '__|/ _` |\ \ / // _ \| |
-| |  | (_) |\ V  V /|  __/| |    | |_) || |_| | | |____| (_| || |  | (_| | \ V /|  __/| |
-\_|   \___/  \_/\_/  \___||_|    |_.__/  \__, | \_____/ \__,_||_|   \__,_|  \_/  \___||_|
-                                          __/ |
-                                         |___/
-  ========================================================
-                                           laravel-china.org
-
-  --------------------------------------------------------
-  Powered by PHPHub
--->
 
 <!DOCTYPE html>
 <html lang="zh">
@@ -38,7 +23,7 @@ ______                            _              _                              
         " />
         <meta name="_token" content="{{ csrf_token() }}">
 
-        <link rel="stylesheet" href="{{ Ah.cdn(elixir('css/styles-cb09ac39c5.css')) }}">
+        <link rel="stylesheet" href="/build/assets/css/styles-cb09ac39c5.css">
 
         <link rel="shortcut icon" href="{{ Ah.cdn('favicon1.png') }}"/>
 
@@ -74,7 +59,7 @@ ______                            _              _                              
         <div style="display: none;"
         　　document.getElementById("typediv1").style.display="none";>
             @section('wechat_icon')
-            <img src="https://dn-lxhub.qbox.me/uploads/images/201701/29/1/pQimFCe1r5.png">
+            <img src="https://dn-phphub.qbox.me/uploads/images/201701/29/1/pQimFCe1r5.png">
             @show
 
         </div>
@@ -109,7 +94,7 @@ ______                            _              _                              
 
 
 
-        <script src="{{ Ah.cdn(elixir('js/scripts-7524e7da5f.js')) }}"></script>
+        <script src="http://phphub5.app/build/assets/js/scripts-7524e7da5f.js"></script>
 
 	    @yield('scripts')
 

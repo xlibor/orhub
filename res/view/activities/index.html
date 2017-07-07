@@ -1,11 +1,11 @@
 @extends('layouts.default')
 
 @section('title')
-@if(if_query('view', nil))
+@if(Ah.if_query('view', nil))
 我关注的动态 | @parent
-@elseif(if_query('view', 'all'))
+@elseif(Ah.if_query('view', 'all'))
 所有动态 | @parent
-@elseif(if_query('view', 'mine'))
+@elseif(Ah.if_query('view', 'mine'))
 我的动态 | @parent
 @endif
 @stop
@@ -18,9 +18,9 @@
 
         <div class="panel-heading">
             <ul class="nav nav-tabs">
-                <li role="presentation" class="{{ active_class(if_query('view', nil)) }}"><a href="{{ route('home') }}"><i class="fa fa-eye" aria-hidden="true"></i> 我的关注</a></li>
-                <li role="presentation" class="{{ active_class(if_query('view', 'all')) }}"><a href="{{ route('home', {view = 'all'}) }}"><i class="fa fa-rss" aria-hidden="true"></i> 所有动态</a></li>
-                <li role="presentation" class="{{ active_class(if_query('view', 'mine')) }}"><a href="{{ route('home', {view = 'mine'}) }}"><i class="fa fa-calendar-minus-o" aria-hidden="true"></i> 我的动态</a></li>
+                <li role="presentation" class="{{ Ah.active_class(Ah.if_query('view', nil)) }}"><a href="{{ route('home') }}"><i class="fa fa-eye" aria-hidden="true"></i> 我的关注</a></li>
+                <li role="presentation" class="{{ Ah.active_class(Ah.if_query('view', 'all')) }}"><a href="{{ route('home', {view = 'all'}) }}"><i class="fa fa-rss" aria-hidden="true"></i> 所有动态</a></li>
+                <li role="presentation" class="{{ Ah.active_class(Ah.if_query('view', 'mine')) }}"><a href="{{ route('home', {view = 'mine'}) }}"><i class="fa fa-calendar-minus-o" aria-hidden="true"></i> 我的动态</a></li>
             </ul>
         </div>
 
@@ -61,9 +61,9 @@ end ?}
         @else
             <div class="panel-body">
                 <div class="empty-block">
-                    @if(if_query('view', nil))
+                    @if(Ah.if_query('view', nil))
                         (=￣ω￣=)··· 关注用户或订阅专栏这里才会有内容哦。
-                    @elseif(if_query('view', 'all'))
+                    @elseif(Ah.if_query('view', 'all'))
                         (=￣ω￣=)···  不活跃度啊你，动态数据为空！记得评论、点赞可产生动态。
                     @endif
                 </div>

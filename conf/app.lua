@@ -6,7 +6,7 @@ local conf = {
     name            = env('appName', 'lxhub'),
     debug           = env('appDebug', false),
     url             = env('appUrl'),
-    urlStatic       = env('urlStatic'),
+    -- urlStatic       = env('urlStatic'),
     userStatic      = env('userStatic'),
     timezone        = env('TIMEZONE') or 'Asia/Shanghai',
     locale          = env('locale') or 'en',
@@ -64,6 +64,7 @@ local conf = {
 
         Ah          = {'appHelper', nil, true},
         ActiveUser  = '.app.model.activeUser',
+        Blog        = '.app.model.blog',
         Topic       = '.app.model.topic',
         Banner      = '.app.model.banner',
         HotTopic    = '.app.model.hotTopic',
@@ -73,6 +74,7 @@ local conf = {
         Tag         = '.app.model.tag',
         Category    = '.app.model.category',
         Reply       = '.app.model.reply',
+        Role        = '.app.model.role',
         Vote        = '.app.model.vote',
     }
 }

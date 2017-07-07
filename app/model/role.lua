@@ -1,7 +1,8 @@
 
 local lx, _M = oo{
-    _cls_ = '',
-    _ext_ = 'entrustRole'
+    _cls_   = '',
+    -- _ext_ = 'entrustRole',
+    _ext_   = 'model'
 }
 
 local app, lf, tb, str = lx.kit()
@@ -11,7 +12,7 @@ function _M:ctor()
     self.fillable = {'name', 'display_name', 'description'}
 end
 
-function _M.s__.boot()
+function _M:boot()
 
     self:__super(_M, 'boot')
     
@@ -21,7 +22,7 @@ function _M.s__.boot()
     -- end)
 end
 
-function _M.s__.addRole(name, display_name, description)
+function _M:addRole(name, display_name, description)
 
     local role = Role.query():where('name', name):first()
     if not role then
@@ -39,23 +40,23 @@ function _M:allUsers()
     return self:belongsToMany(User)
 end
 
-function _M.s__.relationArrayWithCache()
+function _M:relationArrayWithCache()
 
     local minutes = 60
     
     return Cache.remember('all_assigned_roles', minutes, function()
         
-        return DB.table('role_user'):get()
+        return Db.table('role_user'):get()
     end)
 end
 
-function _M.s__.rolesArrayWithCache()
+function _M:rolesArrayWithCache()
 
     local minutes = 60
     
     return Cache.remember('all_roles', minutes, function()
         
-        return DB.table('roles'):get()
+        return Db.table('roles'):get()
     end)
 end
 

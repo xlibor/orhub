@@ -51,7 +51,7 @@ return function(route)
     ------------------ Authentication------------------------
     route:get('/login', 'auth.auth@oauth'):name('login')
     route:get('/auth/login', 'auth.auth@signin'):name('auth.login')
-    route:post('/auth/login', 'auth.auth@postLogin'):name('auth.login')
+    route:post('/auth/login', 'auth.auth@login'):name('auth.login')
     route:get('/login-required', 'auth.auth@loginRequired'):name('login-required')
     route:get('/admin-required', 'auth.auth@adminRequired'):name('admin-required')
     route:get('/user-banned', 'auth.auth@userBanned'):name('user-banned')
@@ -119,7 +119,7 @@ return function(route)
     route:get("/articles/{id}/edit", "articles@edit"):name('articles.edit')
     route:get('/topics/{id}/{slug?}', 'topics@show'):name('topics.show')
     route:get('/articles/{id}/{slug?}', "topics@show"):name('articles.show')
-    route:get('{name}', 'pages@wildcard'):name('wildcard')
+    -- route:get('{name}', 'pages@wildcard'):name('wildcard')
 
 end
 

@@ -43,7 +43,7 @@
 
                 </div>
                 <div class="vote-hint">
-                    成为第一个点赞的人吧 <img title=":bowtie:" alt=":bowtie:" class="emoji" src="https://dn-lxhub.qbox.me/assets/images/emoji/bowtie.png" align="absmiddle"></img>
+                    成为第一个点赞的人吧 <img title=":bowtie:" alt=":bowtie:" class="emoji" src="https://dn-phphub.qbox.me/assets/images/emoji/bowtie.png" align="absmiddle"></img>
                 </div>
             @endif
 
@@ -62,8 +62,8 @@
         <div class="total">{{ Ah.lang('Total Reply Count') }}: <b>{{ replies:total() }}</b> </div>
 
         <div class="order-links">
-            <a class="btn btn-default btn-sm {{ active_class(not if_query('order_by', 'vote_count')) }} popover-with-html" data-content="按照时间排序" href="{{ topic:link({order_by = 'created_at', '#replies'}) }}" role="button">时间</a>
-            <a class="btn btn-default btn-sm {{ active_class(if_query('order_by', 'vote_count')) }} popover-with-html" data-content="按照投票排序" href="{{ topic:link({order_by = 'vote_count', '#replies'})  }}" role="button">投票</a>
+            <a class="btn btn-default btn-sm {{ Ah.active_class(not Ah.if_query('order_by', 'vote_count')) }} popover-with-html" data-content="按照时间排序" href="{{ topic:link({order_by = 'created_at', '#replies'}) }}" role="button">时间</a>
+            <a class="btn btn-default btn-sm {{ Ah.active_class(Ah.if_query('order_by', 'vote_count')) }} popover-with-html" data-content="按照投票排序" href="{{ topic:link({order_by = 'vote_count', '#replies'})  }}" role="button">投票</a>
         </div>
 
     </div>
