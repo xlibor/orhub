@@ -91,7 +91,7 @@ end
 
 function _M:userBanned()
 
-    if Auth.check() and Auth().user.is_banned == 'no' then
+    if Auth.check() and Auth.user().is_banned == 'no' then
         
         return redirect(route('home'))
     end
@@ -114,7 +114,7 @@ function _M:userCreated(user)
     Session.forget('oauthData')
     Flash.success(lang('Congratulations and Welcome!'))
     
-    return redirect(route('users.edit', Auth().user.id))
+    return redirect(route('users.edit', Auth.user().id))
 end
 
 ------------------------------------------
@@ -150,7 +150,7 @@ function _M:userFound(user)
     Session.forget('oauthData')
     Flash.success(lang('Login Successfully.'))
     
-    return redirect(route('users.edit', Auth().user.id))
+    return redirect(route('users.edit', Auth.user().id))
 end
 
 -- 用户屏蔽

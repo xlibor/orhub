@@ -17,7 +17,7 @@ function _M:boot()
 	local view = app.view
  
     view:gather('*',    function(context)
-        context.currentUser = Auth().user
+        context.currentUser = Auth.user()
     end)
 
     view:gather({'layouts.partials.footer', 'users.index'}, function(context)

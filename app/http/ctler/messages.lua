@@ -14,9 +14,9 @@ end
 function _M:index()
 
     local threads = Thread.participateBy(Auth.id())
-    if Auth().user:newThreadsCount() == 0 then
-        Auth().user.message_count = 0
-        Auth().user:save()
+    if Auth.user():newThreadsCount() == 0 then
+        Auth.user().message_count = 0
+        Auth.user():save()
     end
     
     return view('messages.index', Compact('threads', 'currentUserId'))
@@ -31,8 +31,8 @@ function _M:show(id)
     -- counters
     local unread_message_count = thread:userUnreadMessagesCount(Auth.id())
     if unread_message_count > 0 then
-        Auth().user.message_count = Auth().user.message_count - unread_message_count
-        Auth().user:save()
+        Auth.user().message_count = Auth.user().message_count - unread_message_count
+        Auth.user():save()
     end
     thread:markAsRead(Auth.id())
     
@@ -58,7 +58,7 @@ function _M:store(request, markdown)
     if request.thread_id then
         thread = Thread.findOrFail(request.thread_id)
     else 
-        subject = Auth().user.name .. ' 给 ' .. recipient.name .. ' 的私信。'
+        subject = Auth.user().name .. ' 给 ' .. recipient.name .. ' 的私信。'
         thread = Thread.create({subject = subject})
     end
     -- Message
@@ -71,7 +71,7 @@ function _M:store(request, markdown)
     -- Recipient
     thread:addParticipant(recipient.id)
     -- Notify user by Email
-    local job = (new('sendNotifyMail', 'new_message', Auth().user, recipient, nil, nil, message)):delay(config('lxhub.notifyDelay'))
+    local job = (new('sendNotifyMail', 'new_message', Auth.user(), recipient, nil, nil, message)):delay(config('lxhub.notifyDelay'))
     dispatch(job)
     -- notifications count
     recipient.message_count = recipient.message_count + 1

@@ -80,7 +80,7 @@ end
 
 function _M:drafts()
 
-    local user = Auth().user
+    local user = Auth.user()
     local topics = user:topics():onlyArticle():draft():recent():paginate(30)
     local blog = user:blogs():first()
     user.draft_count = user:topics():onlyArticle():draft():count()
@@ -203,8 +203,8 @@ end
 function _M:regenerateLoginToken()
 
     if Auth.check() then
-        Auth().user.login_token = str.random(rand(20, 32))
-        Auth().user:save()
+        Auth.user().login_token = str.random(rand(20, 32))
+        Auth.user():save()
         Flash.success(lang('Regenerate succeeded.'))
     else 
         Flash.error(lang('Regenerate failed.'))
@@ -216,13 +216,13 @@ end
 function _M:doFollow(id)
 
     local user = User.findOrFail(id)
-    if Auth().user:isFollowing(id) then
-        Auth().user:unfollow(id)
-        app(UserFollowedUser.class):remove(Auth().user, user)
+    if Auth.user():isFollowing(id) then
+        Auth.user():unfollow(id)
+        app(UserFollowedUser.class):remove(Auth.user(), user)
     else 
-        Auth().user:follow(id)
-        app('lxhub\\Notification\\Notifier'):newFollowNotify(Auth().user, user)
-        app(UserFollowedUser.class):generate(Auth().user, user)
+        Auth.user():follow(id)
+        app('lxhub\\Notification\\Notifier'):newFollowNotify(Auth.user(), user)
+        app(UserFollowedUser.class):generate(Auth.user(), user)
     end
     user:update({follower_count = user:followers():count()})
     Flash.success(lang('Operation succeeded.'))
@@ -261,7 +261,7 @@ end
 
 function _M:sendVerificationMail()
 
-    local user = Auth().user
+    local user = Auth.user()
     local cache_key = 'send_activite_mail_' .. user.id
     if Cache.has(cache_key) then
         Flash.error(lang('The mail send failed! Please try again in 60 seconds.', {seconds = Cache.get(cache_key) - time()}))
@@ -290,7 +290,7 @@ end
 
 function _M:emailVerificationRequired()
 
-    if \Auth().user.verified then
+    if \Auth.user().verified then
         
         return redirect():intended('/')
     end

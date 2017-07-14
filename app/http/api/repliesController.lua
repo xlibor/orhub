@@ -25,7 +25,7 @@ end
 
 function _M:store(request)
 
-    if not Auth().user.verified then
+    if not Auth.user().verified then
         lx.throw(StoreResourceFailedException, '创建评论失败，请验证用户邮箱')
     end
     

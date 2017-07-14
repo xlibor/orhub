@@ -46,9 +46,9 @@ function _M:create(observer, data)
     topic.reply_count = topic.reply_count + 1
     topic.updated_at = Carbon.now():toDateTimeString()
     topic:save()
-    Auth().user:increment('reply_count', 1)
-    app('lxhub\\Notification\\Notifier'):newReplyNotify(Auth().user, self.mentionParser, topic, reply)
-    app(UserRepliedTopic.class):generate(Auth().user, topic, reply)
+    Auth.user():increment('reply_count', 1)
+    app('lxhub\\Notification\\Notifier'):newReplyNotify(Auth.user(), self.mentionParser, topic, reply)
+    app(UserRepliedTopic.class):generate(Auth.user(), topic, reply)
     
     return observer:creatorSucceed(reply)
 end

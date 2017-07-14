@@ -58,14 +58,14 @@ function _M:show(c, id, fromCode)
     end
     if topic('user').is_banned == 'yes' then
         -- 未登录，或者已登录但是没有管理员权限
-        if not Auth.check() or Auth.check() and not Auth().user:may('manage_topics') then
+        if not Auth.check() or Auth.check() and not Auth.user():may('manage_topics') then
             Flash.error('你访问的文章已被屏蔽，有疑问请发邮件：all@estgroupe.com')
             
             return redirect(route('topics.index'))
         end
         Flash.error('当前文章的作者已被屏蔽，游客与用户将看不到此文章。')
     end
-    if Conf('lxhub.adminBoardCid') and topic.id ==Conf('lxhub.adminBoardCid') and (not Auth.check() or not Auth().user:can('access_board')) then
+    if Conf('lxhub.adminBoardCid') and topic.id ==Conf('lxhub.adminBoardCid') and (not Auth.check() or not Auth.user():can('access_board')) then
         Flash.error('您没有权限访问该文章，有疑问请发邮件：all@estgroupe.com')
         
         return redirect():route('topics.index')
@@ -115,8 +115,8 @@ function _M:append(id, request)
     local markdown = new('markdown')
     local content = markdown:convertMarkdownToHtml(request:input('content'))
     local append = Append.create({topic_id = topic.id, content = content})
-    app('lxhub\\Notification\\Notifier'):newAppendNotify(Auth().user, topic, append)
-    app(UserAddedAppend.class):generate(Auth().user, topic, append)
+    app('lxhub\\Notification\\Notifier'):newAppendNotify(Auth.user(), topic, append)
+    app(UserAddedAppend.class):generate(Auth.user(), topic, append)
     
     return response({status = 200, message = lang('Operation succeeded.'), append = append})
 end
@@ -134,12 +134,12 @@ function _M:update(id, request, mentionParser)
     if topic:isArticle() and request.subject == 'publish' and topic.is_draft == 'yes' then
         data['is_draft'] = 'no'
         -- Topic Published
-        app('lxhub\\Notification\\Notifier'):newTopicNotify(Auth().user, mentionParser, topic)
+        app('lxhub\\Notification\\Notifier'):newTopicNotify(Auth.user(), mentionParser, topic)
         -- User activity
-        app(UserPublishedNewTopic.class):generate(Auth().user, topic)
-        app(BlogHasNewArticle.class):generate(Auth().user, topic, topic:blogs():first())
-        Auth().user:decrement('draft_count', 1)
-        Auth().user:increment('article_count', 1)
+        app(UserPublishedNewTopic.class):generate(Auth.user(), topic)
+        app(BlogHasNewArticle.class):generate(Auth.user(), topic, topic:blogs():first())
+        Auth.user():decrement('draft_count', 1)
+        Auth.user():increment('article_count', 1)
     end
     topic:update(data)
     Flash.success(lang('Operation succeeded.'))
@@ -178,7 +178,7 @@ function _M:recommend(id)
     self:authorize('recommend', topic)
     topic.is_excellent = topic.is_excellent == 'yes' and 'no' or 'yes'
     topic:save()
-    Notification.notify('topic_mark_excellent', Auth().user, topic.user, topic)
+    Notification.notify('topic_mark_excellent', Auth.user(), topic.user, topic)
     
     return response({status = 200, message = lang('Operation succeeded.')})
 end
@@ -199,8 +199,8 @@ function _M:sink(id)
     self:authorize('sink', topic)
     topic.order = topic.order >= 0 and -1 or 0
     topic:save()
-    app(UserPublishedNewTopic.class):remove(Auth().user, topic)
-    app(BlogHasNewArticle.class):remove(Auth().user, topic, topic.user:blogs():first())
+    app(UserPublishedNewTopic.class):remove(Auth.user(), topic)
+    app(BlogHasNewArticle.class):remove(Auth.user(), topic, topic.user:blogs():first())
     
     return response({status = 200, message = lang('Operation succeeded.')})
 end

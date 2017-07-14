@@ -13,7 +13,7 @@ end
 
 function _M:unread()
 
-    if Auth().user.notification_count > 0 and Auth().user.message_count == 0 then
+    if Auth.user().notification_count > 0 and Auth.user().message_count == 0 then
         
         return redirect():route('notifications.index')
     end
@@ -23,16 +23,16 @@ end
 
 function _M:index()
 
-    local notifications = Auth().user:notifications()
-    Auth().user.notification_count = 0
-    Auth().user:save()
+    local notifications = Auth.user():notifications()
+    Auth.user().notification_count = 0
+    Auth.user():save()
     
     return view('notifications.index', Compact('notifications'))
 end
 
 function _M:count()
 
-    return Auth().user.notification_count + Auth().user.message_count
+    return Auth.user().notification_count + Auth.user().message_count
 end
 
 return _M

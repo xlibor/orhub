@@ -15,7 +15,7 @@ end
 
 function _M:create()
 
-    local user = Auth().user
+    local user = Auth.user()
     local blog = Blog.firstOrNew({user_id = Auth.id()})
     
     return view('blogs.create_edit', Compact('user', 'blog'))
@@ -51,7 +51,7 @@ end
 
 function _M:edit(id)
 
-    local user = Auth().user
+    local user = Auth.user()
     local blog = Blog.findOrFail(id)
     
     return view('blogs.create_edit', Compact('blog', 'user'))
@@ -78,10 +78,10 @@ end
 function _M:subscribe(id)
 
     local blog = Blog.findOrFail(id)
-    Auth().user:subscribes():attach(blog.id)
+    Auth.user():subscribes():attach(blog.id)
     blog:increment('subscriber_count', 1)
     Flash.success("订阅成功")
-    app(UserSubscribedBlog.class):generate(Auth().user, blog)
+    app(UserSubscribedBlog.class):generate(Auth.user(), blog)
     
     return redirect():back()
 end
@@ -89,10 +89,10 @@ end
 function _M:unsubscribe(id)
 
     local blog = Blog.findOrFail(id)
-    Auth().user:subscribes():detach(blog.id)
+    Auth.user():subscribes():detach(blog.id)
     blog:decrement('subscriber_count', 1)
     Flash.success("成功取消订阅")
-    app(UserSubscribedBlog.class):remove(Auth().user, blog)
+    app(UserSubscribedBlog.class):remove(Auth.user(), blog)
     
     return redirect():back()
 end

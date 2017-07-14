@@ -32,7 +32,7 @@ end
 
 function _M:store(request)
 
-    if not Auth().user.verified then
+    if not Auth.user().verified then
         lx.throw(StoreResourceFailedException, '创建话题失败，请验证用户邮箱')
     end
     local data = tb.merge(request:except('_token'), {category_id = request.category_id})
@@ -75,8 +75,8 @@ function _M:destroy(id)
         lx.throw(AccessDeniedHttpException)
     end
     topic:delete()
-    app(UserPublishedNewTopic.class):remove(Auth().user, topic)
-    app(BlogHasNewArticle.class):remove(Auth().user, topic, topic:blogs():first())
+    app(UserPublishedNewTopic.class):remove(Auth.user(), topic)
+    app(BlogHasNewArticle.class):remove(Auth.user(), topic, topic:blogs():first())
     
     return {status = 'ok'}
 end

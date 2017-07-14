@@ -108,7 +108,7 @@ end
 
 function _M:followingUsersJson()
 
-    local users = Auth().user:followings():lists('name')
+    local users = Auth.user():followings():lists('name')
     
     return lf.jsen(users)
 end

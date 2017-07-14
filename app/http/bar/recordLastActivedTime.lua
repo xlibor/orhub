@@ -8,7 +8,7 @@ local app, lf, tb, str = lx.kit()
 function _M:handle(request, next)
 
     if Auth.check() and Req.is('notifications/count') == false then
-        Auth().user:recordLastActivedAt()
+        Auth.user():recordLastActivedAt()
     end
     
     return next(request)

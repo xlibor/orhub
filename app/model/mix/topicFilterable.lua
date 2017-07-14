@@ -133,7 +133,7 @@ end
 
 function _M:scopeWithoutBoardTopics(query)
 
-    if app:conf('lxhub.adminBoardCid') and (not Auth.check() or not Auth().user:can('access_board')) then
+    if app:conf('lxhub.adminBoardCid') and (not Auth.check() or not Auth.user():can('access_board')) then
         
         return query:where('category_id', '!=', app:conf('lxhub.adminBoardCid'))
     end

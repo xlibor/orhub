@@ -14,14 +14,14 @@ end
 
 function _M:create(request)
 
-    local user = Auth().user
+    local user = Auth.user()
     if user:blogs():count() <= 0 then
         Flash.info('请先创建专栏，专栏创建成功后才能发布文章。')
         
         return redirect():route('blogs.create')
     end
     local topic = new('topic')
-    local blog = request.blog_id and Blog.findOrFail(request.blog_id) or Auth().user:blogs():first()
+    local blog = request.blog_id and Blog.findOrFail(request.blog_id) or Auth.user():blogs():first()
     self:authorize('create-article', blog)
     
     return view('articles.create_edit', Compact('topic', 'user', 'blog'))
@@ -42,9 +42,9 @@ end
 
 function _M:transform(id)
 
-    Auth().user:decrement('topic_count', 1)
-    Auth().user:increment('article_count', 1)
-    if Auth().user:blogs():count() <= 0 then
+    Auth.user():decrement('topic_count', 1)
+    Auth.user():increment('article_count', 1)
+    if Auth.user():blogs():count() <= 0 then
         Flash.info('请先创建专栏，专栏创建成功后才能发布文章。')
         
         return redirect():route('blogs.create')
@@ -52,7 +52,7 @@ function _M:transform(id)
     local topic = Topic.find(id)
     topic:update({category_id =Conf('lxhub.blogCategoryId')})
     -- attach blog
-    local blog = Auth().user:blogs():first()
+    local blog = Auth.user():blogs():first()
     blog:topics():attach(topic.id)
     blog:increment('article_count', 1)
     -- Co-authors

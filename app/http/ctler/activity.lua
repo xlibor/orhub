@@ -13,9 +13,9 @@ function _M:index(c)
     if st == 'all' then
         activities = Activity.recent():paginate(50)
     elseif st == 'mine' then
-        activities = Auth().user:activities()
+        activities = Auth.user():activities()
     else 
-        activities = Auth().user:subscribedActivityFeeds()
+        activities = Auth.user():subscribedActivityFeeds()
     end
     local links = Link.allFromCache()
     local active_users = ActiveUser.fetchAll()

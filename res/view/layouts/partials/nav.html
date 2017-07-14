@@ -80,7 +80,7 @@
 
                   <ul class="dropdown-menu" aria-labelledby="dLabel">
 
-                      @if(Auth().user:can('visit_admin'))
+                      @if(Auth.user():can('visit_admin'))
                         <li>
                             <a href="/admin" class="no-pjax">
                                 <i class="fa fa-tachometer text-md"></i> 管理后台
@@ -88,7 +88,7 @@
                         </li>
                       @endif
 
-                        @if(Auth().user:can('access_board'))
+                        @if(Auth.user():can('access_board'))
                             <li>
                                 <a class="button" href="{{ route('categories.show',Conf('lxhub.adminBoardCid')) }}">
                                     <i class="fa fa-users "></i> 站务
