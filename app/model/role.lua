@@ -1,8 +1,7 @@
 
 local lx, _M = oo{
     _cls_   = '',
-    -- _ext_ = 'entrustRole',
-    _ext_   = 'model'
+    _ext_   = 'entrustRole',
 }
 
 local app, lf, tb, str = lx.kit()

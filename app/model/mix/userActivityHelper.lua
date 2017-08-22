@@ -19,14 +19,14 @@ end
 
 function _M:interestedCausers()
 
-    local followings = self.followings:map(function(user, key)
+    local followings = self('followings'):Col():map(function(user, key)
         
         return 'u' .. user.id
-    end):toArray()
-    local subscribed_blogs = self.subscribes:map(function(blog, key)
+    end):toArr()
+    local subscribed_blogs = self('subscribes'):Col():map(function(blog, key)
         
         return 'b' .. blog.id
-    end):toArray()
+    end):toArr()
     
     return tb.merge({'u' .. self.id}, followings, subscribed_blogs)
 end

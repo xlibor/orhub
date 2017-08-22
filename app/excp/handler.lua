@@ -22,7 +22,7 @@ function _M:unauthenticated(ctx, e)
 
     local req = ctx.req
 
-    if req:wantJson() then
+    if req.wantsJson then
         ctx:json({error = 'Unauthenticated'}, 401)
     else
         redirect():guest(route('login'))

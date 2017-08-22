@@ -65,7 +65,7 @@ function _M:update(request, id)
         request:performUpdate(blog)
         Flash.success(lang('Operation succeeded.'))
     end)
-    :catch('ImageUploadException', function(e) 
+    :catch('imageUploadException', function(e) 
         Flash.error(lang(e:getMsg()))
         
         return redirect():back():withInput(request:input())
@@ -75,7 +75,7 @@ function _M:update(request, id)
     return redirect():route('blogs.edit', blog.id)
 end
 
-function _M:subscribe(id)
+function _M:subscribe(c, id)
 
     local blog = Blog.findOrFail(id)
     Auth.user():subscribes():attach(blog.id)

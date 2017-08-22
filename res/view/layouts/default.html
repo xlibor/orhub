@@ -23,7 +23,7 @@
         " />
         <meta name="_token" content="{{ csrf_token() }}">
 
-        <link rel="stylesheet" href="/build/assets/css/styles-cb09ac39c5.css">
+        <link rel="stylesheet" href="{{ mix('/css/styles-cb09ac39c5.css') }}">
 
         <link rel="shortcut icon" href="{{ Ah.cdn('favicon1.png') }}"/>
 
@@ -50,7 +50,7 @@
 
 	    @yield('styles')
 
-		<meta http-equiv="x-pjax-version" content="{{ elixir('assets/css/styles.css') }}">
+		<meta http-equiv="x-pjax-version" content="{{ mix('assets/css/styles.css') }}">
 
 	</head>
 	<body id="body" class="{{ Ah.route_class() }}">
@@ -94,7 +94,7 @@
 
 
 
-        <script src="http://phphub5.app/build/assets/js/scripts-7524e7da5f.js"></script>
+        <script src="{{ mix('/js/scripts-7524e7da5f.js') }}"></script>
 
 	    @yield('scripts')
 

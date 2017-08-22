@@ -31,6 +31,18 @@ function _M.if_query(key, value)
     return false
 end
 
+function _M.if_route(routeNames)
+
+    local routeName = Route.currentRouteName()
+    if not routeName then return false end
+
+    if lf.isTbl(routeNames) then
+        return tb.inList(routeNames, routeName)
+    else
+        return routeNames == routeName 
+    end
+end
+
 function _M.active_class(condition, activeClass, inactiveClass)
 
     activeClass = activeClass or 'active'

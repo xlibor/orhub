@@ -1,7 +1,8 @@
 
 local lx, _M = oo{
-    _cls_ = '',
-    _ext_ = 'entrustPermission'
+    _cls_       = '',
+    _ext_       = 'entrustPermission',
+    _static_    = {}
 }
 
 local app, lf, tb, str = lx.kit()

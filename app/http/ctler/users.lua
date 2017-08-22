@@ -5,20 +5,25 @@ local lx, _M, mt = oo{
 }
 
 local app, lf, tb, str = lx.kit()
+local try = lx.try
+local redirect, lang = lx.h.redirect, lx.h.lang
 
 function _M:ctor()
 
-    self:middleware('auth', {except = {'index', 'show', 'replies', 'topics', 'articles', 'votes', 'following', 'followers', 'githubCard', 'githubApiProxy'}})
+    self:setBar('auth', {except = {
+        'index', 'show', 'replies', 'topics', 'articles', 'votes',
+        'following', 'followers', 'githubCard', 'githubApiProxy'
+    }})
 end
 
-function _M:index()
+function _M:index(c)
 
     local users = User.recent():take(48):get()
     
-    return view('users.index', Compact('users'))
+    return c:view('users.index', Compact('users'))
 end
 
-function _M:show(id)
+function _M:show(c, id)
 
     local user = User.findOrFail(id)
     local topics = Topic.whose(user.id):withoutArticle():withoutBoardTopics():recent():limit(20):get()
@@ -26,18 +31,18 @@ function _M:show(id)
     local blog = user:blogs():first()
     local replies = Reply.whose(user.id):recent():limit(20):get()
     
-    return view('users.show', Compact('user', 'blog', 'articles', 'topics', 'replies'))
+    return c:view('users.show', Compact('user', 'blog', 'articles', 'topics', 'replies'))
 end
 
-function _M:edit(id)
+function _M:edit(c, id)
 
     local user = User.findOrFail(id)
     self:authorize('update', user)
     
-    return view('users.edit', Compact('user', 'topics', 'replies'))
+    return c:view('users.edit', Compact('user', 'topics', 'replies'))
 end
 
-function _M:update(id, request)
+function _M:update(c, id, request)
 
     local user = User.findOrFail(id)
     self:authorize('update', user)
@@ -45,40 +50,40 @@ function _M:update(id, request)
         request:performUpdate(user)
         Flash.success(lang('Operation succeeded.'))
     end)
-    :catch(function(ImageUploadException exception) 
-        Flash.error(lang(exception:getMessage()))
+    :catch('ImageUploadException', function(e) 
+        Flash.error(lang(e:getMessage()))
     end)
     :run()
     
     return redirect(route('users.edit', id))
 end
 
-function _M:replies(id)
+function _M:replies(c, id)
 
     local user = User.findOrFail(id)
     local replies = Reply.whose(user.id):recent():paginate(15)
     
-    return view('users.replies', Compact('user', 'replies'))
+    return c:view('users.replies', Compact('user', 'replies'))
 end
 
-function _M:topics(id)
+function _M:topics(c, id)
 
     local user = User.findOrFail(id)
     local topics = Topic.whose(user.id):withoutArticle():withoutBoardTopics():recent():paginate(30)
     
-    return view('users.topics', Compact('user', 'topics'))
+    return c:view('users.topics', Compact('user', 'topics'))
 end
 
-function _M:articles(id)
+function _M:articles(c, id)
 
     local user = User.findOrFail(id)
     local topics = Topic.whose(user.id):onlyArticle():withoutDraft():recent():with('blogs'):paginate(30)
     user:update({article_count = topics:total()})
     
-    return view('users.articles', Compact('user', 'blog', 'topics'))
+    return c:view('users.articles', Compact('user', 'blog', 'topics'))
 end
 
-function _M:drafts()
+function _M:drafts(c)
 
     local user = Auth.user()
     local topics = user:topics():onlyArticle():draft():recent():paginate(30)
@@ -86,34 +91,34 @@ function _M:drafts()
     user.draft_count = user:topics():onlyArticle():draft():count()
     user:save()
     
-    return view('users.articles', Compact('user', 'blog', 'topics'))
+    return c:view('users.articles', Compact('user', 'blog', 'topics'))
 end
 
-function _M:votes(id)
+function _M:votes(c, id)
 
     local user = User.findOrFail(id)
     local topics = user:votedTopics():orderBy('pivot_created_at', 'desc'):paginate(30)
     
-    return view('users.votes', Compact('user', 'topics'))
+    return c:view('users.votes', Compact('user', 'topics'))
 end
 
-function _M:following(id)
+function _M:following(c, id)
 
     local user = User.findOrFail(id)
-    local users = user:followings():orderBy('id', 'desc'):paginate(15)
+    local users = user:followings():orderBy('users.id', 'desc'):paginate(15)
     
-    return view('users.following', Compact('user', 'users'))
+    return c:view('users.following', Compact('user', 'users'))
 end
 
-function _M:followers(id)
+function _M:followers(c, id)
 
     local user = User.findOrFail(id)
     local users = user:followers():orderBy('id', 'desc'):paginate(15)
     
-    return view('users.followers', Compact('user', 'users'))
+    return c:view('users.followers', Compact('user', 'users'))
 end
 
-function _M:accessTokens(id)
+function _M:accessTokens(c, id)
 
     if not Auth.check() or Auth.id() ~= id then
         
@@ -123,10 +128,10 @@ function _M:accessTokens(id)
     local sessions = OAuthSession.where({owner_type = 'user', owner_id = Auth.id()}):with('token'):lists('id') or {}
     local tokens = AccessToken.whereIn('session_id', sessions):get()
     
-    return view('users.access_tokens', Compact('user', 'tokens'))
+    return c:view('users.access_tokens', Compact('user', 'tokens'))
 end
 
-function _M:revokeAccessToken(token)
+function _M:revokeAccessToken(c, token)
 
     local access_token = AccessToken.with('session'):find(token)
     if not access_token or not Auth.check() or access_token.session.owner_id ~= Auth.id() then
@@ -139,7 +144,7 @@ function _M:revokeAccessToken(token)
     return redirect(route('users.access_tokens', Auth.id()))
 end
 
-function _M:blocking(id)
+function _M:blocking(c, id)
 
     local user = User.findOrFail(id)
     user.is_banned = user.is_banned == 'yes' and 'no' or 'yes'
@@ -151,15 +156,15 @@ function _M:blocking(id)
     return redirect(route('users.show', id))
 end
 
-function _M:editEmailNotify(id)
+function _M:editEmailNotify(c, id)
 
     local user = User.findOrFail(id)
     self:authorize('update', user)
     
-    return view('users.edit_email_notify', Compact('user'))
+    return c:view('users.edit_email_notify', Compact('user'))
 end
 
-function _M:updateEmailNotify(id, request)
+function _M:updateEmailNotify(c, id, request)
 
     local user = User.findOrFail(id)
     self:authorize('update', user)
@@ -170,15 +175,15 @@ function _M:updateEmailNotify(id, request)
     return redirect(route('users.edit_email_notify', id))
 end
 
-function _M:editPassword(id)
+function _M:editPassword(c, id)
 
     local user = User.findOrFail(id)
     self:authorize('update', user)
     
-    return view('users.edit_password', Compact('user'))
+    return c:view('users.edit_password', Compact('user'))
 end
 
-function _M:updatePassword(id, request)
+function _M:updatePassword(c, id, request)
 
     local user = User.findOrFail(id)
     self:authorize('update', user)
@@ -189,7 +194,7 @@ function _M:updatePassword(id, request)
     return redirect(route('users.edit_password', id))
 end
 
-function _M:githubApiProxy(username)
+function _M:githubApiProxy(c, username)
 
     local cache_name = 'github_api_proxy_user_' .. username
     
@@ -200,7 +205,7 @@ function _M:githubApiProxy(username)
     end)
 end
 
-function _M:regenerateLoginToken()
+function _M:regenerateLoginToken(c)
 
     if Auth.check() then
         Auth.user().login_token = str.random(rand(20, 32))
@@ -213,7 +218,7 @@ function _M:regenerateLoginToken()
     return redirect(route('users.show', Auth.id()))
 end
 
-function _M:doFollow(id)
+function _M:doFollow(c, id)
 
     local user = User.findOrFail(id)
     if Auth.user():isFollowing(id) then
@@ -230,15 +235,15 @@ function _M:doFollow(id)
     return redirect():back()
 end
 
-function _M:editAvatar(id)
+function _M:editAvatar(c, id)
 
     local user = User.findOrFail(id)
     self:authorize('update', user)
     
-    return view('users.edit_avatar', Compact('user'))
+    return c:view('users.edit_avatar', Compact('user'))
 end
 
-function _M:updateAvatar(id, request)
+function _M:updateAvatar(c, id, request)
 
     local user = User.findOrFail(id)
     self:authorize('update', user)
@@ -248,8 +253,8 @@ function _M:updateAvatar(id, request)
             user:updateAvatar(file)
             Flash.success(lang('Update Avatar Success'))
         end)
-        :catch(function(ImageUploadException exception) 
-            Flash.error(lang(exception:getMessage()))
+        :catch('ImageUploadException', function(e) 
+            Flash.error(lang(e:getMessage()))
         end)
         :run()
     else 
@@ -259,7 +264,7 @@ function _M:updateAvatar(id, request)
     return redirect(route('users.edit_avatar', id))
 end
 
-function _M:sendVerificationMail()
+function _M:sendVerificationMail(c)
 
     local user = Auth.user()
     local cache_key = 'send_activite_mail_' .. user.id
@@ -280,22 +285,22 @@ function _M:sendVerificationMail()
     return redirect():intended('/')
 end
 
-function _M:editSocialBinding(id)
+function _M:editSocialBinding(c, id)
 
     local user = User.findOrFail(id)
     self:authorize('update', user)
     
-    return view('users.edit_social_binding', Compact('user'))
+    return c:view('users.edit_social_binding', Compact('user'))
 end
 
-function _M:emailVerificationRequired()
+function _M:emailVerificationRequired(c)
 
-    if \Auth.user().verified then
+    if Auth.user().verified then
         
         return redirect():intended('/')
     end
     
-    return view('users.emailverificationrequired')
+    return c:view('users.emailverificationrequired')
 end
 
 return _M

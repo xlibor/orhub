@@ -18,7 +18,7 @@ function _M:reg()
 
  	app:bind('.app.lxhub.stat.stat')
  	app:single('appHelper', '.app.mod.appHelper')
-
+ 	app:single('flashHelper', '.app.mod.flashHelper')
  	app:bindNs('.app.http.ctler', lx.dir('app', 'http/ctler'))
 
 	app:bindNs('.app.lxhub.presenter', lx.dir('app', 'lxhub/presenter'))

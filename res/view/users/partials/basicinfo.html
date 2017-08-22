@@ -146,7 +146,7 @@
         @endif
 
         @if(Auth.check() and currentUser.id ~= user.id)
-        <!--{{isFollowing = currentUser and currentUser:isFollowing(user.id) and true or false}}-->
+        {? local isFollowing = currentUser and currentUser:isFollowing(user.id) ?}
 
         <a data-method="post" class="btn btn-{{ not isFollowing and 'warning' or 'default' }} btn-block" href="javascript:void(0);" data-url="{{ route('users.doFollow', user.id) }}" id="user-edit-button">
            <i class="fa {{!isFollowing and 'fa-plus' or 'fa-minus'}}"></i> {{ not isFollowing and '关注 Ta' or '已关注' }}

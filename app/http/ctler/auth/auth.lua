@@ -15,9 +15,7 @@ local app, lf, tb, str = lx.kit()
 local try = lx.try
 local redirect, route = lx.h.redirect, lx.h.route
 
--- Create a new authentication controller instance.
-
-function _M:ctor(userModel)
+function _M:ctor()
     
     self.redirectTo = '/topics'
     self:setBar('guest', {except = {'logout', 'oauth', 'callback', 'getVerification', 'userBanned'}})
@@ -33,17 +31,17 @@ function _M.__:loginUser(user)
     return self:userFound(user)
 end
 
-function _M:logout()
+function _M:logout(c)
 
     Auth.logout()
-    Flash.success(lang('Operation succeeded.'))
+    -- Flash.success(lang('Operation succeeded.'))
     
     return redirect(route('home'))
 end
 
-function _M:loginRequired()
+function _M:loginRequired(c)
 
-    return view('auth.loginrequired')
+    return c:view('auth.loginrequired')
 end
 
 function _M:signin(c)
@@ -51,19 +49,19 @@ function _M:signin(c)
     return c:view('auth.signin')
 end
 
-function _M:signinStore()
+function _M:signinStore(c)
 
-    return view('auth.signin')
+    return c:view('auth.signin')
 end
 
-function _M:adminRequired()
+function _M:adminRequired(c)
 
-    return view('auth.adminrequired')
+    return c:view('auth.adminrequired')
 end
 
 -- Shows a user what their new account will look like.
 
-function _M:create()
+function _M:create(c)
 
     if not Session.has('oauthData') then
         
@@ -71,13 +69,14 @@ function _M:create()
     end
     local oauthData = tb.merge(Session.get('oauthData'), Session.get('_old_input', {}))
     
-    return view('auth.signupconfirm', Compact('oauthData'))
+    return c:view('auth.signupconfirm', Compact('oauthData'))
 end
 
 -- Actually creates the new user account
 
-function _M:createNewUser(request)
+function _M:createNewUser(c)
 
+    local request = c.req
     if not Session.has('oauthData') then
         
         return redirect():route('login')
@@ -89,26 +88,26 @@ function _M:createNewUser(request)
     return new('.app.lxhub.creator.user'):create(self, userData)
 end
 
-function _M:userBanned()
+function _M:userBanned(c)
 
     if Auth.check() and Auth.user().is_banned == 'no' then
         
         return redirect(route('home'))
     end
     
-    return view('auth.userbanned')
+    return c:view('auth.userbanned')
 end
 
 ------------------------------------------
 -- UserCreatorListener Delegate
 ------------------------------------------
 
-function _M:userValidationError(errors)
+function _M:userValidationError(c, errors)
 
     return redirect('/')
 end
 
-function _M:userCreated(user)
+function _M:userCreated(c, user)
 
     Auth.login(user, true)
     Session.forget('oauthData')
@@ -121,7 +120,7 @@ end
 -- GithubAuthenticatorListener Delegate
 ------------------------------------------
 
-function _M:userNotFound(driver, registerUserData)
+function _M:userNotFound(c, driver, registerUserData)
 
     if driver == 'github' then
         oauthData['image_url'] = registerUserData.user['avatar_url']
@@ -144,7 +143,7 @@ function _M:userNotFound(driver, registerUserData)
 end
 
 -- 数据库有用户信息, 登录用户
-function _M:userFound(user)
+function _M:userFound(c, user)
 
     Auth.login(user, true)
     Session.forget('oauthData')
@@ -154,7 +153,7 @@ function _M:userFound(user)
 end
 
 -- 用户屏蔽
-function _M:userIsBanned(user)
+function _M:userIsBanned(c, user)
 
     return redirect(route('user-banned'))
 end
@@ -163,8 +162,9 @@ end
 -- Email Validation
 ------------------------------------------
 
-function _M:getVerification(request, token)
+function _M:getVerification(c, token)
 
+    local request = c.req
     self:validateRequest(request)
     try(function()
         UserVerification.process(request:input('email'), token, 'users')

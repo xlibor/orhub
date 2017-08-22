@@ -1,7 +1,8 @@
 @extends('layouts.default')
 
 @section('title')
-{{ user.name }} {{ Ah.lang('Basic Info') }}_@parent
+  {{ user.name }} {{ Ah.lang('Basic Info') }} _ 
+  @parent
 @stop
 
 @section('content')
@@ -28,7 +29,7 @@
         </div>
 
         <div class="panel-body">
-            @if(#articles and #blog)
+            @if(#articles and blog)
               @include('users.partials.articles')
             @elseif(currentUser and currentUser.id == user.id)
                 <div class="empty-block">

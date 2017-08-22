@@ -31,19 +31,5 @@ function _M:map()
 	self:autoload()
 end
 
-function _M:autoload()
-
-	local router = self.router
-
-	local routes = fs.files(lx.dir('map', 'load'), 'n')
-	if #routes > 0 then
-		for _, route in ipairs(routes) do
-			route = fs.fileName(route)
-			require('.map.load.' .. route)(router)
-		end
-	end
-
-end
-
 return _M
 

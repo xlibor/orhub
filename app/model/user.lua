@@ -9,14 +9,17 @@ local lx, _M = oo{
         '.app.model.mix.userAvatarHelper',
         '.app.model.mix.userActivityHelper',
         'presentableMix',
+        'entrustUserMix',
+        '.app.model.mix.followHelper'
         -- 'messagable', 'searchableMix',
-        -- 'revisionableMix', 'entrustUserMix',
-        -- 'softDelete', 'followMix'
+        -- 'revisionableMix',
+        -- 'softDelete'
     },
     _static_ = {}
 }
 
 local app, lf, tb, str = lx.kit()
+local Attention = lx.use('.app.model.attention')
 
 function _M:ctor()
 

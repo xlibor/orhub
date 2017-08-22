@@ -2,10 +2,10 @@
 <ul class="list-group">
   @foreach(replies as index, reply)
    <li class="list-group-item">
-
-    @if(#reply.topic)
-      <a href="{{ reply.topic:link() }}" title="{{ reply.topic.title }}" class="remove-padding-left">
-          {{ reply.topic.title }}
+   {? local topic = reply('topic') ?}
+    @if(#topic)
+      <a href="{{ topic:link() }}" title="{{ topic.title }}" class="remove-padding-left">
+          {{ topic.title }}
       </a>
       <span class="meta">
          at <span class="timeago" title="{{ reply.created_at }}">{{ reply.created_at }}</span>

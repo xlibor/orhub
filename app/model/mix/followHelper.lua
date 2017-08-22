@@ -29,7 +29,7 @@ end
 
 function _M:isFollowing(user)
 
-    return self.followings:contains(user)
+    return self('followings'):col():contains(user)
 end
 
 -- Check if user is followed by given user.
@@ -42,19 +42,19 @@ function _M:isFollowedBy(user)
 end
 
 -- Return user followers.
--- @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+-- @return belongsToMany
 
 function _M:followers()
 
-    return self:belongsToMany(__CLASS__, 'followers', 'follow_id', 'user_id')
+    return self:belongsToMany(self, 'followers', 'follow_id', 'user_id')
 end
 
 -- Return user following users.
--- @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+-- @return belongsToMany
 
 function _M:followings()
 
-    return self:belongsToMany(__CLASS__, 'followers', 'user_id', 'follow_id')
+    return self:belongsToMany(self, 'followers', 'user_id', 'follow_id')
 end
 
 return _M

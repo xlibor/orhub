@@ -5,6 +5,7 @@ local lx, _M = oo{
 }
 
 local app, lf, tb, str = lx.kit()
+local route = lx.h.route
 
 function _M:ctor()
 

@@ -1,14 +1,11 @@
 
 local lx, _M = oo{
-    _cls_ = '',
-    _ext_ = 'model'
+    _cls_       = '',
+    _ext_       = 'model',
+    _static_    = {}
 }
 
 local app, lf, tb, str = lx.kit()
-
-function _M:ctor()
-
-end
 
 function _M:post()
 

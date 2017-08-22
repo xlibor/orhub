@@ -14,8 +14,8 @@ end
 function _M:fromActivities(activities)
 
     local images = {}
-    for _, activity in pairs(activities) do
-        if str.strpos(activity.indentifier, 't') ~= false then
+    for _, activity in lf.each(activities) do
+        if str.strpos(activity.indentifier, 't') then
             images[activity.indentifier] = static.where('topic_id', str.replace(activity.indentifier, 't', '')):get()
         end
     end

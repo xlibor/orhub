@@ -34,7 +34,8 @@ local conf = {
         '.app.box.appBox',
         '.app.box.dbBox',
         '.app.box.gatherBox',
-        'lv2lx.box.viewTransBox'
+        'lv2lx.box.viewTransBox',
+        'lxlib.entrust.entrustBox'
     },
 
     faces = {
@@ -62,8 +63,12 @@ local conf = {
         View        = 'view',
         Schema      = 'db.schema',
 
+        Entrust     = 'entrust',
         Ah          = {'appHelper', nil, true},
+        Flash       = 'flashHelper',
+        Activity    = '.app.model.activity',
         ActiveUser  = '.app.model.activeUser',
+        Attention   = '.app.model.attention',
         Blog        = '.app.model.blog',
         Topic       = '.app.model.topic',
         Banner      = '.app.model.banner',

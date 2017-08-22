@@ -8,7 +8,7 @@
 PHPHub  - PHP & Laravel 中文社区
         @show
     </title>
-    <link rel="stylesheet" href="{{ Ah.cdn(elixir('assets/css/api.css')) }}">
+    <link rel="stylesheet" href="{{ Ah.cdn(mix('assets/css/api.css')) }}">
 
     <script>
         Config = {
@@ -25,7 +25,7 @@ PHPHub  - PHP & Laravel 中文社区
 
     @yield('content')
 
-    <script src="{{ Ah.cdn(elixir('assets/js/api.js')) }}"></script>
+    <script src="{{ Ah.cdn(mix('assets/js/api.js')) }}"></script>
 
     @yield('scripts')
 </body>

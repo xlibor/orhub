@@ -74,7 +74,8 @@
         @endif
     </div>
     @endif
-    @include('topics.partials.topic_operate', {manage_topics = currentUser and currentUser:can("manage_topics") and currentUser.roles:count() <= 5 or false})
+    {? local canManageTopics = currentUser and currentUser:can('manage_topics') and currentUser:roles():count() <= 5 ?}
+    @include('topics.partials.topic_operate', {manage_topics = canManageTopics})
   </div>
 
 

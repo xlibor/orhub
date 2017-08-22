@@ -8,7 +8,7 @@
             <a data-ajax="post" href="javascript:void(0);" data-url="{{ route('topics.upvote', topic.id) }}" title="{{ Ah.lang('Up Vote') }}"
                 data-content="点赞相当于收藏，可以在个人页面的「赞过的话题」导航里查看"
                 id="up-vote"
-                {? is_voted = currentUser and topic:votes():byWhom(Auth.id()):withType('upvote'):exists() ?}
+                {? local is_voted = currentUser and topic:votes():byWhom(Auth.id()):withType('upvote'):exists() ?}
                 class="vote btn btn-primary {{ topic('user').payment_qrcode or 'btn-inverted' }} popover-with-html {{  is_voted and 'active' or '' }}" >
                 @if(is_voted)
                 已赞过

@@ -119,7 +119,7 @@ return function(route)
     route:get("/articles/{id}/edit", "articles@edit"):name('articles.edit')
     route:get('/topics/{id}/{slug?}', 'topics@show'):name('topics.show')
     route:get('/articles/{id}/{slug?}', "topics@show"):name('articles.show')
-    -- route:get('{name}', 'pages@wildcard'):name('wildcard')
+    route:get('/other/{name}', 'pages@wildcard'):name('wildcard')
 
 end
 

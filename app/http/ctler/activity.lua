@@ -9,14 +9,17 @@ local app, lf, tb, str = lx.kit()
 function _M:index(c)
 
     local request = c.req
+    local activities
     local st = request.view
+
     if st == 'all' then
         activities = Activity.recent():paginate(50)
     elseif st == 'mine' then
         activities = Auth.user():activities()
-    else 
+    else
         activities = Auth.user():subscribedActivityFeeds()
     end
+
     local links = Link.allFromCache()
     local active_users = ActiveUser.fetchAll()
     local hot_topics = HotTopic.fetchAll()

@@ -10,14 +10,14 @@
         @endif
 
       <a href="{{ topic:link() }}" title="{{ topic.title }}" class="title">
-        {{ str.limit(topic.title, '100') }}
+        {{ Str.limit(topic.title, 100) }}
       </a>
 
       <span class="meta">
           @if(topic:isArticle())
-
-              <a href="{{ topic.blogs:first():link() }}" title="{{ topic.blogs:first().name }}">
-                {{ topic.blogs:first().name }}
+              {? local firstBlog = topic:blogs():first() ?}
+              <a href="{{ firstBlog:link() }}" title="{{ firstBlog.name }}">
+                {{ firstBlog.name }}
               </a>
 
           @else
@@ -41,7 +41,7 @@
 </ul>
 
 
-@if(if_route('users.show') and user.topic_count > #topics)
+@if(Ah.if_route('users.show') and user.topic_count > #topics)
     <div class="panel-footer" style="margin-top: 10px">
         <a href="{{ route('users.topics', user.id) }}" class="btn btn-default btn-sm">
             所有话题

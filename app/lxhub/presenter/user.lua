@@ -34,8 +34,8 @@ function _M:loginQR(size)
         self.entity.login_token = str.random(20)
         self.entity:save()
     end
-    
-    return QrCode.format('png'):size(200):errorCorrection('L'):margin(0):encoding('utf-8'):generate(self.id .. ',' .. self.login_token)
+    return ''
+    -- return QrCode.format('png'):size(200):errorCorrection('L'):margin(0):encoding('utf-8'):generate(self.id .. ',' .. self.login_token)
 end
 
 function _M:userinfoNavActive(anchor)
@@ -108,7 +108,7 @@ end
 
 function _M:followingUsersJson()
 
-    local users = Auth.user():followings():lists('name')
+    local users = Auth.user():followings():pluck('name')
     
     return lf.jsen(users)
 end
