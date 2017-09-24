@@ -20,7 +20,7 @@ local conf = {
         db              = {
             driver      = 'db',
             connection  = nil,
-            table       = 'session'
+            table       = 'sessions'
         },
         cookie          = {
             driver      = 'cookie'

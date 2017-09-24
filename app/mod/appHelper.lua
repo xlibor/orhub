@@ -5,7 +5,7 @@ local lx, _M = oo{
 
 local app, lf, tb, str, new = lx.kit()
 local trans = lx.h.trans
-
+local env = lx.env
 local SlugTranslate = lx.use('.app.lxhub.handler.slugTranslate')
 local pow = math.pow
 
@@ -21,8 +21,7 @@ function _M.if_query(key, value)
 
     local queryValue = Req.get(key)
 
-    if queryValue == value or
-        (queryValue and not value) or
+    if (queryValue == value)   or
         (lf.isTbl(queryValue) and tb.inList(queryValue, value)) then
 
         return true
@@ -49,6 +48,21 @@ function _M.active_class(condition, activeClass, inactiveClass)
     inactiveClass = inactiveClass or ''
 
     return condition and activeClass or inactiveClass
+end
+
+function _M.if_uri_pattern(patterns)
+
+    patterns = lf.needList(patterns)
+
+    local uri = Req().uri
+
+    for k, p in ipairs(patterns) do
+        if str.is(uri, p) then
+            return true
+        end
+    end
+
+    return false
 end
 
 function _M.cdn(filepath)
@@ -153,7 +167,7 @@ end
 
 function _M.is_request_from_api()
 
-    return _SERVER['SERVER_NAME'] == env('API_DOMAIN')
+    return Req().host == env('apiDomain')
 end
 
 function _M.route_class()
@@ -220,7 +234,8 @@ end
 
 function _M.slug_trans(word)
 
-    return SlugTranslate.translate(word)
+    return str.random(8)
+    -- return SlugTranslate.translate(word)
 end
 
 -- Shortens a number and attaches K, M, B, etc. accordingly

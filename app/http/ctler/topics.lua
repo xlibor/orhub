@@ -6,7 +6,8 @@ local lx, _M, mt = oo{
 }
 
 local app, lf, tb, str, new = lx.kit()
-local redirect = lx.f.redirect
+local redirect = lx.h.redirect
+local lang = Ah.lang
 
 function _M:ctor()
 
@@ -18,24 +19,31 @@ function _M:index(c)
     local request = c.req
     local topics = new(Topic):getTopicsWithFilter(request:get('filter', 'index'), 40)
 
+    -- dd(topics.items:count())
     local links = Link.allFromCache()
     local active_users = ActiveUser.fetchAll()
     local hot_topics = HotTopic.fetchAll()
     
-    return c:view('topics.index', Compact('topics', 'links', 'banners', 'active_users', 'hot_topics'))
+    c:view('topics.index', Compact('topics', 'links', 'banners', 'active_users', 'hot_topics'))
 end
 
-function _M:create(request)
+function _M:create(c)
 
-    local category = Category.find(request:input('category_id'))
-    local categories = Category.where('id', '!=',Conf('lxhub.blogCategoryId')):get()
+    local request = c.req
+    local categoryId = request:input('category_id')
+    local category
+    if categoryId then
+        category = Category.find(categoryId)
+    end
+    local categories = Category.where('id', '!=', app:conf('lxhub.blogCategoryId')):get()
     
-    return view('topics.create_edit', Compact('categories', 'category'))
+    return c:view('topics.create_edit', Compact('categories', 'category'))
 end
 
-function _M:store(request)
+function _M:store(c)
 
-    return app('lxhub\\Creators\\TopicCreator'):create(self, request:except('_token'))
+    local request = c.req
+    return app('.app.lxhub.creator.topic'):create(self, request:except('_token'))
 end
 
 function _M:show(c, id, fromCode)
@@ -51,7 +59,9 @@ function _M:show(c, id, fromCode)
         self:authorize('show_draft', topic)
     end
     -- URL 矫正
-    local slug = request:getParam('slug')
+
+    local slug = request:param('slug')
+
     if not lf.isEmpty(topic.slug) and topic.slug ~= slug and not fromCode then
         
         return redirect(topic:link(), 301)
@@ -89,11 +99,11 @@ function _M:show(c, id, fromCode)
         blog = topic:blogs():first()
         userTopics = blog:topics():withoutDraft():onlyArticle():orderBy('vote_count', 'desc'):limit(5):get()
         
-        return c:view('articles.show', Compact('blog', 'user', 'topic', 'replies', 'categoryTopics', 'category', 'banners', 'cover', 'votedUsers', 'userTopics', 'revisionHistory'))
+        c:view('articles.show', Compact('blog', 'user', 'topic', 'replies', 'categoryTopics', 'category', 'banners', 'cover', 'votedUsers', 'userTopics', 'revisionHistory'))
     else 
         userTopics = topic:byWhom(topic.user_id):withoutDraft():withoutBoardTopics():recent():limit(3):get()
         
-        return c:view('topics.show', Compact('topic', 'replies', 'categoryTopics', 'category', 'banners', 'cover', 'votedUsers', 'userTopics', 'revisionHistory'))
+        c:view('topics.show', Compact('topic', 'replies', 'categoryTopics', 'category', 'banners', 'cover', 'votedUsers', 'userTopics', 'revisionHistory'))
     end
 end
 

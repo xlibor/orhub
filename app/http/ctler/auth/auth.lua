@@ -5,15 +5,16 @@ local lx, _M, mt = oo{
     -- _bond_ = 'userCreatorListener',
     _mix_ = {
         -- 'verifiesUsers',
-        -- 'socialiteHelper',
+        'socialiteHelper',
         'auth.authenticateUser',
         'auth.regUser'
     }
 }
 
-local app, lf, tb, str = lx.kit()
+local app, lf, tb, str, new = lx.kit()
 local try = lx.try
 local redirect, route = lx.h.redirect, lx.h.route
+local lang = Ah.lang
 
 function _M:ctor()
     
@@ -34,29 +35,29 @@ end
 function _M:logout(c)
 
     Auth.logout()
-    -- Flash.success(lang('Operation succeeded.'))
+    Flash.success(lang('Operation succeeded.'))
     
     return redirect(route('home'))
 end
 
 function _M:loginRequired(c)
 
-    return c:view('auth.loginrequired')
+    c:view('auth.loginrequired')
 end
 
 function _M:signin(c)
 
-    return c:view('auth.signin')
+    c:view('auth.signin')
 end
 
 function _M:signinStore(c)
 
-    return c:view('auth.signin')
+    c:view('auth.signin')
 end
 
 function _M:adminRequired(c)
 
-    return c:view('auth.adminrequired')
+    c:view('auth.adminrequired')
 end
 
 -- Shows a user what their new account will look like.
@@ -69,21 +70,22 @@ function _M:create(c)
     end
     local oauthData = tb.merge(Session.get('oauthData'), Session.get('_old_input', {}))
     
-    return c:view('auth.signupconfirm', Compact('oauthData'))
+    c:view('auth.signupconfirm', Compact('oauthData'))
 end
 
 -- Actually creates the new user account
 
 function _M:createNewUser(c)
 
-    local request = c.req
+    local request = c:form('storeUserRequest')
+
     if not Session.has('oauthData') then
         
         return redirect():route('login')
     end
     local oauthUser = tb.merge(Session.get('oauthData'), request:only('name', 'email', 'password'))
-    local userData = array_only(oauthUser, tb.keys(request:rules()))
-    userData['register_source'] = oauthUser['driver']
+    local userData = tb.only(oauthUser, tb.keys(request:rules()))
+    userData.register_source = oauthUser['driver']
     
     return new('.app.lxhub.creator.user'):create(self, userData)
 end
@@ -95,7 +97,7 @@ function _M:userBanned(c)
         return redirect(route('home'))
     end
     
-    return c:view('auth.userbanned')
+    c:view('auth.userbanned')
 end
 
 ------------------------------------------
@@ -107,7 +109,7 @@ function _M:userValidationError(c, errors)
     return redirect('/')
 end
 
-function _M:userCreated(c, user)
+function _M:userCreated(user)
 
     Auth.login(user, true)
     Session.forget('oauthData')
@@ -120,30 +122,32 @@ end
 -- GithubAuthenticatorListener Delegate
 ------------------------------------------
 
-function _M:userNotFound(c, driver, registerUserData)
+function _M:userNotFound(driver, registerUserData)
 
+    local oauthData = {}
     if driver == 'github' then
-        oauthData['image_url'] = registerUserData.user['avatar_url']
-        oauthData['github_id'] = registerUserData.user['id']
-        oauthData['github_url'] = registerUserData.user['url']
-        oauthData['github_name'] = registerUserData.nickname
-        oauthData['name'] = registerUserData.user['name']
-        oauthData['email'] = registerUserData.user['email']
+        oauthData.image_url = registerUserData.user.avatar_url
+        oauthData.github_id = registerUserData.user.id
+        oauthData.github_url = registerUserData.user.url
+        oauthData.github_name = registerUserData.nickname
+        oauthData.name = registerUserData.user.name
+        oauthData.email = registerUserData.user.email
     elseif driver == 'wechat' then
-        oauthData['image_url'] = registerUserData.avatar
-        oauthData['wechat_openid'] = registerUserData.id
-        oauthData['name'] = registerUserData.nickname
-        oauthData['email'] = registerUserData.email
-        oauthData['wechat_unionid'] = registerUserData.user['unionid']
+        oauthData.image_url = registerUserData.avatar
+        oauthData.wechat_openid = registerUserData.id
+        oauthData.name = registerUserData.nickname
+        oauthData.email = registerUserData.email
+        oauthData.wechat_unionid = registerUserData.user.unionid
     end
-    oauthData['driver'] = driver
+    oauthData.driver = driver
+
     Session.put('oauthData', oauthData)
     
     return redirect(route('signup'))
 end
 
 -- 数据库有用户信息, 登录用户
-function _M:userFound(c, user)
+function _M:userFound(user)
 
     Auth.login(user, true)
     Session.forget('oauthData')

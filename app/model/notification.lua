@@ -1,15 +1,24 @@
 
 local lx, _M = oo{
-    _cls_ = '',
-    _ext_ = 'model',
-    _mix_ = 'presentableMix'
+    _cls_       = '',
+    _ext_       = 'model',
+    _mix_       = 'presentableMix',
+    _static_    = {}
 }
 
 local app, lf, tb, str = lx.kit()
+local new = lx.new
+local dispatch = function() end
+local static
+
+function _M._init_(this)
+
+    static = this.static
+end
 
 function _M:ctor()
 
-    self.presenter = '.app.lxhub.presenters.notification'
+    self.presenter = '.app.lxhub.presenter.notification'
     self.fillable = {
         'from_user_id', 'user_id', 'topic_id',
         'reply_id', 'body', 'type'
@@ -39,26 +48,18 @@ function _M:from_user()
     return self:belongsTo(User, 'from_user_id')
 end
 
--- Create a notification
--- @param  [type] type     currently have 'at', 'new_reply', 'attention', 'append'
--- @param  User   fromUser come from who
--- @param  table   users   to who, table of users
--- @param  Topic  topic    cuurent context
--- @param  Reply  reply    the content
--- @return [type]           none
-
 function _M.s__.batchNotify(type, fromUser, users, topic, reply, content)
 
     local job
-    local nowTimestamp = Carbon.now():toDateTimeString()
+    local nowTimestamp = lf.datetime()
     local data = {}
-    for _, toUser in pairs(users) do
+    for _, toUser in ipairs(users) do
         if fromUser.id ~= toUser.id then
             tapd(data, {
                 from_user_id = fromUser.id,
                 user_id = toUser.id,
                 topic_id = topic.id,
-                reply_id = content or (reply and reply.id or ''),
+                reply_id = content or (reply and reply.id or 0),
                 body = content or (reply and reply.body or ''),
                 type = type,
                 created_at = nowTimestamp,
@@ -68,10 +69,10 @@ function _M.s__.batchNotify(type, fromUser, users, topic, reply, content)
         end
     end
     if #data then
-        Notification.insert(data)
-        for _, toUser in pairs(users) do
-            job = (new('sendNotifyMail', type, fromUser, toUser, topic, reply, content)):delay(config('lxhub.notifyDelay'))
-            dispatch(job)
+        Notification.inserts(data)
+        for _, toUser in ipairs(users) do
+            -- job = (new('sendNotifyMail', type, fromUser, toUser, topic, reply, content)):delay(config('lxhub.notifyDelay'))
+            -- dispatch(job)
         end
     end
     for _, value in pairs(data) do
@@ -90,11 +91,11 @@ function _M.s__.notify(type, fromUser, toUser, topic, reply)
         
         return
     end
-    if topic and Notification.isNotified(fromUser.id, toUser.id, topic.id, type) then
+    if topic and static.isNotified(fromUser.id, toUser.id, topic.id, type) then
         
         return
     end
-    local nowTimestamp = Carbon.now():toDateTimeString()
+    local nowTimestamp = lf.datetime()
     local data = {
         from_user_id = fromUser.id,
         user_id = toUser.id,
@@ -106,9 +107,9 @@ function _M.s__.notify(type, fromUser, toUser, topic, reply)
         updated_at = nowTimestamp
     }
     toUser:increment('notification_count', 1)
-    Notification.insert({data})
-    local job = (new('sendNotifyMail', type, fromUser, toUser, topic, reply)):delay(config('lxhub.notifyDelay'))
-    dispatch(job)
+    Notification.insert(data)
+    -- local job = new('sendNotifyMail', type, fromUser, toUser, topic, reply):delay(config('lxhub.notifyDelay'))
+    -- dispatch(job)
     static.pushNotification(data)
 end
 
@@ -119,10 +120,10 @@ function _M.s__.pushNotification(data)
         
         return
     end
-    local from_user_name = notification.fromUser.name
-    local topic_title = notification.topic and notification.topic.title or '关注了你'
+    local from_user_name = notification('fromUser').name
+    local topic_title = notification('topic') and notification('topic').title or '关注了你'
     local msg = from_user_name .. ' • ' .. notification:present():lableUp() .. ' • ' .. topic_title
-    local push_data = array_only(data, {'topic_id', 'from_user_id', 'type'})
+    local push_data = tb.only(data, {'topic_id', 'from_user_id', 'type'})
     if data['reply_id'] ~= 0 then
         push_data['reply_id'] = data['reply_id']
         -- push_data['replies_url'] = route('replies.web_view', data['reply_id']);

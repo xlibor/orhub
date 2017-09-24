@@ -19,13 +19,13 @@ function _M:home(c)
     else
         local topics = new(Topic):getTopicsWithFilter('excellent')
 
-        return c:view('pages.home', Compact('topics', 'banners'))
+        c:view('pages.home', Compact('topics', 'banners'))
     end
 end
 
 function _M:about(c)
 
-    return c:view('pages.about')
+    c:view('pages.about')
 end
 
 function _M:composer(c)

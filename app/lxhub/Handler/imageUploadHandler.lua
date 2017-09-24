@@ -15,17 +15,15 @@ function _M:new()
     return oo(this, mt)
 end
 
--- @var UploadedFile file
-
--- @param UploadedFile file
--- @param User user
+-- @param uploadedFile file
+-- @param user user
 -- @return table
 
 function _M:uploadAvatar(file, user)
 
     self.file = file
     self:checkAllowedExtensionsOrFail()
-    local avatar_name = user.id .. '_' .. time() .. '.' .. file:getClientOriginalExtension() or 'png'
+    local avatar_name = user.id .. '_' .. lf.time() .. '.' .. file:getClientOriginalExtension() or 'png'
     self:saveImageToLocal('avatar', 380, avatar_name)
     
     return {filename = avatar_name}

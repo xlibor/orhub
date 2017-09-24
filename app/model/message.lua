@@ -1,7 +1,7 @@
 
 local lx, _M = oo{
     _cls_ = '',
-    _ext_ = 'messengerMessage'
+    _ext_ = 'messenger.message'
 }
 
 local app, lf, tb, str = lx.kit()

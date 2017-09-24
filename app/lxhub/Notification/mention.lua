@@ -19,13 +19,15 @@ end
 
 function _M:getMentionedUsername()
 
-    preg_match_all("/(\\S*)\\@([^\r\n\\s]*)/i", self.body_original, atlist_tmp)
+    local atlist_tmp = str.rematchAll(self.body_original, [[(\S*)\@([^\r\n\s]*)]], 'ijo')
     local usernames = {}
-    for k, v in pairs(atlist_tmp[2]) do
-        if atlist_tmp[1][k] or str.len(v) > 25 then
-            continue
+    if atlist_tmp then
+
+        for _, m in pairs(atlist_tmp) do
+            if not (m[1] and str.len(m[2]) > 25) then
+                tapd(usernames, v)
+            end
         end
-        tapd(usernames, v)
     end
     
     return tb.unique(usernames)
@@ -47,7 +49,9 @@ function _M:parse(body)
 
     self.body_original = body
     self.usernames = self:getMentionedUsername()
-    #self.usernames > 0 and (self.users = User.whereIn('name', self.usernames):get())
+    if #self.usernames > 0 then
+        self.users = User.whereIn('name', self.usernames):get()
+    end
     self:replace()
     
     return self.body_parsed

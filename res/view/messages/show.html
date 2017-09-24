@@ -52,10 +52,11 @@
 
                 <ul class="list-group row">
                     @foreach(messages as index, message)
+                    {? local user = message('user') ?}
                      <li class="list-group-item media {{ unread_message_count > 0 and index < unread_message_count and 'unread' or ''  }}" style="margin-top: 0px;"  >
                         <div class="avatar pull-left">
-                            <a href="{{ route('users.show', {message.user.id}) }}">
-                                <img class="media-object img-thumbnail avatar" alt="{{ message.user.name }}" src="{{ message.user:present('gravatar') }}"  style="width:48px;height:48px;"/>
+                            <a href="{{ route('users.show', {user.id}) }}">
+                                <img class="media-object img-thumbnail avatar" alt="{{ user.name }}" src="{{ user:present('gravatar') }}"  style="width:48px;height:48px;"/>
                             </a>
                         </div>
 
@@ -66,8 +67,8 @@
                             @if(message.user_id == currentUser.id)
                                 我
                             @else
-                                <a href="{{ route('users.show', {message.user.id}) }}">
-                                    {{ message.user.name }}
+                                <a href="{{ route('users.show', {user.id}) }}">
+                                    {{ user.name }}
                                 </a>
                             @endif
                             ：

@@ -1,20 +1,12 @@
 
-local _M = {
+local lx, _M = oo{
 	_cls_ = '',
 	_ext_ = {
 		path = 'lxlib.http.context',
 	}
 }
 
-function _M:init()
-
-end
-
-function _M:_get_(key)
-
-	return self:__super('_get_', key)
-end
-
+local app, lf, tb, str = lx.kit()
 
 return _M
 

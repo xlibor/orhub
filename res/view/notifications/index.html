@@ -26,12 +26,15 @@
 
                 <ul class="list-group row">
                     @foreach(notifications as notification)
+                    {? local fromUser = notification('fromUser')
+
+                    ?}
                      <li class="list-group-item media" style="margin-top: 0px;">
 
-                        @if((#notification.topic or notification.type == 'follow') and #notification.fromUser)
+                        @if((notification('topic') or notification.type == 'follow') and fromUser)
                             <div class="avatar pull-left">
                                 <a href="{{ route('users.show', {notification.from_user_id}) }}">
-                                    <img class="media-object img-thumbnail avatar" alt="{{ notification.fromUser.name }}" src="{{ notification.fromUser:present('gravatar') }}"  style="width:38px;height:38px;"/>
+                                    <img class="media-object img-thumbnail avatar" alt="{{ fromUser.name }}" src="{{ fromUser:present('gravatar') }}"  style="width:38px;height:38px;"/>
                                 </a>
                             </div>
 
@@ -40,7 +43,7 @@
                               <div class="media-heading">
 
                                 <a href="{{ route('users.show', {notification.from_user_id}) }}">
-                                    {{ notification.fromUser.name }}
+                                    {{ fromUser.name }}
                                 </a>
                                  •
                                  @if(notification.type ~= 'follow' and notification.topic:isArticle())

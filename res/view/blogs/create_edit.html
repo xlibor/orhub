@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ blog.id > 0 and '编辑专栏' or '新建专栏' }} | @parent
+{{ blog.id and '编辑专栏' or '新建专栏' }} | @parent
 @stop
 
 @section('content')
@@ -17,8 +17,8 @@
       <div class="panel-body ">
 
           <div class="">
-              <h2><i class="fa fa-paper-plane" aria-hidden="true"></i> {{ blog.id > 0 and '编辑专栏' or '新建专栏' }}
-                  @if(blog.id > 0)
+              <h2><i class="fa fa-paper-plane" aria-hidden="true"></i> {{ blog.id and '编辑专栏' or '新建专栏' }}
+                  @if(blog.id)
                       <a href="{{ route('articles.create') }}" class="btn btn-primary no-pjax">
                       <i class="fa fa-paint-brush" aria-hidden="true"></i>  创作文章
                     </a>
@@ -30,9 +30,8 @@
 
           @include('layouts.partials.errors')
 
-          @if(blog.id > 0)
+          @if(blog.id)
               <form class="form-horizontal" method="POST" action="{{ route('blogs.update', blog.id) }}" accept-charset="UTF-8" id="topic-create-form" enctype="multipart/form-data">
-              <input name="_method" type="hidden" value="PATCH">
           @else
               <form class="form-horizontal" method="POST" action="{{ route('blogs.store') }}" accept-charset="UTF-8" id="topic-create-form" enctype="multipart/form-data">
           @endif

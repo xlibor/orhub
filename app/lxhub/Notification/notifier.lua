@@ -4,6 +4,7 @@ local lx, _M, mt = oo{
 }
 
 local app, lf, tb, str = lx.kit()
+local Notification = lx.use('.app.model.notification')
 
 function _M:new()
 
@@ -19,17 +20,18 @@ function _M:newTopicNotify(fromUser, mentionParser, topic)
     -- Notify mentioned users
     Notification.batchNotify('mentioned_in_topic', fromUser, self:removeDuplication(mentionParser.users), topic)
     -- Notify user follower
-    Notification.batchNotify('new_topic_from_following', fromUser, self:removeDuplication(fromUser.followers), topic)
+    Notification.batchNotify('new_topic_from_following', fromUser, self:removeDuplication(fromUser('followers')), topic)
     -- Notify blog subscriber
-    if #topic('user').blogs then
-        Notification.batchNotify('new_topic_from_subscribe', fromUser, self:removeDuplication(topic('user').blogs:first().subscribers), topic)
+    local firstBlog = topic('user'):blogs():first()
+    if firstBlog then
+        Notification.batchNotify('new_topic_from_subscribe', fromUser, self:removeDuplication(firstBlog('subscribers')), topic)
     end
 end
 
 function _M:newReplyNotify(fromUser, mentionParser, topic, reply)
 
     -- Notify the author
-    Notification.batchNotify('new_reply', fromUser, self:removeDuplication({topic.user}), topic, reply)
+    Notification.batchNotify('new_reply', fromUser, self:removeDuplication({topic('user')}), topic, reply)
     -- Notify attented users
     Notification.batchNotify('attention', fromUser, self:removeDuplication(topic:attentedUsers()), topic, reply)
     -- Notify mentioned users

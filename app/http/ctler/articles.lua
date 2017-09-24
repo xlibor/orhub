@@ -1,43 +1,49 @@
 
 local lx, _M, mt = oo{
-    _cls_ = '',
-    _ext_ = 'controller',
-    _bond_ = 'creatorListener'
+    _cls_       = '',
+    _ext_       = 'controller',
+    _bond_      = 'creatorListener'
 }
 
-local app, lf, tb, str = lx.kit()
+local app, lf, tb, str, new = lx.kit()
+
+local redirect = lx.h.redirect
+local lang = Ah.lang
 
 function _M:ctor()
 
-    self:middleware('auth', {except = {'index', 'show'}})
+    self:setBar('auth', {except = {'index', 'show'}})
 end
 
-function _M:create(request)
+function _M:create(c)
 
+    local request = c.req
     local user = Auth.user()
     if user:blogs():count() <= 0 then
         Flash.info('请先创建专栏，专栏创建成功后才能发布文章。')
         
         return redirect():route('blogs.create')
     end
-    local topic = new('topic')
-    local blog = request.blog_id and Blog.findOrFail(request.blog_id) or Auth.user():blogs():first()
+    local topic = new('.app.model.topic')
+    local blogId = request:input('blog_id')
+    local blog = blogId and Blog.findOrFail(blogId) or Auth.user():blogs():first()
     self:authorize('create-article', blog)
     
-    return view('articles.create_edit', Compact('topic', 'user', 'blog'))
+    return c:view('articles.create_edit', Compact('topic', 'user', 'blog'))
 end
 
-function _M:store(request)
+function _M:store(c)
 
+    local request = c.req
     local data = request:except('_token')
     local blog = Blog.findOrFail(request.blog_id)
     self:authorize('create-article', blog)
-    data['blog_id'] = blog.id
+    data.blog_id = blog.id
     if request.subject == 'draft' then
-        data['is_draft'] = 'yes'
+        data.is_draft = 'yes'
     end
     
-    return app('lxhub\\Creators\\TopicCreator'):create(self, data, blog)
+    return app('.app.lxhub.creator.topic'):create(self, data, blog)
 end
 
 function _M:transform(id)
@@ -55,7 +61,7 @@ function _M:transform(id)
     local blog = Auth.user():blogs():first()
     blog:topics():attach(topic.id)
     blog:increment('article_count', 1)
-    -- Co-authors
+
     if not blog:authors():where('user_id', topic.user_id):exists() then
         blog:authors():attach(topic.user_id)
     end
@@ -64,19 +70,19 @@ function _M:transform(id)
     return redirect():to(topic:link())
 end
 
-function _M:show(id)
+function _M:show(c, id)
 
     -- See: TopicsController->show
 end
 
-function _M:edit(id)
+function _M:edit(c, id)
 
     local topic = Topic.findOrFail(id)
     
     return view('articles.create_edit', Compact('topic'))
 end
 
-function _M:update(id, request)
+function _M:update(c, id)
 
     -- See: TopicsController->update
 end

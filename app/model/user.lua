@@ -10,10 +10,11 @@ local lx, _M = oo{
         '.app.model.mix.userActivityHelper',
         'presentableMix',
         'entrustUserMix',
-        '.app.model.mix.followHelper'
-        -- 'messagable', 'searchableMix',
+        '.app.model.mix.followHelper',
+        'messenger.messagable',
+        -- 'searchableMix',
         -- 'revisionableMix',
-        -- 'softDelete'
+        'softDelete'
     },
     _static_ = {}
 }

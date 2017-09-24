@@ -5,13 +5,14 @@ local lx, _M, mt = oo{
 }
 
 local app, lf, tb, str = lx.kit()
+local redirect = lx.h.redirect
 
 function _M:ctor()
 
-    self:middleware('auth')
+    self:setBar('auth')
 end
 
-function _M:unread()
+function _M:unread(c)
 
     if Auth.user().notification_count > 0 and Auth.user().message_count == 0 then
         
@@ -21,13 +22,13 @@ function _M:unread()
     return redirect():route('messages.index')
 end
 
-function _M:index()
+function _M:index(c)
 
     local notifications = Auth.user():notifications()
     Auth.user().notification_count = 0
     Auth.user():save()
     
-    return view('notifications.index', Compact('notifications'))
+    return c:view('notifications.index', Compact('notifications'))
 end
 
 function _M:count()

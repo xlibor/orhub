@@ -1,7 +1,8 @@
 @extends('layouts.default')
 
 @section('title')
-{{ topic and '编辑话题' or Ah.lang('Create New Topic') }}_@parent
+{{ topic and '编辑话题' or Ah.lang('Create New Topic') }}_
+  @parent
 @stop
 
 @section('content')
@@ -28,13 +29,13 @@
         <div class="form-group">
             <select class="selectpicker form-control" name="category_id" id="category-select" required="require">
 
-              <option value="" disabled {{ #category ~= 0 or 'selected' }}>{{ Ah.lang('Pick a category') }}</option>
+              <option value="" disabled {{ category or 'selected' }}>{{ Ah.lang('Pick a category') }}</option>
 
               @foreach(categories as value)
                   {{-- 如果用户可以发布公告，并且是 id == 3 的话 --}}
                   @if(value.id ~= 3 or Auth.user():can('compose_announcement'))
                       @if(value.id ~=Conf('lxhub.adminBoardCid') or Auth.user():can('access_board'))
-                          <option value="{{ value.id }}" {{ #category ~= 0 and value.id == category.id and 'selected' or '' }} >{{ value.name }}</option>
+                          <option value="{{ value.id }}" {{ category and value.id == category.id and 'selected' or '' }} >{{ value.name }}</option>
                       @endif
                   @endif
               @endforeach
@@ -43,7 +44,7 @@
 
 
         @foreach(categories as cat)
-            <div class="category-hint alert alert-warning category-{{ cat.id }} {{ #category and cat.id == category.id and 'animated rubberBand ' or ''}}" style="{{ #category and cat.id == category.id and '' or 'display:none' }}">
+            <div class="category-hint alert alert-warning category-{{ cat.id }} {{ category and cat.id == category.id and 'animated rubberBand ' or ''}}" style="{{ category and cat.id == category.id and '' or 'display:none' }}">
                 {!! cat.description !!}
             </div>
         @endforeach
@@ -108,8 +109,8 @@
 
 @section('scripts')
 
-<link rel="stylesheet" href="{{ Ah.cdn(mix('assets/css/editor.css')) }}">
-<script src="{{ Ah.cdn(mix('assets/js/editor.js')) }}"></script>
+<link rel="stylesheet" href="{{ mix('/css/editor-7d149186af.css') }}">
+<script src="{{ mix('/js/editor-7c1634df3a.js') }}"></script>
 
 <script type="text/javascript">
 

@@ -24,7 +24,7 @@ end
 
 function _M:getDataAttr(value)
 
-    return lf.unpack(value)
+    return lf.jsde(value)
 end
 
 return _M

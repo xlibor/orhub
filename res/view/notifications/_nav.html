@@ -1,7 +1,7 @@
 <div class="box">
     <div class="padding-md">
         <div class="list-group text-center">
-          <a href="{{ route('messages.index') }}" class="list-group-item big {{ Ah.active_class(if_uri_pattern({'messages*'})) }}">
+          <a href="{{ route('messages.index') }}" class="list-group-item big {{ Ah.active_class(Ah.if_uri_pattern({'/messages*'})) }}">
               <i class="text-md fa fa-envelope" aria-hidden="true"></i>
               &nbsp;私信
                @if(currentUser.message_count > 0)
@@ -11,7 +11,7 @@
                @endif
           </a>
 
-          <a href="{{ route('notifications.index') }}" class="list-group-item big {{ Ah.active_class(if_route('notifications.index')) }}">
+          <a href="{{ route('notifications.index') }}" class="list-group-item big {{ Ah.active_class(Ah.if_route('notifications.index')) }}">
               <i class="text-md fa fa-bell" aria-hidden="true"></i>
                &nbsp;通知
                @if(currentUser.notification_count > 0)

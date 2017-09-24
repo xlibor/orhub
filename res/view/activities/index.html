@@ -1,13 +1,13 @@
 @extends('layouts.default')
 
 @section('title')
-@if(Ah.if_query('view', nil))
-我关注的动态 | @parent
-@elseif(Ah.if_query('view', 'all'))
-所有动态 | @parent
-@elseif(Ah.if_query('view', 'mine'))
-我的动态 | @parent
-@endif
+    @if(Ah.if_query('view'))
+    我关注的动态 | @parent
+    @elseif(Ah.if_query('view', 'all'))
+    所有动态 | @parent
+    @elseif(Ah.if_query('view', 'mine'))
+    我的动态 | @parent
+    @endif
 @stop
 
 @section('content')
@@ -18,7 +18,7 @@
 
         <div class="panel-heading">
             <ul class="nav nav-tabs">
-                <li role="presentation" class="{{ Ah.active_class(Ah.if_query('view', nil)) }}"><a href="{{ route('home') }}"><i class="fa fa-eye" aria-hidden="true"></i> 我的关注</a></li>
+                <li role="presentation" class="{{ Ah.active_class(Ah.if_query('view')) }}"><a href="{{ route('home') }}"><i class="fa fa-eye" aria-hidden="true"></i> 我的关注</a></li>
                 <li role="presentation" class="{{ Ah.active_class(Ah.if_query('view', 'all')) }}"><a href="{{ route('home', {view = 'all'}) }}"><i class="fa fa-rss" aria-hidden="true"></i> 所有动态</a></li>
                 <li role="presentation" class="{{ Ah.active_class(Ah.if_query('view', 'mine')) }}"><a href="{{ route('home', {view = 'mine'}) }}"><i class="fa fa-calendar-minus-o" aria-hidden="true"></i> 我的动态</a></li>
             </ul>
@@ -29,10 +29,11 @@
             <div class="jscroll">
                 <div class="panel-body remove-padding-horizontal">
                     <ul class="list-group row feed-list">
-                        {? indentifiers = {} ?}
+                        {? local indentifiers = {} ?}
                         @foreach(activities as activity)
                             @unless(activity.type == 'UserPublishedNewTopic' and tb.inList(indentifiers, activity.indentifier))
-                                @include('activities.types._' .. str.snake(class_basename(activity.type)))
+                                {? local activityUser = activity('user') ?}
+                                @include('activities.types@blogHasNewArticle;userAddedAppend;userAttendedTopic;userFollowedUser;userPublishedNewTopic;userRepliedTopic;userSubscribedBlog;userUpvotedReply;userUpvotedTopic', activity.type)
                             @endunless
                             {? if activity.type == 'BlogHasNewArticle' then
     tapd(indentifiers, activity.indentifier)

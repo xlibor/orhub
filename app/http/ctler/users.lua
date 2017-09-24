@@ -6,7 +6,8 @@ local lx, _M, mt = oo{
 
 local app, lf, tb, str = lx.kit()
 local try = lx.try
-local redirect, lang = lx.h.redirect, lx.h.lang
+local redirect, route, lang = lx.h.redirect, lx.h.route, Ah.lang
+local UserFollowedUser = lx.use('.app.activity.userFollowedUser')
 
 function _M:ctor()
 
@@ -20,7 +21,7 @@ function _M:index(c)
 
     local users = User.recent():take(48):get()
     
-    return c:view('users.index', Compact('users'))
+    c:view('users.index', Compact('users'))
 end
 
 function _M:show(c, id)
@@ -31,7 +32,7 @@ function _M:show(c, id)
     local blog = user:blogs():first()
     local replies = Reply.whose(user.id):recent():limit(20):get()
     
-    return c:view('users.show', Compact('user', 'blog', 'articles', 'topics', 'replies'))
+    c:view('users.show', Compact('user', 'blog', 'articles', 'topics', 'replies'))
 end
 
 function _M:edit(c, id)
@@ -39,22 +40,25 @@ function _M:edit(c, id)
     local user = User.findOrFail(id)
     self:authorize('update', user)
     
-    return c:view('users.edit', Compact('user', 'topics', 'replies'))
+    c:view('users.edit', Compact('user', 'topics', 'replies'))
 end
 
-function _M:update(c, id, request)
+function _M:update(c, id)
+
+    local request = c:form('updateUserRequest')
 
     local user = User.findOrFail(id)
     self:authorize('update', user)
+
     try(function()
         request:performUpdate(user)
         Flash.success(lang('Operation succeeded.'))
     end)
-    :catch('ImageUploadException', function(e) 
-        Flash.error(lang(e:getMessage()))
+    :catch('imageUploadException', function(e) 
+        Flash.error(lang(e:getMsg()))
     end)
     :run()
-    
+
     return redirect(route('users.edit', id))
 end
 
@@ -63,7 +67,7 @@ function _M:replies(c, id)
     local user = User.findOrFail(id)
     local replies = Reply.whose(user.id):recent():paginate(15)
     
-    return c:view('users.replies', Compact('user', 'replies'))
+    c:view('users.replies', Compact('user', 'replies'))
 end
 
 function _M:topics(c, id)
@@ -71,7 +75,7 @@ function _M:topics(c, id)
     local user = User.findOrFail(id)
     local topics = Topic.whose(user.id):withoutArticle():withoutBoardTopics():recent():paginate(30)
     
-    return c:view('users.topics', Compact('user', 'topics'))
+    c:view('users.topics', Compact('user', 'topics'))
 end
 
 function _M:articles(c, id)
@@ -80,7 +84,7 @@ function _M:articles(c, id)
     local topics = Topic.whose(user.id):onlyArticle():withoutDraft():recent():with('blogs'):paginate(30)
     user:update({article_count = topics:total()})
     
-    return c:view('users.articles', Compact('user', 'blog', 'topics'))
+    c:view('users.articles', Compact('user', 'blog', 'topics'))
 end
 
 function _M:drafts(c)
@@ -91,7 +95,7 @@ function _M:drafts(c)
     user.draft_count = user:topics():onlyArticle():draft():count()
     user:save()
     
-    return c:view('users.articles', Compact('user', 'blog', 'topics'))
+    c:view('users.articles', Compact('user', 'blog', 'topics'))
 end
 
 function _M:votes(c, id)
@@ -99,7 +103,7 @@ function _M:votes(c, id)
     local user = User.findOrFail(id)
     local topics = user:votedTopics():orderBy('pivot_created_at', 'desc'):paginate(30)
     
-    return c:view('users.votes', Compact('user', 'topics'))
+    c:view('users.votes', Compact('user', 'topics'))
 end
 
 function _M:following(c, id)
@@ -107,7 +111,7 @@ function _M:following(c, id)
     local user = User.findOrFail(id)
     local users = user:followings():orderBy('users.id', 'desc'):paginate(15)
     
-    return c:view('users.following', Compact('user', 'users'))
+    c:view('users.following', Compact('user', 'users'))
 end
 
 function _M:followers(c, id)
@@ -115,7 +119,7 @@ function _M:followers(c, id)
     local user = User.findOrFail(id)
     local users = user:followers():orderBy('id', 'desc'):paginate(15)
     
-    return c:view('users.followers', Compact('user', 'users'))
+    c:view('users.followers', Compact('user', 'users'))
 end
 
 function _M:accessTokens(c, id)
@@ -128,7 +132,7 @@ function _M:accessTokens(c, id)
     local sessions = OAuthSession.where({owner_type = 'user', owner_id = Auth.id()}):with('token'):lists('id') or {}
     local tokens = AccessToken.whereIn('session_id', sessions):get()
     
-    return c:view('users.access_tokens', Compact('user', 'tokens'))
+    c:view('users.access_tokens', Compact('user', 'tokens'))
 end
 
 function _M:revokeAccessToken(c, token)
@@ -161,7 +165,7 @@ function _M:editEmailNotify(c, id)
     local user = User.findOrFail(id)
     self:authorize('update', user)
     
-    return c:view('users.edit_email_notify', Compact('user'))
+    c:view('users.edit_email_notify', Compact('user'))
 end
 
 function _M:updateEmailNotify(c, id, request)
@@ -180,7 +184,7 @@ function _M:editPassword(c, id)
     local user = User.findOrFail(id)
     self:authorize('update', user)
     
-    return c:view('users.edit_password', Compact('user'))
+    c:view('users.edit_password', Compact('user'))
 end
 
 function _M:updatePassword(c, id, request)
@@ -221,13 +225,14 @@ end
 function _M:doFollow(c, id)
 
     local user = User.findOrFail(id)
+
     if Auth.user():isFollowing(id) then
         Auth.user():unfollow(id)
-        app(UserFollowedUser.class):remove(Auth.user(), user)
-    else 
+        app(UserFollowedUser.__cls):remove(Auth.user(), user)
+    else
         Auth.user():follow(id)
-        app('lxhub\\Notification\\Notifier'):newFollowNotify(Auth.user(), user)
-        app(UserFollowedUser.class):generate(Auth.user(), user)
+        app('.app.lxhub.notification.notifier'):newFollowNotify(Auth.user(), user)
+        app(UserFollowedUser.__cls):generate(Auth.user(), user)
     end
     user:update({follower_count = user:followers():count()})
     Flash.success(lang('Operation succeeded.'))
@@ -240,7 +245,7 @@ function _M:editAvatar(c, id)
     local user = User.findOrFail(id)
     self:authorize('update', user)
     
-    return c:view('users.edit_avatar', Compact('user'))
+    c:view('users.edit_avatar', Compact('user'))
 end
 
 function _M:updateAvatar(c, id, request)
@@ -290,7 +295,7 @@ function _M:editSocialBinding(c, id)
     local user = User.findOrFail(id)
     self:authorize('update', user)
     
-    return c:view('users.edit_social_binding', Compact('user'))
+    c:view('users.edit_social_binding', Compact('user'))
 end
 
 function _M:emailVerificationRequired(c)
@@ -300,7 +305,7 @@ function _M:emailVerificationRequired(c)
         return redirect():intended('/')
     end
     
-    return c:view('users.emailverificationrequired')
+    c:view('users.emailverificationrequired')
 end
 
 return _M

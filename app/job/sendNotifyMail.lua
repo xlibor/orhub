@@ -2,8 +2,8 @@
 local lx, _M, mt = oo{
     _cls_ = '',
     _ext_ = 'job',
-    _bond_ = 'selfHandling, ShouldQueue',
-    _mix_ = 'interactsWithQueue, SerializesModels'
+    _bond_ = {'selfHandling', 'shouldQueue'},
+    _mix_ = {'interactsWithQueue', 'serializesModels'}
 }
 
 local app, lf, tb, str = lx.kit()

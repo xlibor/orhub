@@ -1,7 +1,8 @@
 @extends('layouts.default')
 
 @section('title')
-{{ Ah.lang('Edit Profile') }} | @parent
+  {{ Ah.lang('Edit Profile') }}|
+  @parent
 @stop
 
 @section('content')
@@ -24,7 +25,7 @@
         @include('layouts.partials.errors')
 
         <form class="form-horizontal" method="POST" action="{{ route('users.update', user.id) }}" accept-charset="UTF-8" enctype="multipart/form-data">
-            <input name="_method" type="hidden" value="PATCH">
+
             {!! csrf_field() !!}
 
             <div class="form-group">
@@ -57,7 +58,7 @@
                     <input class="form-control" name="email" type="text" value="{{ user.email }}">
                 </div>
                 <div class="col-sm-4 help-block">
-                    {{ Ah.lang('Email example: name@website }}
+                    {{ Ah.lang('Email example: name@website') }}
                 </div>
             </div>
 

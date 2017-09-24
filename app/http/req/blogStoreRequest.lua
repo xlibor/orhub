@@ -1,7 +1,7 @@
 
-local lx, _M, mt = oo{
+local lx, _M = oo{
     _cls_ = '',
-    _ext_ = 'request'
+    _ext_ = 'baseFormRequest'
 }
 
 local app, lf, tb, str = lx.kit()
@@ -13,32 +13,27 @@ end
 
 function _M:rules()
 
-    local st = self:method()
-    if st == 'GET' then
-    elseif st == 'DELETE' then
+    local method, action = self.method, self.action
+    if method == 'get' then
         
         return {}
-        -- Crate
-    elseif st == 'POST' then
+    elseif action == 'store' then
         
         return {
-            slug = 'between:2,25|regex:/^[A-Za-z0-9\\-\\_]+$/|required|unique:blogs',
+            slug = 'between:2,25|regex:^[A-Za-z0-9\\-\\_]+$|required|unique:blogs',
             name = 'between:2,20|required|unique:blogs',
             description = 'max:250',
             cover = 'required|image'
         }
-        -- UPDATE
-    elseif st == 'PUT' then
-    elseif st == 'PATCH' then
-        blog = Blog.findOrFail(self:route('id'))
+    elseif action == 'update' then
+        blog = Blog.findOrFail(self:param('id'))
         
         return {
-            slug = 'between:2,25|regex:/^[A-Za-z0-9\\-\\_]+$/|required|unique:blogs,slug,' .. blog.id,
+            slug = 'between:2,25|regex:^[A-Za-z0-9\\-\\_]+$|required|unique:blogs,slug,' .. blog.id,
             name = 'between:2,20|required|unique:blogs,name,' .. blog.id,
             description = 'max:250',
             cover = 'image'
         }
-    else 
     end
 end
 
@@ -51,8 +46,10 @@ function _M:performUpdate(blog)
     blog.description = self:input("description")
     local file = self:file('cover')
     if file then
-        upload_status = app('.app.lxhub.handler.imageUploadHandler'):uploadImage(file)
-        blog.cover = upload_status['filename']
+        -- todo
+        -- upload_status = app('.app.lxhub.handler.imageUploadHandler'):uploadImage(file)
+        -- blog.cover = upload_status['filename']
+        blog.cover = ''
     end
     
     return blog:save()

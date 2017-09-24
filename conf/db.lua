@@ -11,8 +11,10 @@ local conf = {
             user        = env('db.user', ''),
             database    = 'lxhub2',
             password    = 'secret',
-            port = 3306,
-            pool = 5
+            port        = 3306,
+            pool        = 5,
+            charset     = 'utf8mb4',
+            -- strict      = true,
         },
         sqlite = {
             driver = 'sqlite',

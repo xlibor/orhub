@@ -22,7 +22,7 @@
 
               <div class="media-heading">
 
-                @if(topic.order > 0 and not Req('filter') and Route.currentRouteName() ~= 'home')
+                @if(topic.order > 0 and not Req.get('filter') and Route.currentRouteName() ~= 'home')
                     <span class="hidden-xs label label-warning">{{ Ah.lang('Stick') }}</span>
                 @else
                     <span class="hidden-xs label label-{{ topic.is_excellent == 'yes' and Route.currentRouteName() ~= 'home' and 'success' or 'default' }}">{{ topic('category').name }}</span>

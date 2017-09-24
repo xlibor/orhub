@@ -1,10 +1,12 @@
 
-local lx, _M, mt = oo{
+local lx, _M = oo{
     _cls_ = '',
     _ext_ = 'presenter'
 }
 
 local app, lf, tb, str = lx.kit()
+
+local lang = Ah.lang
 
 function _M:lableUp()
 

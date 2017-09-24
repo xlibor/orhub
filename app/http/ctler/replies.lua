@@ -5,16 +5,18 @@ local lx, _M, mt = oo{
     _bond_ = 'creatorListener'
 }
 
-local app, lf, tb, str = lx.kit()
+local app, lf, tb, str, new = lx.kit()
+local lang = Ah.lang
+local response = lx.h.response
 
 function _M:ctor()
 
-    self:middleware('auth')
+    self:setBar('auth')
 end
 
 function _M:store(request)
 
-    return app('lxhub\\Creators\\ReplyCreator'):create(self, request:except('_token'))
+    return new('.app.lxhub.creator.reply'):create(self, request:except('_token'))
 end
 
 function _M:vote(id)
@@ -43,7 +45,7 @@ end
 
 function _M:creatorFailed(errors)
 
-    if Req.ajax() then
+    if Req.ajax then
         
         return response({status = 500, message = lang('Operation failed.')})
     else 
@@ -55,16 +57,16 @@ end
 
 function _M:creatorSucceed(reply)
 
-    reply.user.image_url = reply.user:present('gravatar')
-    if Req.ajax() then
+    reply('user').image_url = reply('user'):present('gravatar')
+    if Req.ajax then
         
-        return response({
+        return {
             status = 200,
             message = lang('Operation succeeded.'),
-            reply = reply,
-            manage_topics = reply.user:may('manage_topics') and 'yes' or 'no'
-        })
-    else 
+            reply = reply:toArr(),
+            manage_topics = reply('user'):can('manage_topics') and 'yes' or 'no'
+        }
+    else
         Flash.success(lang('Operation succeeded.'))
         
         return Redirect.to(reply.topic:link({'#last-reply'}))

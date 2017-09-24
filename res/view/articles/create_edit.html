@@ -1,7 +1,8 @@
 @extends('layouts.default')
 
 @section('title')
-{{ topic.id > 0 and '编辑文章' or '创作文章' }} | @parent
+{{ topic.id and '编辑文章' or '创作文章' }} |
+    @parent
 @stop
 
 @section('content')
@@ -12,12 +13,12 @@
 
       <div class="panel-body">
 
-            <h2 class="text-center"> {{ topic.id > 0 and '编辑文章' or '创作文章' }}</h2>
+            <h2 class="text-center"> {{ topic.id and '编辑文章' or '创作文章' }}</h2>
             <hr>
 
             @include('layouts.partials.errors')
 
-            @if(topic.id > 0)
+            @if(topic.id)
             <form method="POST" action="{{ route('topics.update', topic.id) }}" accept-charset="UTF-8" id="article-edit-form">
                 <input name="_method" type="hidden" value="PATCH">
             @else
@@ -63,8 +64,8 @@
 
 @section('scripts')
 
-<link rel="stylesheet" href="{{ Ah.cdn(mix('assets/css/editor.css')) }}">
-<script src="{{ Ah.cdn(mix('assets/js/editor.js')) }}"></script>
+<link rel="stylesheet" href="{{ mix('/css/editor-7d149186af.css') }}">
+<script src="{{ mix('/js/editor-7c1634df3a.js') }}"></script>
 
 <script type="text/javascript">
 

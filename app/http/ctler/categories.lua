@@ -13,7 +13,7 @@ function _M:show(c, id)
     local topics = Topic.getCategoryTopicsWithFilter(request:get('filter', 'default'), id)
     local links = Link.allFromCache()
     
-    return c:view('topics.index', Compact('topics', 'category', 'links', 'banners'))
+    c:view('topics.index', Compact('topics', 'category', 'links', 'banners'))
 end
 
 return _M

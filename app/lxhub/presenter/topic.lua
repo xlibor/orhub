@@ -22,7 +22,7 @@ function _M:topicFilter(filter)
         end
         link = Url.to('topics') .. '?filter=' .. filter .. query_append .. category_append
     end
-    local selected = Req('filter') and Req('filter') == filter and ' class="active"' or '' or (filter == 'default' and ' class="active"' or '')
+    local selected = Req.get('filter') and Req.get('filter') == filter and ' class="active"' or '' or (filter == 'default' and ' class="active"' or '')
     
     return 'href="' .. link .. '"' .. selected
 end
@@ -41,8 +41,8 @@ end
 function _M:replyFloorFromIndex(index)
 
     index = index + 1
-    local current_page = Req('page') or 1
-    
+    local current_page = Req.input('page') or 1
+
     return (current_page - 1) * app:conf('lxhub.repliesPerpage') + index
 end
 

@@ -1,7 +1,4 @@
--- This file is part of Entrust,
--- a role & permission management solution for Laravel.
--- @license MIT
--- @package Zizaco\Entrust
+
 return {
     role = '.app.model.role',
     roles_table = 'roles',

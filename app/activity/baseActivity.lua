@@ -7,14 +7,16 @@ local app, lf, tb, str = lx.kit()
 
 function _M:removeBy(causer, indentifier)
 
-    Activity.where('causer', causer):where('indentifier', indentifier):where('type', class_basename(get_class(self))):delete()
+    Activity.where('causer', causer)
+        :where('indentifier', indentifier)
+        :where('type', self.__cls):delete()
 end
 
 function _M:addTopicActivity(user, topic, extra_data, indentifier)
 
     extra_data = extra_data or {}
     -- 站务不显示
-    if topic.category_id ==Conf('lxhub.adminBoardCid') then
+    if topic.category_id == app:conf('lxhub.adminBoardCid') then
         
         return
     end
@@ -32,16 +34,16 @@ end
 
 function _M:addActivity(causer, user, indentifier, data)
 
-    local type = class_basename(get_class(self))
-    tapd(activities, {)
+    local activities = {
         causer = causer,
         user_id = user.id,
-        type = type,
+        type = self.__cls,
         indentifier = indentifier,
-        data = serialize(data),
-        created_at = Carbon.now():toDateTimeString(),
-        updated_at = Carbon.now():toDateTimeString()
+        data = lf.jsen(data),
+        created_at = lf.datetime(),
+        updated_at = lf.datetime()
     }
+
     Activity.insert(activities)
 end
 

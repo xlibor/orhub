@@ -1,7 +1,7 @@
 
-local lx, _M, mt = oo{
+local lx, _M = oo{
     _cls_ = '',
-    _ext_ = 'request'
+    _ext_ = 'baseFormRequest'
 }
 
 local app, lf, tb, str = lx.kit()

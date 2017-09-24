@@ -141,7 +141,8 @@ end
 function _M.s__.makeExcerpt(body)
 
     local html = body
-    local excerpt = str.trim(str.rereplace(strip_tags(html), '/\\s\\s+/', ' '))
+
+    local excerpt = str.trim(str.rereplace(str.stripTags(html), [[\s\s+]], ' '))
     
     return str.limit(excerpt, 200)
 end

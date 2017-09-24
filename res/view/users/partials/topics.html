@@ -5,7 +5,7 @@
 
         @if(is_blog)
             <a href="{{ route('users.show', {topic.user_id}) }}" title="{{ topic('user').name }}" class="avatar-wrap">
-                <img class="avatar avatar-small" alt="{{ topic('user').name }}" src="{{ topic.user:present('gravatar') }}"/>
+                <img class="avatar avatar-small" alt="{{ topic('user').name }}" src="{{ topic('user'):present('gravatar') }}"/>
             </a>
         @endif
 

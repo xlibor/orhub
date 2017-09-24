@@ -26,10 +26,12 @@
 
                 <ul class="list-group row">
                     @foreach(threads as thread)
-                    {? unread_messagesCount = thread:userUnreadMessagesCount(currentUser.id) ?}
+                    {? local unread_messagesCount = thread:userUnreadMessagesCount(currentUser.id) ?}
 
                      <li class="list-group-item media {{ unread_messagesCount > 0 and 'unread' or '' }}" style="margin-top: 0px;">
-                        {? participant = thread:participant() ?}
+                        {?  local participant = thread:participant();
+                            local latestMessage = thread.latestMessage
+                        ?}
                         <div class="avatar pull-left">
                             <a href="{{ route('users.show', {participant.id}) }}">
                                 <img class="media-object img-thumbnail avatar" alt="{{ participant.name }}" src="{{ participant:present('gravatar') }}"  style="width:48px;height:48px;"/>
@@ -40,7 +42,7 @@
 
                           <div class="media-heading">
 
-                            @if(thread.latestMessage.user_id == currentUser.id)
+                            @if(latestMessage.user_id == currentUser.id)
                                 我发送给
                             @endif
 
@@ -48,12 +50,12 @@
                                 {{ participant.name }}
                             </a>
                             <span class="meta">
-                                 ⋅ {{ Ah.lang('at') }} ⋅ <span class="timeago">{{ thread.latestMessage.created_at }}</span>
+                                 ⋅ {{ Ah.lang('at') }} ⋅ <span class="timeago">{{ latestMessage.created_at }}</span>
                             </span>：
                           </div>
 
                           <div class="media-body markdown-reply content-body">
-                                {!! thread.latestMessage.body  !!}
+                                {!! latestMessage.body  !!}
                           </div>
 
                             <div class="message-meta">

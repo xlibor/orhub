@@ -9,10 +9,10 @@ local fs = lx.fs
 function _M:cacheAvatar()
 
     --Download Image
-    local guzzle = new('client')
-    local response = guzzle:get(self.image_url)
+    local hc = new('net.http.client')
+    local response = hc:get(self.image_url)
     --Get ext
-    local content_type = str.split(response:getHeader('Content-Type')[0], '/')
+    local content_type = str.split(response:getHeader('Content-Type')[1], '/')
     local ext = tb.pop(content_type)
     local avatar_name = self.id .. '_' .. time() .. '.' .. ext
     local save_path = public_path('uploads/avatars/') .. avatar_name

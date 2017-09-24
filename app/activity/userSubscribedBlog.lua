@@ -1,7 +1,7 @@
 
 local lx, _M, mt = oo{
     _cls_ = '',
-    _ext_ = 'baseActivity'
+    _ext_ = '.app.activity.baseActivity'
 }
 
 local app, lf, tb, str = lx.kit()
@@ -16,7 +16,7 @@ end
 
 function _M:remove(user, blog)
 
-    self:removeBy("u{user.id}", "b{blog.id}")
+    self:removeBy('u' .. user.id, 'b' .. blog.id)
 end
 
 return _M
