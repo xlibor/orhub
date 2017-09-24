@@ -1,0 +1,97 @@
+commands = {}
+dependencies = {
+   discount = {
+      ['0.2.1-1'] = {
+         {
+            constraints = {
+               {
+                  op = ">=",
+                  version = {
+                     5, 1, string = "5.1"
+                  }
+               }
+            },
+            name = "lua"
+         }
+      }
+   },
+   ['lua-cmsgpack'] = {
+      ['0.4.0-0'] = {
+         {
+            constraints = {
+               {
+                  op = ">=",
+                  version = {
+                     5, 1, string = "5.1"
+                  }
+               }
+            },
+            name = "lua"
+         }
+      }
+   },
+   luafilesystem = {
+      ['1.6.3-2'] = {
+         {
+            constraints = {
+               {
+                  op = ">=",
+                  version = {
+                     5, 1, string = "5.1"
+                  }
+               }
+            },
+            name = "lua"
+         }
+      }
+   }
+}
+modules = {
+   cmsgpack = {
+      "lua-cmsgpack/0.4.0-0"
+   },
+   discount = {
+      "discount/0.2.1-1"
+   },
+   lfs = {
+      "luafilesystem/1.6.3-2"
+   }
+}
+repository = {
+   discount = {
+      ['0.2.1-1'] = {
+         {
+            arch = "installed",
+            commands = {},
+            dependencies = {},
+            modules = {
+               discount = "discount.so"
+            }
+         }
+      }
+   },
+   ['lua-cmsgpack'] = {
+      ['0.4.0-0'] = {
+         {
+            arch = "installed",
+            commands = {},
+            dependencies = {},
+            modules = {
+               cmsgpack = "cmsgpack.so"
+            }
+         }
+      }
+   },
+   luafilesystem = {
+      ['1.6.3-2'] = {
+         {
+            arch = "installed",
+            commands = {},
+            dependencies = {},
+            modules = {
+               lfs = "lfs.so"
+            }
+         }
+      }
+   }
+}

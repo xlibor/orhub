@@ -1,0 +1,28 @@
+<li class="list-group-item media" >
+    <div class="avatar pull-left">
+        <a href="{{ route('users.show', {activityUser.id}) }}">
+            <img class="media-object img-thumbnail avatar" alt="{{ activityUser.name }}" src="{{ activityUser:present('gravatar') }}" />
+        </a>
+    </div>
+    <div class="infos">
+        <div class="media-heading">
+
+            <i class="fa fa-eye" aria-hidden="true"></i>
+
+            <a href="{{ route('users.show', {activityUser.id}) }}">
+                {{ activityUser.name }}
+            </a>
+            @if(activity.data['topic_type'] == 'article')
+                关注了文章
+            @else
+                关注了话题
+            @endif
+            <a href="{{ activity.data['topic_link'] }}" title="{{ activity.data['topic_title'] }}">
+                {{ str.limit(activity.data['topic_title'], '100') }}
+            </a>
+             <span class="meta pull-right">
+                 <span class="timeago">{{ activity.created_at }}</span>
+            </span>
+        </div>
+    </div>
+</li>
