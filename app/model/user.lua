@@ -12,7 +12,7 @@ local lx, _M = oo{
         'entrustUserMix',
         '.app.model.mix.followHelper',
         'messenger.messagable',
-        -- 'searchableMix',
+        'searchableMix',
         -- 'revisionableMix',
         'softDelete'
     },

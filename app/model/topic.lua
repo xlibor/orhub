@@ -7,7 +7,7 @@ local lx, _M = oo{
         '.app.model.mix.topicApiHelper',
         '.app.model.mix.topicImageHelper',
         -- 'revisionableMix',
-        -- 'searchableMix',
+        'searchableMix',
         'presentableMix',
         'softDelete'
     },

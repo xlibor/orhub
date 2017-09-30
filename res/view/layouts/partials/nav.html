@@ -27,7 +27,7 @@
 
       <div class="navbar-right">
 
-          @if(Req.is('users*') and user or Req.is('search*') and user.id > 0)
+          @if((Req.is('users*') and user) or (Req.is('search*') and user.id > 0))
 
               <form method="GET" action="{{ route('search') }}" accept-charset="UTF-8" class="navbar-form navbar-left hidden-sm hidden-md">
                   <div class="form-group">

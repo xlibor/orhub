@@ -54,12 +54,12 @@ function _M:store(c)
     return redirect():route('blogs.edit', blog.id)
 end
 
-function _M:edit(id)
+function _M:edit(c, id)
 
     local user = Auth.user()
     local blog = Blog.findOrFail(id)
     
-    return view('blogs.create_edit', Compact('blog', 'user'))
+    return c:view('blogs.create_edit', Compact('blog', 'user'))
 end
 
 function _M:update(c, id)

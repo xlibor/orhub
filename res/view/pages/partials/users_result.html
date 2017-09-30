@@ -9,7 +9,7 @@
       <div class="info">
         <a href="{{ route('users.show', user_result.id) }}">
             {{ user_result.name }}
-            @if(user_result.real_name)
+            @if(not lf.empty(user_result.real_name))
                 （{{ user_result.real_name }}）
             @endif
         </a>
@@ -28,7 +28,7 @@
         第 {{ user_result.id }} 位会员
           ⋅
         <span title="注册日期">
-            {{ Carbon\Carbon.parse(user_result.created_at):format('Y-m-d') }}
+            {{ user_result.created_at:format('Y-m-d') }}
         </span>
 
           ⋅ <span>{{ user_result.follower_count }}</span> 关注者

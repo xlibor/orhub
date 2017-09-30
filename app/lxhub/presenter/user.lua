@@ -5,7 +5,7 @@ local lx, _M, mt = oo{
 }
 
 local app, lf, tb, str, new = lx.kit()
-
+local Markdown = lx.use('.app.lxhub.markdown.markdown')
 -- Present a link to the user gravatar.
 
 function _M:gravatar(size)
@@ -127,9 +127,7 @@ end
 
 function _M:formattedSignature()
 
-    return 'formattedSignature'
-    --todo
-    -- return (new('markdown')):convertMarkdownToHtml(self.signature)
+    return new(Markdown):convertMarkdownToHtml(self.signature)
 end
 
 return _M

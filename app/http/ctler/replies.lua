@@ -19,12 +19,15 @@ function _M:store(request)
     return new('.app.lxhub.creator.reply'):create(self, request:except('_token'))
 end
 
-function _M:vote(id)
+function _M:vote(c, id)
 
     local reply = Reply.findOrFail(id)
-    local type = app('lxhub\\Vote\\Voter'):replyUpVote(reply)
+    local voteInfo = app('.app.lxhub.vote.voter'):replyUpVote(reply)
     
-    return response({status = 200, message = lang('Operation succeeded.'), type = type['action_type']})
+    return c:json({
+        status = 200, message = lang('Operation succeeded.'),
+        type = voteInfo.action_type
+    })
 end
 
 function _M:destroy(id)

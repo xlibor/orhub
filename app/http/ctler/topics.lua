@@ -19,7 +19,6 @@ function _M:index(c)
     local request = c.req
     local topics = new(Topic):getTopicsWithFilter(request:get('filter', 'index'), 40)
 
-    -- dd(topics.items:count())
     local links = Link.allFromCache()
     local active_users = ActiveUser.fetchAll()
     local hot_topics = HotTopic.fetchAll()
@@ -75,7 +74,7 @@ function _M:show(c, id, fromCode)
         end
         Flash.error('当前文章的作者已被屏蔽，游客与用户将看不到此文章。')
     end
-    if Conf('lxhub.adminBoardCid') and topic.id ==Conf('lxhub.adminBoardCid') and (not Auth.check() or not Auth.user():can('access_board')) then
+    if Conf('lxhub.adminBoardCid') and topic.id == Conf('lxhub.adminBoardCid') and (not Auth.check() or not Auth.user():can('access_board')) then
         Flash.error('您没有权限访问该文章，有疑问请发邮件：all@estgroupe.com')
         
         return redirect():route('topics.index')
@@ -100,7 +99,7 @@ function _M:show(c, id, fromCode)
         userTopics = blog:topics():withoutDraft():onlyArticle():orderBy('vote_count', 'desc'):limit(5):get()
         
         c:view('articles.show', Compact('blog', 'user', 'topic', 'replies', 'categoryTopics', 'category', 'banners', 'cover', 'votedUsers', 'userTopics', 'revisionHistory'))
-    else 
+    else
         userTopics = topic:byWhom(topic.user_id):withoutDraft():withoutBoardTopics():recent():limit(3):get()
         
         c:view('topics.show', Compact('topic', 'replies', 'categoryTopics', 'category', 'banners', 'cover', 'votedUsers', 'userTopics', 'revisionHistory'))
@@ -162,12 +161,12 @@ end
 -- User Topic Vote function
 ------------------------------------------
 
-function _M:upvote(id)
+function _M:upvote(c, id)
 
     local topic = Topic.find(id)
-    app('lxhub\\Vote\\Voter'):topicUpVote(topic)
+    app('.app.lxhub.vote.voter'):topicUpVote(topic)
     
-    return response({status = 200})
+    return c:json({status = 200})
 end
 
 function _M:downvote(id)

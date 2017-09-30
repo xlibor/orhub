@@ -6,7 +6,7 @@
     <small>by</small>
 
     <a href="{{ route('users.show', {topic.user_id}) }}" title="{{ topic('user').name }}">
-        <img class="avatar avatar-small" alt="{{ topic('user').name }}" src="{{ topic.user:present('gravatar') }}"/>
+        <img class="avatar avatar-small" alt="{{ topic('user').name }}" src="{{ topic('user'):present('gravatar') }}"/>
         <small>{{ topic('user').name }}</small>
     </a>
 
@@ -16,7 +16,7 @@
         <a href="{{ topic:link() }}">{{ topic:link() }}</a>
   </span>
   <span class="date" title="Last Updated At">
-      {{ Carbon\Carbon.parse(topic.created_at):format('Y-m-d') }}
+      {{ topic.created_at:format('Y-m-d') }}
 
       ⋅
       <i class="fa fa-eye"></i> {{ topic.view_count }}
@@ -29,7 +29,7 @@
 
 </div>
 <div class="desc">
-    {{ str.limit(topic.body_original, 250) }}
+    {{ Str.limit(topic.body_original, 250) }}
 </div>
 <hr>
 </div>

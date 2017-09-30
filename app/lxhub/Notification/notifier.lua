@@ -58,7 +58,7 @@ end
 function _M:removeDuplication(users)
 
     local notYetNotifyUsers = {}
-    for _, user in pairs(users) do
+    for _, user in ipairs(users) do
         if not tb.inList(self.notifiedUsers, user.id) then
             tapd(notYetNotifyUsers, user)
             tapd(self.notifiedUsers, user.id)

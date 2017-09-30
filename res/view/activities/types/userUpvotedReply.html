@@ -17,13 +17,13 @@
             @else
                 赞了话题
             @endif
-             <a href="{{ activity.data['topic_link'] }}#reply{{ activity.data['reply_id'] }}" title="{{ activity.data['topic_title'] }}">
-                {{ str.limit(activity.data['topic_title'], '100') }}
+             <a href="{{ activity.data['topic_link'] }}#reply{{ activity.data.reply_id }}" title="{{ activity.data.topic_title }}">
+                {{ Str.limit(activity.data.topic_title, 100) }}
             </a>
             @if(activity.data['reply_user_name'])
-                下 <a href="{{ activity.data['topic_link'] }}#reply{{ activity.data['reply_id'] }}">{{ '@' .. activity.data['reply_user_name'] }} 的评论</a>：
+                下 <a href="{{ activity.data.topic_link }}#reply{{ activity.data.reply_id }}">{{ '@' .. activity.data.reply_user_name }} 的评论</a>：
             @else
-                下的 <a href="{{ activity.data['topic_link'] }}#reply{{ activity.data['reply_id'] }}">评论</a>：
+                下的 <a href="{{ activity.data.topic_link }}#reply{{ activity.data.reply_id }}">评论</a>：
             @endif
 
              <span class="meta pull-right">
@@ -31,7 +31,7 @@
             </span>
         </div>
         <div class="media-body markdown-reply content-body">
-            {!! activity.data['body'] !!}
+            {!! activity.data.body !!}
         </div>
     </div>
 </li>

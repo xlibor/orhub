@@ -26,19 +26,19 @@
 
   <div class="panel-body ">
 
-        @if(#users)
+        @if(#users > 0)
             @foreach(users as user_result)
                 @include('pages.partials.users_result')
             @endforeach
         @endif
 
-        @if(#topics)
+        @if(topics:count() > 0)
             @foreach(topics as topic)
                 @include('pages.partials.topics_result')
             @endforeach
         @endif
 
-        @if(#topics + #users <= 0)
+        @if(topics:count() == 0 and #users == 0)
             <div class="empty-block">{{ Ah.lang('Dont have any data Yet') }}~~</div>
         @endif
 

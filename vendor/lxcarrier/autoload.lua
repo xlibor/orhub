@@ -8,11 +8,14 @@ local appName = fs.basename(appPath)
 local vendor = appName .. '.'
 
 local namespace = {
+	["ltn12"] = vendor .. "ltn12",
+	["lfs"] = "lxhub-lfs",
 	["cmsgpack"] = "lxhub-cmsgpack",
+	["mime"] = vendor .. "mime",
 	["resty.http"] = vendor .. "resty.http",
 	["discount"] = "lxhub-discount",
-	["lfs"] = "lxhub-lfs",
-	["resty.http_headers"] = vendor .. "resty.http_headers"
+	["resty.http_headers"] = vendor .. "resty.http_headers",
+	["socket"] = vendor .. "socket"
 }
 
 return namespace

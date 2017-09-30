@@ -43,25 +43,26 @@ function _M:wiki(c)
     return new(TopicsCtler):show(c, app:conf('lxhub.wikiTopicId'), true)
 end
 
-function _M:search(request)
+function _M:search(c)
 
-    local users
-    local topics
-    local user
-    local query = Purifier.clean(request:input('q'), 'search_q')
+    local request = c.req
+    local user, users, topics
+    local query = request:input('q')
     if request.user_id then
         user = User.findOrFail(request.user_id)
         topics = Topic.search(query, nil, true):withoutBlocked():withoutBoardTopics():withoutDraft():byWhom(user.id):paginate(30)
-        users = collect({})
+        users = {}
     end
+    
     local filterd_noresult = topics and topics:total() == 0 or false
-    if not request.user_id or request.user_id and topics:total() == 0 then
-        user = request.user_id and user or new('user')
+    if not request.user_id or (request.user_id and topics:total() == 0) then
+        user = request.user_id and user or new(User)
+        if not user.id then user.id = 0 end
         users = User.search(query, nil, true):orderBy('last_actived_at', 'desc'):limit(5):get()
         topics = Topic.search(query, nil, true):withoutBlocked():withoutBoardTopics():withoutDraft():paginate(30)
     end
     
-    return view('pages.search', Compact('users', 'user', 'query', 'topics', 'filterd_noresult'))
+    return c:view('pages.search', Compact('users', 'user', 'query', 'topics', 'filterd_noresult'))
 end
 
 function _M:feed()

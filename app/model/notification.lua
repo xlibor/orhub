@@ -71,6 +71,7 @@ function _M.s__.batchNotify(type, fromUser, users, topic, reply, content)
     if #data then
         Notification.inserts(data)
         for _, toUser in ipairs(users) do
+            -- todo
             -- job = (new('sendNotifyMail', type, fromUser, toUser, topic, reply, content)):delay(config('lxhub.notifyDelay'))
             -- dispatch(job)
         end
@@ -132,7 +133,7 @@ end
 
 function _M.s__.isNotified(from_user_id, user_id, topic_id, type)
 
-    local notifys = Notification.fromwhom(from_user_id):toWhom(user_id):atTopic(topic_id):withType(type):get()
+    local notifys = Notification.fromWhom(from_user_id):toWhom(user_id):atTopic(topic_id):withType(type):get()
     
     return notifys:count()
 end

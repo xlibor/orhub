@@ -1,7 +1,7 @@
 
 local lx, _M, mt = oo{
     _cls_ = '',
-    _ext_ = 'baseActivity'
+    _ext_ = '.app.activity.baseActivity'
 }
 
 local app, lf, tb, str = lx.kit()

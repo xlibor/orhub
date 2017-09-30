@@ -27,7 +27,7 @@
                 <ul class="list-group row">
                     @foreach(notifications as notification)
                     {? local fromUser = notification('fromUser')
-
+                       local notificationTopic = notification('topic')
                     ?}
                      <li class="list-group-item media" style="margin-top: 0px;">
 
@@ -46,16 +46,16 @@
                                     {{ fromUser.name }}
                                 </a>
                                  •
-                                 @if(notification.type ~= 'follow' and notification.topic:isArticle())
-                                     {{ str.replace(notification:present('lableUp'), '话题', '文章') }}
-                                     <a href="{{ notification.topic:link() }}{{ not lf.isEmpty(notification.reply_id) and '#reply' .. notification.reply_id or '' }}" title="{{ notification.topic.title }}">
-                                         {{ str.limit(notification.topic.title, '100') }}
+                                 @if(notification.type ~= 'follow' and notificationTopic:isArticle())
+                                     {{ Str.replace(notification:present('lableUp'), '话题', '文章') }}
+                                     <a href="{{ notificationTopic:link() }}{{ not lf.isEmpty(notification.reply_id) and '#reply' .. notification.reply_id or '' }}" title="{{ notificationTopic.title }}">
+                                         {{ Str.limit(notificationTopic.title, 100) }}
                                      </a>
                                  @else
                                     {{ notification:present('lableUp') }}
                                     @if(notification.type ~= 'follow')
-                                        <a href="{{ notification.topic:link() }}{{ not lf.isEmpty(notification.reply_id) and '#reply' .. notification.reply_id or '' }}" title="{{ notification.topic.title }}">
-                                            {{ str.limit(notification.topic.title, '100') }}
+                                        <a href="{{ notificationTopic:link() }}{{ not lf.isEmpty(notification.reply_id) and '#reply' .. notification.reply_id or '' }}" title="{{ notificationTopic.title }}">
+                                            {{ Str.limit(notificationTopic.title, 100) }}
                                         </a>
                                     @endif
                                  @endif

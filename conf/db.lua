@@ -23,7 +23,7 @@ local conf = {
     },
     shift = {
         dirver = 'db',
-        table = 'shift'
+        table = 'shifts'
     }
     -- dbos =   '.db.schema.dbos'
 }

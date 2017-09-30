@@ -19,10 +19,9 @@ end
 
 function _M:create(observer, data)
 
-    local errorMessages
     -- 检查是否重复发布评论
     if self:isDuplicateReply(data) then
-        errorMessages = new('msgBag')
+        local errorMessages = new('msgBag')
         errorMessages:add('duplicated', '请不要发布重复内容。')
         
         return observer:creatorFailed(errorMessages)

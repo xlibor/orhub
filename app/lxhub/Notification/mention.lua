@@ -4,6 +4,7 @@ local lx, _M, mt = oo{
 }
 
 local app, lf, tb, str = lx.kit()
+local route = lx.h.route
 
 function _M:new()
 
@@ -19,13 +20,16 @@ end
 
 function _M:getMentionedUsername()
 
-    local atlist_tmp = str.rematchAll(self.body_original, [[(\S*)\@([^\r\n\s]*)]], 'ijo')
+    local atlist_tmp = str.rematchAll(
+        self.body_original, [[(\S*)\@([^\r\n\s]*)]], 'ijo'
+    )
+
     local usernames = {}
     if atlist_tmp then
 
-        for _, m in pairs(atlist_tmp) do
-            if not (m[1] and str.len(m[2]) > 25) then
-                tapd(usernames, v)
+        for _, m in ipairs(atlist_tmp) do
+            if m[1] == '' and str.len(m[2]) <= 25 then
+                tapd(usernames, m[2])
             end
         end
     end

@@ -8,7 +8,7 @@
         "luafilesystem": "",
         "discount": "",
         "pintsized/lua-resty-http": ">=0.10",
-        "lua-cmsgpack": ""
+        "lua-cmsgpack": "",
     },
     "require-dev": {
     }
