@@ -8,8 +8,8 @@ local app, lf, tb, str = lx.kit()
 
 function _M:run()
 
-    \DB.table('oauth_clients'):delete()
-    \DB.table('oauth_clients'):insert({{
+    Db.table('oauth_clients'):delete()
+    Db.table('oauth_clients'):inserts({{
         id = '14n5UsWFzhrt8iPx82wz',
         secret = 'j48EpY29pF06i7cAhEx6dgSTLD7',
         name = 'Test Drive',

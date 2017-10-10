@@ -10,9 +10,9 @@ local lx = require('lxlib')
 
 function _M:loadCommands(cmder)
 
-    -- cmder:group('.app.cmd', function()
-    --     require('.map.cmd')(cmder)
-    -- end)
+    cmder:group('.app.cmd.command', function()
+        require('.map.cmd')(cmder)
+    end)
 end
 
 return _M

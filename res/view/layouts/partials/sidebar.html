@@ -6,8 +6,7 @@
         </div>
     @endif
 
-
-    @if(topic)
+    @if(Ctx.topic)
   <div class="panel panel-default corner-radius">
 
       <div class="panel-heading text-center">
@@ -20,10 +19,10 @@
 
         @if(Auth.check() and currentUser.id ~= topic('user').id)
             <span class="text-white">
-                {? isFollowing = currentUser and currentUser:isFollowing(topic('user').id) ?}
+                {? local isFollowing = currentUser and currentUser:isFollowing(topic('user').id) ?}
                 <hr>
-                <a data-method="post" class="btn btn-{{ not isFollowing and 'warning' or 'default' }} btn-block" href="javascript:void(0);" data-url="{{ route('users.doFollow', topic('user').id) }}" id="user-edit-button">
-                   <i class="fa {{ not isFollowing and 'fa-plus' or 'fa-minus'}}"></i> {{ not isFollowing and '关注 Ta' or '已关注' }}
+                <a data-method="post" class="btn btn-{{ not Ctx.isFollowing and 'warning' or 'default' }} btn-block" href="javascript:void(0);" data-url="{{ route('users.doFollow', topic('user').id) }}" id="user-edit-button">
+                   <i class="fa {{ not isFollowing and 'fa-plus' or 'fa-minus'}}"></i> {{ not  isFollowing and '关注 Ta' or '已关注' }}
                 </a>
 
                 <a class="btn btn-default btn-block" href="{{ route('messages.create', topic('user').id) }}" >
@@ -37,25 +36,25 @@
   @endif
 
 
-  @if(userTopics and #userTopics)
+  @if(Ctx.userTopics and #userTopics)
   <div class="panel panel-default corner-radius">
     <div class="panel-heading text-center">
       <h3 class="panel-title">{{ topic('user').name }} 的其他话题</h3>
     </div>
     <div class="panel-body">
-      @include('layouts.partials.sidebar_topics', {sidebarTopics = userTopics})
+      @include('layouts.partials.sidebar_topics', {sidebarTopics = userTopics, numbered = false})
     </div>
   </div>
   @endif
 
 
-  @if(categoryTopics and #categoryTopics)
+  @if(Ctx.categoryTopics and #categoryTopics)
   <div class="panel panel-default corner-radius">
     <div class="panel-heading text-center">
       <h3 class="panel-title">{{ Ah.lang('Same Category Topics') }}</h3>
     </div>
     <div class="panel-body">
-      @include('layouts.partials.sidebar_topics', {sidebarTopics = categoryTopics})
+      @include('layouts.partials.sidebar_topics', {sidebarTopics = categoryTopics, numbered = false})
     </div>
   </div>
   @endif
@@ -73,7 +72,7 @@
     @include('layouts.partials._resources_panel')
 @endif
 
-@if(active_users and #active_users)
+@if(Ctx.active_users and #active_users)
     <div class="panel panel-default corner-radius panel-active-users">
       <div class="panel-heading text-center">
         <h3 class="panel-title">{{ Ah.lang('Active Users') }}（<a href="{{ route('hall_of_fames') }}"><i class="fa fa-star" aria-hidden="true"></i> {{ Ah.lang('Hall of Fame') }}</a>）</h3>
@@ -84,7 +83,7 @@
     </div>
 @endif
 
-@if(hot_topics and #hot_topics > 0)
+@if(Ctx.hot_topics and #hot_topics > 0)
 <div class="panel panel-default corner-radius panel-hot-topics">
   <div class="panel-heading text-center">
     <h3 class="panel-title">七天内最热</h3>
@@ -110,7 +109,7 @@
   </div>
 
 @if(Route.currentRouteName() ~= 'home')
-  @if(links and #links)
+  @if(Ctx.links and #links)
     <div class="panel panel-default corner-radius">
       <div class="panel-heading text-center">
         <h3 class="panel-title">{{ Ah.lang('Links') }}</h3>

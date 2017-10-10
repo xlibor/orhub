@@ -6,14 +6,11 @@ local lx, _M, mt = oo{
 
 local app, lf, tb, str = lx.kit()
 
--- Auto generated seed file
-
-
 function _M:run()
 
-    \DB.table('categories'):delete()
-    \DB.table('categories'):insert({
-        [0] = {
+    Db.table('categories'):delete()
+    Db.table('categories'):inserts({
+    {
         id = 1,
         parent_id = 0,
         post_count = 0,
@@ -25,7 +22,7 @@ function _M:run()
         updated_at = '2016-07-03 10:00:00',
         deleted_at = nil
     },
-        [1] = {
+    {
         id = 3,
         parent_id = 0,
         post_count = 0,
@@ -37,7 +34,7 @@ function _M:run()
         updated_at = '2016-07-03 10:00:00',
         deleted_at = nil
     },
-        [2] = {
+    {
         id = 4,
         parent_id = 0,
         post_count = 0,
@@ -49,7 +46,7 @@ function _M:run()
         updated_at = '2016-07-03 10:00:00',
         deleted_at = nil
     },
-        [3] = {
+    {
         id = 5,
         parent_id = 0,
         post_count = 0,
@@ -61,7 +58,7 @@ function _M:run()
         updated_at = '2016-07-03 10:00:00',
         deleted_at = nil
     },
-        [4] = {
+    {
         id = 6,
         parent_id = 0,
         post_count = 0,
@@ -73,7 +70,7 @@ function _M:run()
         updated_at = '2016-07-03 10:00:00',
         deleted_at = nil
     },
-        [5] = {
+    {
         id = 8,
         parent_id = 0,
         post_count = 0,

@@ -1,19 +1,20 @@
 
 local lx, _M = oo{
-    _cls_ = '',
-    _ext_ = 'model',
-    _mix_ = 'presentableMix'
+    _cls_       = '',
+    _ext_       = 'model',
+    _mix_       = 'presentableMix',
+    _static_    = {}
 }
 
 local app, lf, tb, str = lx.kit()
 
 function _M:ctor()
 
-    self.presenter = '.app.lxhub.presenter.site',
+    self.presenter = '.app.lxhub.presenter.site'
     self.guarded = {'id'}
 end
 
-function _M.s__.boot()
+function _M:boot()
 
     self:__super(_M, 'boot')
     -- static.saving(function(model)
@@ -25,25 +26,25 @@ function _M.s__.allFromCache(expire)
 
     expire = expire or 1440
     local data = Cache.remember('lxhub_sites', 60, function()
-        raw_sites = static.orderBy('order', 'desc'):orderBy('created_at', 'desc'):get()
-        sorted = {}
-        sorted['site'] = raw_sites:filter(function(item)
+        local raw_sites = Site:orderBy('order', 'desc'):orderBy('created_at', 'desc'):get()
+        local sorted = {}
+        sorted.site = raw_sites:filter(function(item)
             
             return item.type == 'site'
         end)
-        sorted['blog'] = raw_sites:filter(function(item)
+        sorted.blog = raw_sites:filter(function(item)
             
             return item.type == 'blog'
         end)
-        sorted['weibo'] = raw_sites:filter(function(item)
+        sorted.weibo = raw_sites:filter(function(item)
             
             return item.type == 'weibo'
         end)
-        sorted['dev_service'] = raw_sites:filter(function(item)
+        sorted.dev_service = raw_sites:filter(function(item)
             
             return item.type == 'dev_service'
         end)
-        sorted['site_foreign'] = raw_sites:filter(function(item)
+        sorted.site_foreign = raw_sites:filter(function(item)
             
             return item.type == 'site_foreign'
         end)

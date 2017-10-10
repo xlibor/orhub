@@ -56,7 +56,7 @@
                         </li>
 
                         <li>
-                            <a class="button no-pjax" href="{{ category and Url.route('topics.create', {category_id = category.id}) or Url.route('topics.create') }}">
+                            <a class="button no-pjax" href="{{ Ctx.category and Url.route('topics.create', {category_id = category.id}) or Url.route('topics.create') }}">
                                 <i class="fa fa-comment text-md"></i> 发起讨论
                             </a>
                         </li>

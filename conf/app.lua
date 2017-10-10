@@ -89,6 +89,7 @@ local conf = {
         Participant = '.app.model.participant',
         Reply       = '.app.model.reply',
         Role        = '.app.model.role',
+        Site        = '.app.model.site',
         Thread      = '.app.model.thread',
 
         Vote        = '.app.model.vote',

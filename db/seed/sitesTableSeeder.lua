@@ -5,14 +5,12 @@ local lx, _M, mt = oo{
 }
 
 local app, lf, tb, str = lx.kit()
-
--- Run the database seeds.
-
+local fair = lx.h.fair
 
 function _M:run()
 
-    local sites = factory(Site.class):times(300):make()
-    Site.insert(sites:toArray())
+    local sites = fair(Site):times(300):make()
+    Site.inserts(sites:toArr())
 end
 
 return _M

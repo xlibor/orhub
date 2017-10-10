@@ -6,14 +6,12 @@ local lx, _M, mt = oo{
 
 local app, lf, tb, str = lx.kit()
 
--- Auto generated seed file
-
-
 function _M:run()
 
     local user
-    \DB.table('followers'):delete()
-    local followers = {{
+    Db.table('followers'):delete()
+    local followers = {
+    {
         id = 4,
         user_id = 1,
         follow_id = 2,
@@ -302,10 +300,9 @@ function _M:run()
         created_at = '0000-00-00 00:00:00',
         updated_at = '0000-00-00 00:00:00'
     }}
-    \DB.table('followers'):insert(followers)
-    local follow_ids = tb.unique(array_column(followers, 'follow_id'))
-    for _, follow_id in pairs(follow_ids) do
-        -- @var User user */
+    Db.table('followers'):inserts(followers)
+    local follow_ids = tb.unique(tb.column(followers, 'follow_id'))
+    for _, follow_id in ipairs(follow_ids) do
         user = User.find(follow_id)
         user:update({follower_count = user:followers():count()})
     end

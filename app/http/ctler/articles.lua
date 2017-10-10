@@ -34,7 +34,8 @@ end
 
 function _M:store(c)
 
-    local request = c.req
+    local request = c:form('storeTopicRequest')
+    
     local data = request:except('_token')
     local blog = Blog.findOrFail(request.blog_id)
     self:authorize('create-article', blog)

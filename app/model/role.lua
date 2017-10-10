@@ -4,7 +4,7 @@ local lx, _M = oo{
     _ext_   = 'entrustRole',
 }
 
-local app, lf, tb, str = lx.kit()
+local app, lf, tb, str, new = lx.kit()
 
 function _M:ctor()
 
@@ -25,7 +25,7 @@ function _M:addRole(name, display_name, description)
 
     local role = Role.query():where('name', name):first()
     if not role then
-        role = new('role', {name = name})
+        role = new(Role, {name = name})
     end
     role.display_name = display_name
     role.description = description

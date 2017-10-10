@@ -15,7 +15,7 @@ function _M:ctor()
 end
 
 function _M:index(c)
-
+ 
     local request = c.req
     local topics = new(Topic):getTopicsWithFilter(request:get('filter', 'index'), 40)
 
@@ -41,7 +41,8 @@ end
 
 function _M:store(c)
 
-    local request = c.req
+    local request = c:form('storeTopicRequest')
+    
     return app('.app.lxhub.creator.topic'):create(self, request:except('_token'))
 end
 
@@ -88,7 +89,7 @@ function _M:show(c, id, fromCode)
         end)
     -- local revisionHistory = topic:revisionHistory():orderBy('created_at', 'desc'):first()
     topic:increment('view_count', 1)
-    local cover = topic:cover()
+    local cover = topic:cover() or false
     if topic:isArticle() then
         if request:is('topics*') then
             
@@ -97,7 +98,7 @@ function _M:show(c, id, fromCode)
         user = topic('user')
         blog = topic:blogs():first()
         userTopics = blog:topics():withoutDraft():onlyArticle():orderBy('vote_count', 'desc'):limit(5):get()
-        
+
         c:view('articles.show', Compact('blog', 'user', 'topic', 'replies', 'categoryTopics', 'category', 'banners', 'cover', 'votedUsers', 'userTopics', 'revisionHistory'))
     else
         userTopics = topic:byWhom(topic.user_id):withoutDraft():withoutBoardTopics():recent():limit(3):get()

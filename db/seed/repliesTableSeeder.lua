@@ -5,17 +5,20 @@ local lx, _M, mt = oo{
 }
 
 local app, lf, tb, str = lx.kit()
+local fair = lx.h.fair
+local rand = lf.rand
 
 function _M:run()
 
-    local users = User.lists('id'):toArray()
-    local topics = Topic.lists('id'):toArray()
-    local faker = app(Faker\Generator.class)
-    local replies = factory(Reply.class):times(rand(300, 500)):make():each(function(reply)
+    local users = User.pluck('id')
+    local topics = Topic.pluck('id')
+    local faker = app('db.seed.faker')
+
+    local replies = fair(Reply):times(rand(300, 500)):make():each(function(reply)
         reply.user_id = faker:randomElement(users)
         reply.topic_id = faker:randomElement(topics)
     end)
-    Reply.insert(replies:toArray())
+    Reply.inserts(replies:toArr())
 end
 
 return _M

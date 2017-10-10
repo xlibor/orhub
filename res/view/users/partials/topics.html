@@ -3,7 +3,7 @@
   @foreach(topics as index, topic)
    <li class="list-group-item" >
 
-        @if(is_blog)
+        @if(Ctx.is_blog)
             <a href="{{ route('users.show', {topic.user_id}) }}" title="{{ topic('user').name }}" class="avatar-wrap">
                 <img class="avatar avatar-small" alt="{{ topic('user').name }}" src="{{ topic('user'):present('gravatar') }}"/>
             </a>

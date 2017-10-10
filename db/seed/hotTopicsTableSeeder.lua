@@ -6,12 +6,9 @@ local lx, _M, mt = oo{
 
 local app, lf, tb, str = lx.kit()
 
--- Run the database seeds.
-
-
 function _M:run()
 
-    \Artisan.call('lxhub:calculate-hot-topic', {})
+    app:run('lxhub:calculateHotTopic', {})
 end
 
 return _M

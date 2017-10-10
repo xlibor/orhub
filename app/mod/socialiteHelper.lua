@@ -4,7 +4,7 @@ local lx, _M = oo{
 }
 
 local app, lf, tb, str = lx.kit()
-local redi = lx.h.redirect
+local redirect = lx.h.redirect
 local lang = Ah.lang
 
 local oauthDrivers = {github = 'github', wechat = 'weixin'}

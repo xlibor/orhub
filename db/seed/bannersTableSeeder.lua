@@ -6,14 +6,11 @@ local lx, _M, mt = oo{
 
 local app, lf, tb, str = lx.kit()
 
--- Auto generated seed file
-
-
 function _M:run()
 
-    \DB.table('banners'):delete()
-    \DB.table('banners'):insert({
-        [0] = {
+    Db.table('banners'):delete()
+    Db.table('banners'):inserts({
+    {
         id = 1,
         position = 'website_top',
         order = 1,
@@ -25,7 +22,7 @@ function _M:run()
         created_at = '2016-07-12 11:31:36',
         updated_at = '2016-07-12 11:31:36'
     },
-        [1] = {
+    {
         id = 3,
         position = 'website_top',
         order = 3,
@@ -37,7 +34,7 @@ function _M:run()
         created_at = '2016-07-12 11:32:25',
         updated_at = '2016-07-12 11:32:25'
     },
-        [2] = {
+    {
         id = 4,
         position = 'website_top',
         order = 2,
@@ -49,7 +46,7 @@ function _M:run()
         created_at = '2016-07-12 11:33:05',
         updated_at = '2016-07-12 15:03:56'
     },
-        [3] = {
+    {
         id = 5,
         position = 'website_top',
         order = 4,
@@ -61,7 +58,7 @@ function _M:run()
         created_at = '2016-07-12 11:33:40',
         updated_at = '2016-07-12 11:33:40'
     },
-        [4] = {
+    {
         id = 6,
         position = 'website_top',
         order = 6,
@@ -73,7 +70,7 @@ function _M:run()
         created_at = '2016-07-12 11:34:07',
         updated_at = '2016-07-12 11:34:07'
     },
-        [5] = {
+    {
         id = 7,
         position = 'website_top',
         order = 5,
@@ -85,7 +82,7 @@ function _M:run()
         created_at = '2016-07-12 11:34:36',
         updated_at = '2016-07-12 15:05:09'
     },
-        [6] = {
+    {
         id = 8,
         position = 'sidebar-resources',
         order = 5,
@@ -97,7 +94,7 @@ function _M:run()
         created_at = '2016-07-12 11:34:36',
         updated_at = '2016-07-12 15:05:09'
     },
-        [7] = {
+    {
         id = 9,
         position = 'sidebar-resources',
         order = 6,

@@ -13,7 +13,11 @@ end
 
 function _M:rules()
 
-    return {title = 'required|min:2', body = 'required|min:2', category_id = 'required|numeric'}
+    return {
+        title = 'required|min:2',
+        body = 'required|min:2',
+        category_id = 'required|numeric'
+    }
 end
 
 return _M

@@ -1,5 +1,3 @@
--- composer require laracasts/testdummy
-
 
 local lx, _M, mt = oo{
     _cls_ = '',
@@ -10,8 +8,9 @@ local app, lf, tb, str = lx.kit()
 
 function _M:run()
 
-    \DB.table('blogs'):delete()
-    \DB.table('blogs'):insert({[0] = {
+    Db.table('blogs'):delete()
+    Db.table('blogs'):inserts({
+    {
         id = 1,
         name = '我的专栏',
         slug = 'myblog',
@@ -24,7 +23,8 @@ function _M:run()
         is_blocked = 0,
         created_at = '2017-01-17 14:35:47',
         updated_at = '2017-01-17 14:35:47'
-    }, [1] = {
+    },
+    {
         id = 2,
         name = '望洋路12号',
         slug = 'road12',

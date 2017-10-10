@@ -14,9 +14,11 @@ function _M:ctor()
     self:setBar('auth')
 end
 
-function _M:store(request)
+function _M:store(c)
 
-    return new('.app.lxhub.creator.reply'):create(self, request:except('_token'))
+    local req = c:form('storeReplyRequest')
+    
+    return new('.app.lxhub.creator.reply'):create(self, req:except('_token'))
 end
 
 function _M:vote(c, id)

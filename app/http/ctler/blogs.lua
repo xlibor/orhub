@@ -34,9 +34,11 @@ function _M:show(c, name)
 end
 
 function _M:store(c)
-    local file = c.req:file('cover')
 
+
+    local file = c.req:file('cover')
     local request = c:form('blogStoreRequest')
+    
     local blog = new(Blog)
     try(function()
         request:performUpdate(blog)

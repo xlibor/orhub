@@ -1,5 +1,3 @@
--- composer require laracasts/testdummy
-
 
 local lx, _M, mt = oo{
     _cls_ = '',

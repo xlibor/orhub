@@ -57,7 +57,7 @@
 </div>
 
 <script>
-    Config.article_id = '{{ article and article.id or 0 }}';
+    Config.article_id = '{{ Ctx.article and article.id or 0 }}';
 </script>
 
 @stop
