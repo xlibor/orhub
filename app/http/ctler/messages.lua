@@ -6,7 +6,7 @@ local lx, _M, mt = oo{
 
 local app, lf, tb, str, new = lx.kit()
 local redirect = lx.h.redirect
-local Markdown = lx.use('.app.lxhub.markdown.markdown')
+local Markdown = lx.use('.app.core.markdown.markdown')
 
 function _M:ctor()
 

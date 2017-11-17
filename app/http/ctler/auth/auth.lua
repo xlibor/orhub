@@ -6,8 +6,8 @@ local lx, _M, mt = oo{
     _mix_ = {
         -- 'verifiesUsers',
         'socialiteHelper',
-        'auth.authenticateUser',
-        'auth.regUser'
+        'lxlib.auth.authenticateUser',
+        'lxlib.auth.regUser'
     }
 }
 
@@ -69,7 +69,7 @@ function _M:create(c)
         return redirect():route('login')
     end
     local oauthData = tb.merge(Session.get('oauthData'), Session.get('_old_input', {}))
-    
+
     c:view('auth.signupconfirm', Compact('oauthData'))
 end
 
@@ -86,8 +86,8 @@ function _M:createNewUser(c)
     local oauthUser = tb.merge(Session.get('oauthData'), request:only('name', 'email', 'password'))
     local userData = tb.only(oauthUser, tb.keys(request:rules()))
     userData.register_source = oauthUser['driver']
-    
-    return new('.app.lxhub.creator.user'):create(self, userData)
+
+    return new('.app.http.doer.user'):create(self, userData)
 end
 
 function _M:userBanned(c)
@@ -125,22 +125,30 @@ end
 function _M:userNotFound(driver, registerUserData)
 
     local oauthData = {}
+    local original = registerUserData.original
+    
     if driver == 'github' then
-        oauthData.image_url = registerUserData.user.avatar_url
-        oauthData.github_id = registerUserData.user.id
-        oauthData.github_url = registerUserData.user.url
+        oauthData.image_url = original.avatar_url
+        oauthData.github_id = original.id
+        oauthData.github_url = original.url
         oauthData.github_name = registerUserData.nickname
-        oauthData.name = registerUserData.user.name
-        oauthData.email = registerUserData.user.email
+        oauthData.name = original.name
+        oauthData.email = original.email
     elseif driver == 'wechat' then
         oauthData.image_url = registerUserData.avatar
         oauthData.wechat_openid = registerUserData.id
         oauthData.name = registerUserData.nickname
         oauthData.email = registerUserData.email
-        oauthData.wechat_unionid = registerUserData.user.unionid
+        oauthData.wechat_unionid = original.unionid
+    elseif driver == 'qq' then
+        oauthData.image_url = registerUserData.avatar
+        oauthData.qq_openid = registerUserData.id
+        oauthData.name = registerUserData.nickname
+        oauthData.email = registerUserData.email
+        oauthData.qq_unionid = original.unionid
     end
-    oauthData.driver = driver
 
+    oauthData.driver = driver
     Session.put('oauthData', oauthData)
     
     return redirect(route('signup'))

@@ -5,29 +5,36 @@ local lx, _M, mt = oo{
 }
 
 local app, lf, tb, str = lx.kit()
+local lang = Ah.lang
+local redirect = lx.h.redirect
+
+local use = lx.use
+local UserAttendedTopic = use('.app.activity.userAttendedTopic')
+local Attention = use('.app.model.attention')
+local Notification = use('.app.model.notification')
 
 function _M:ctor()
 
-    self:middleware('auth')
+    self:setBar('auth')
 end
 
-function _M:createOrDelete(id)
+function _M:createOrDelete(c, id)
 
     local message
     local topic = Topic.find(id)
     if Attention.isUserAttentedTopic(Auth.user(), topic) then
         message = lang('Successfully remove attention.')
         Auth.user():attentTopics():detach(topic.id)
-        app(UserAttendedTopic.class):remove(Auth.user(), topic)
+        app(UserAttendedTopic):remove(Auth.user(), topic)
     else 
         message = lang('Successfully_attention')
         Auth.user():attentTopics():attach(topic.id)
-        Notification.notify('topic_attent', Auth.user(), topic.user, topic)
-        app(UserAttendedTopic.class):generate(Auth.user(), topic)
+        Notification.notify('topic_attent', Auth.user(), topic('user'), topic)
+        app(UserAttendedTopic):generate(Auth.user(), topic)
     end
     Flash.success(message)
     
-    return Redirect.back()
+    return redirect():back()
 end
 
 return _M

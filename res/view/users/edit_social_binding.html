@@ -1,7 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ Ah.lang('Edit Social Binding') }} | @parent
+  {{ Ah.lang('Edit Social Binding') }} | @parent
 @stop
 
 @section('content')
@@ -27,16 +27,18 @@
           {{ Ah.lang('Setup multiple Bindings allow you to login to the same account with different binding site account.') }}
         </div>
 
-
         <form class="form-horizontal" method="POST" action="{{ route('users.update_email_notify', user.id) }}" accept-charset="UTF-8">
 
             {!! csrf_field() !!}
-
 
             <div class="form-group">
 
                 <label for="inputEmail3" class="col-sm-3 control-label">{{ Ah.lang('Register Binding') }}</label>
                 <div class="col-sm-9">
+                    <a class="btn btn-success login-btn qq-login-btn {{ user.register_source == 'qq' and '' or 'hide' }}" role="button">
+                      <i class="fa fa-qq"></i>
+                      {{ Ah.lang('QQ') }}
+                    </a>
 
                     <a class="btn btn-success login-btn weichat-login-btn {{ user.register_source == 'wechat' and '' or 'hide' }}" role="button">
                       <i class="fa fa-weixin"></i>
@@ -86,24 +88,14 @@
                     @else
                         <span class="padding-sm">{{ Ah.lang('Click to bind to this account') }}</span>
                     @endif
-
                 </div>
               </div>
 <br>
 <br>
-
       </form>
-
-
       </div>
-
     </div>
   </div>
-
-
 </div>
-
-
-
 
 @stop

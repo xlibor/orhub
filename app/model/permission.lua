@@ -5,18 +5,25 @@ local lx, _M = oo{
     _static_    = {}
 }
 
-local app, lf, tb, str = lx.kit()
+local app, lf, tb, str, new = lx.kit()
+
+local static
+
+function _M._init_(this)
+
+    static = this.static
+end
 
 function _M:ctor()
 
     self.fillable = {'name', 'display_name', 'description'}
 end
 
-function _M.s__.addPermission(name, display_name, description)
+function _M.t__.addPermission(this, name, display_name, description)
 
-    local permission = Permission.where('name', name):first()
+    local permission = new(this):where('name', name):first()
     if not permission then
-        permission = new('permission', {name = name})
+        permission = new(this, {name = name})
     end
     permission.display_name = display_name
     permission.description = description

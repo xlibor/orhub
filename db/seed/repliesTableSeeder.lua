@@ -12,7 +12,7 @@ function _M:run()
 
     local users = User.pluck('id')
     local topics = Topic.pluck('id')
-    local faker = app('db.seed.faker')
+    local faker = app('lxlib.db.orm.seed.faker')
 
     local replies = fair(Reply):times(rand(300, 500)):make():each(function(reply)
         reply.user_id = faker:randomElement(users)

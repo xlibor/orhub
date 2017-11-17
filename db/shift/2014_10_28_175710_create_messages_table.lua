@@ -16,6 +16,7 @@ function _M:up(schema)
         table:integer('thread_id'):unsigned()
         table:integer('user_id'):unsigned()
         table:text('body')
+        table:softDeletes()
         table:timestamps()
     end)
 end

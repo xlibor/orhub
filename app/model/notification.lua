@@ -18,7 +18,7 @@ end
 
 function _M:ctor()
 
-    self.presenter = '.app.lxhub.presenter.notification'
+    self.presenter = '.app.core.presenter.notification'
     self.fillable = {
         'from_user_id', 'user_id', 'topic_id',
         'reply_id', 'body', 'type'
@@ -59,7 +59,7 @@ function _M.s__.batchNotify(type, fromUser, users, topic, reply, content)
                 from_user_id = fromUser.id,
                 user_id = toUser.id,
                 topic_id = topic.id,
-                reply_id = content or (reply and reply.id or 0),
+                reply_id = reply and reply.id or 0,
                 body = content or (reply and reply.body or ''),
                 type = type,
                 created_at = nowTimestamp,

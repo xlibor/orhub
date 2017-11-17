@@ -53,7 +53,7 @@ return {
     numeric = 'The :attr must be a number.',
     present = 'The :attr field must be present.',
     regex = 'The :attr format is invalid.',
-    required = 'The :attr field is required.',
+    required = '字段 :attr 必填.',
     required_if = 'The :attr field is required when :other is :value.',
     required_unless = 'The :attr field is required unless :other is in :values.',
     required_with = 'The :attr field is required when :values is present.',

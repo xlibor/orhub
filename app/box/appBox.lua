@@ -18,8 +18,7 @@ function _M:reg()
 	app:bind('baseFormRequest', '.app.http.req.request')
  	app:single('appHelper', 		'.app.mod.appHelper')
  	app:bind('socialiteHelper', 	'.app.mod.socialiteHelper')
-	app:bond('creatorListener', 	'.app.lxhub.core.creatorListener')
-
+	app:bond('creatorListener', 	'.app.core.core.creatorListener')
 end
 
 function _M:boot()

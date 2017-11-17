@@ -32,6 +32,7 @@
           使用以下方法注册或者登录（<a class="forget-password">忘记密码？</a>）
       </div>
       <a class="btn btn-lg btn-default btn-block" id="login-required-submit" href="{{ Url.route('auth.oauth', {driver = 'github'}) }}"><i class="fa fa-github-alt"></i> {{Ah.lang('Login with GitHub')}}</a>
+      <a class="btn btn-lg btn-default btn-block" href="{{ Url.route('auth.oauth', {driver = 'qq'}) }}"><i class="fa fa-qq" ></i> {{Ah.lang('Login with QQ')}}</a>
       <a class="btn btn-lg btn-default btn-block" href="{{ Url.route('auth.oauth', {driver = 'wechat'}) }}"><i class="fa fa-weixin" ></i> {{Ah.lang('Login with WeChat')}}</a>
     </fieldset>
 </form>

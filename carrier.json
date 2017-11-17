@@ -1,7 +1,7 @@
 {
     "name": "lxhub/lxhub",
     "description": "a forum project",
-    "keywords": ["lxlib", "openresty", "forum"],
+    "keywords": ["lxlib", "openresty", "forum", "bbs"],
     "license": "MIT",
     "type": "project",
     "require": {
@@ -9,6 +9,8 @@
         "discount": "",
         "pintsized/lua-resty-http": ">=0.10",
         "lua-cmsgpack": "",
+        "magick": "",
+        "gumbo": "",
     },
     "require-dev": {
     }

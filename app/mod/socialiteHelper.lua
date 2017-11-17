@@ -4,10 +4,11 @@ local lx, _M = oo{
 }
 
 local app, lf, tb, str = lx.kit()
-local redirect = lx.h.redirect
+local lh = lx.h
+local redirect, route = lh.redirect, lh.route
 local lang = Ah.lang
 
-local oauthDrivers = {github = 'github', wechat = 'weixin'}
+local oauthDrivers = {github = 'github', wechat = 'wechat', qq = 'qq'}
 
 function _M:oauth(c)
 
@@ -30,11 +31,12 @@ function _M:callback(c)
         return redirect():intended('/')
     end
     local oauthUser = Socialite.with(oauthDrivers[driver]):user()
+
     local user = User.getByDriver(driver, oauthUser.id)
     if Auth.check() then
         if user and user.id ~= Auth.id() then
             Flash.error(lang('Sorry, this socialite account has been registed.', {driver = lang(driver)}))
-        else 
+        else
             self:bindSocialiteUser(oauthUser, driver)
             Flash.success(lang('Bind Successfully!', {driver = lang(driver)}))
         end
@@ -55,11 +57,15 @@ function _M:bindSocialiteUser(oauthUser, driver)
     local currentUser = Auth.user()
     if driver == 'github' then
         currentUser.github_id = oauthUser.id
-        currentUser.github_url = oauthUser.user.url
+        currentUser.github_url = oauthUser.url
     elseif driver == 'wechat' then
         currentUser.wechat_openid = oauthUser.id
-        currentUser.wechat_unionid = oauthUser.user.unionid
+        currentUser.wechat_unionid = oauthUser.unionid
+    elseif driver == 'qq' then
+        currentUser.qq_openid = oauthUser.id
+        currentUser.qq_unionid = oauthUser.unionid
     end
+    
     currentUser:save()
 end
 

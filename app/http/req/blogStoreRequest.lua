@@ -4,7 +4,8 @@ local lx, _M = oo{
     _ext_ = 'baseFormRequest'
 }
 
-local app, lf, tb, str = lx.kit()
+local app, lf, tb, str, new = lx.kit()
+local ImageUploadHandler = lx.use('.app.core.handler.imageUploadHandler')
 
 function _M:authorize()
 
@@ -40,16 +41,15 @@ end
 function _M:performUpdate(blog)
 
     local upload_status
+
     blog.name = self:input("name")
     blog.slug = self:input("slug")
     blog.user_id = blog.user_id or Auth.id()
     blog.description = self:input("description")
     local file = self:file('cover')
     if file then
-        -- todo
-        -- upload_status = app('.app.lxhub.handler.imageUploadHandler'):uploadImage(file)
-        -- blog.cover = upload_status['filename']
-        blog.cover = ''
+        upload_status = new(ImageUploadHandler):uploadImage(file)
+        blog.cover = upload_status['filename']
     end
     
     return blog:save()

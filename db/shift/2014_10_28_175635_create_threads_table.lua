@@ -14,6 +14,7 @@ function _M:up(schema)
     schema:create('threads', function(table)
         table:increments('id')
         table:string('subject')
+        table:softDeletes()
         table:timestamps()
     end)
 end

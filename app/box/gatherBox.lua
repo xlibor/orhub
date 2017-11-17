@@ -5,6 +5,7 @@ local lx, _M = oo{
 }
 
 local app, lf, tb, str = lx.kit()
+local Banner = lx.use('.app.model.banner')
 
 function _M:reg()
 
@@ -23,7 +24,7 @@ function _M:boot()
     view:gather({'layouts.partials.footer', 'users.index'}, function(context)
 
         context.banners = Banner.allByPosition()
-        context.siteStat = app('.app.lxhub.stat.stat'):getSiteStat()
+        context.siteStat = app('.app.core.stat.stat'):getSiteStat()
     end)
 end
 

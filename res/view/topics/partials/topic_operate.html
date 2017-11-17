@@ -41,18 +41,18 @@
         <i class="fa fa-trash-o"></i>
     </a>
 
-      <a id="topic-edit-button" href="{{ Ctx.is_article and route('articles.edit', {topic.id}) or route('topics.edit', {topic.id}) }}" data-content="{{ Ah.lang('Edit') }}" class="admin  popover-with-html no-pjax">
+      <a id="topic-edit-button" href="{{ is_article and route('articles.edit', {topic.id}) or route('topics.edit', {topic.id}) }}" data-content="{{ Ah.lang('Edit') }}" class="admin  popover-with-html no-pjax">
         <i class="fa fa-pencil-square-o"></i>
       </a>
     @endif
 
-      @if(not Ctx.is_article and currentUser and (manage_topics or currentUser.id == topic.user_id))
+      @if(not is_article and currentUser and (manage_topics or currentUser.id == topic.user_id))
           <a id="topic-append-button" href="javascript:void(0);" class="admin  popover-with-html" data-toggle="modal" data-target="#exampleModal" data-content="帖子附言，添加附言后所有参与讨论的用户都能收到消息提醒，包括点赞和评论的用户">
             <i class="fa fa-plus"></i>
           </a>
 
           @if(topic('user'):blogs():count() > 0)
-              <a data-method="patch" data-btn="transform-button" href="javascript:void(0);" data-url="{{ route('articles.transform', {topic.id}) }}" class="admin  popover-with-html" data-content="转换话题为专栏文章">
+              <a data-method="post" data-btn="transform-button" href="javascript:void(0);" data-url="{{ route('articles.transform', {topic.id}) }}" class="admin  popover-with-html" data-content="转换话题为专栏文章">
                 <i class="fa fa-rocket" aria-hidden="true"></i>
               </a>
           @endif

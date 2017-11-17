@@ -28,7 +28,7 @@
 
                 <input name="category_id" type="hidden" value="{{Conf('lxhub.blogCategoryId') }}">
 
-                @if(blog)
+                @if(Ctx.blog)
                     <input name="blog_id" type="hidden" value="{{ blog.id }}">
                 @endif
 
@@ -64,8 +64,8 @@
 
 @section('scripts')
 
-<link rel="stylesheet" href="{{ mix('/css/editor-7d149186af.css') }}">
-<script src="{{ mix('/js/editor-7c1634df3a.js') }}"></script>
+<link rel="stylesheet" href="{{ mix('/css/editor.css') }}">
+<script src="{{ mix('/js/editor.js') }}"></script>
 
 <script type="text/javascript">
 
@@ -111,7 +111,7 @@
             autosave: {
                 enabled: true,
                 delay: 5000,
-                unique_id: "article_content{{ topic.id and topic.id .. '_' .. str_slug(topic.updated_at) or '' }}"
+                unique_id: "article_content{{ topic.id and topic.id .. '_' .. Str.slug(topic.updated_at) or '' }}"
             },
             forceSync: true,
             toolbar: [

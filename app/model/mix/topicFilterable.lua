@@ -103,7 +103,7 @@ end
 
 function _M:scopePinAndRecentReply(query)
 
-    return query:fresh():pinned():orderBy('updated_at', 'desc')
+    return query:fresh():orderBy('order', 'desc'):orderBy('updated_at', 'desc')
 end
 
 function _M:scopePinned(query)

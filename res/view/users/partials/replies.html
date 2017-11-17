@@ -3,7 +3,7 @@
   @foreach(replies as index, reply)
    <li class="list-group-item">
    {? local topic = reply('topic') ?}
-    @if(#topic)
+    @if(topic)
       <a href="{{ topic:link() }}" title="{{ topic.title }}" class="remove-padding-left">
           {{ topic.title }}
       </a>

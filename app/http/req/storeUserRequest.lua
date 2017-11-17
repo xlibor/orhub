@@ -22,7 +22,9 @@ function _M:rules()
         github_url = 'url',
         image_url = 'url',
         wechat_unionid = 'string',
-        password = 'required|confirmed|min:6'
+        password = 'required|confirmed|min:6',
+        qq_openid = 'num',
+        qq_unionid = 'num',
     }
 end
 

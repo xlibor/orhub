@@ -24,10 +24,10 @@ return function(fair)
             introduction = faker:sentence(),
             certification = faker:sentence(),
             email = faker:email(),
-            password = 'xxx',
+            password = 'secret',
             verified = true,
             login_token = 'uDFDJys7iwM0fTXuLNNH',
-            avatar = '',
+            -- avatar = '',
             created_at = lf.datetime(),
             updated_at = lf.datetime()
         }

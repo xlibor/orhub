@@ -40,7 +40,7 @@ function _M:store(c)
     local request = c:form('blogStoreRequest')
     
     local blog = new(Blog)
-    try(function()
+    local ok, ret = try(function()
         request:performUpdate(blog)
         Flash.success(lang('Operation succeeded.'))
     end)

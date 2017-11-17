@@ -24,7 +24,7 @@ local Attention = lx.use('.app.model.attention')
 
 function _M:ctor()
 
-    self.presenter = '.app.lxhub.presenter.user'
+    self.presenter = '.app.core.presenter.user'
     self.searchable = {
         columns = {
             ['users.name'] = 10, ['users.real_name'] = 10,

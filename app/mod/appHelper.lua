@@ -4,12 +4,14 @@ local lx, _M = oo{
 }
 
 local app, lf, tb, str, new = lx.kit()
-local trans = lx.h.trans
-local env = lx.env
-local SlugTranslate = lx.use('.app.lxhub.handler.slugTranslate')
+local use, lh, env = lx.use, lx.h, lx.env
+local trans = lh.trans
+-- local SlugTranslate = use('.app.core.handler.slugTranslate')
 local pow = math.pow
+local sfind, slen = string.find, string.len
 
 -- 如：db:seed 或者 清空数据库命令的地方调用
+
 function _M.insanity_check()
 
     if app:isEnv('production') then
@@ -84,7 +86,7 @@ end
 
 function _M.get_user_static_domain()
 
-    return app:conf('app.user_static') or app:conf('app.url')
+    return app:conf('app.userStatic') or app:conf('app.url')
 end
 
 function _M.lang(text, parameters)
@@ -178,11 +180,16 @@ end
 -- 见：https://developer.qiniu.com/dora/api/basic-processing-images-imageview2
 function _M.img_crop(filepath, width, height, mode)
 
+    filepath = filepath or ''
     mode = mode or 1
     height = height or 0
     width = width or 0
     
-    return filepath .. "?imageView2/{mode}/w/{width}/h/{height}"
+    if slen(filepath) > 0 then
+        return filepath .. '?imageView2/' .. mode .. '/w/' .. width .. '/h/' .. height
+    else
+        return ''
+    end
 end
 
 function _M.setting(key, default)
@@ -202,17 +209,19 @@ end
 
 function _M.is_route(name)
 
-    return true
-    -- return Req.routeIs(name)
+    return Req.routeIs(name)
 end
 
 function _M.get_image_links(html)
 
     local image_links = _M.get_images_from_html(html)
     local result = {}
-    for _, url in pairs(image_links) do
-        if str.strpos(url, app:conf('app.urlStatic')) then
-            tapd(result, strtok(url, '?'))
+    for _, url in ipairs(image_links) do
+        if sfind(url, app:conf('app.urlStatic')) then
+            if sfind(url, '%?') then
+                url = str.str(url, '?', true)
+            end
+            tapd(result, url)
         end
     end
     
@@ -222,13 +231,13 @@ end
 function _M.get_images_from_html(html)
 
     local doc = new('domDocument')
-    doc:loadHTML(html)
+    doc:loadHtml(html)
     local img_tags = doc:getElementsByTagName('img')
     local result = {}
-    for _, img in pairs(img_tags) do
-        tapd(result, img:getAttribute('src'))
+    for _, img in ipairs(img_tags) do
+        tapd(result, img.attributes.src)
     end
-    
+
     return result
 end
 

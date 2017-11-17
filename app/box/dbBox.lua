@@ -17,7 +17,7 @@ function _M:reg()
     -- app:bindNs('.app.model.mix', lx.dir('app', 'model/mix'))
 
 	app:listen('.app.model.post',	'.db.event.modelListener')
-
+    -- app:bind('model', '.app.model.model')
 end
 
 function _M:boot()

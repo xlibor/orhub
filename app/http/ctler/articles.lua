@@ -6,9 +6,10 @@ local lx, _M, mt = oo{
 }
 
 local app, lf, tb, str, new = lx.kit()
-
-local redirect = lx.h.redirect
-local lang = Ah.lang
+local use, lh       = lx.use, lx.h
+local redirect      = lh.redirect
+local lang          = Ah.lang
+local TopicDoer     = use('.app.http.doer.topic')
 
 function _M:ctor()
 
@@ -44,10 +45,10 @@ function _M:store(c)
         data.is_draft = 'yes'
     end
     
-    return app('.app.lxhub.creator.topic'):create(self, data, blog)
+    return new(TopicDoer):create(self, data, blog)
 end
 
-function _M:transform(id)
+function _M:transform(c, id)
 
     Auth.user():decrement('topic_count', 1)
     Auth.user():increment('article_count', 1)
@@ -57,7 +58,7 @@ function _M:transform(id)
         return redirect():route('blogs.create')
     end
     local topic = Topic.find(id)
-    topic:update({category_id =Conf('lxhub.blogCategoryId')})
+    topic:update({category_id = Conf('lxhub.blogCategoryId')})
     -- attach blog
     local blog = Auth.user():blogs():first()
     blog:topics():attach(topic.id)
@@ -80,7 +81,7 @@ function _M:edit(c, id)
 
     local topic = Topic.findOrFail(id)
     
-    return view('articles.create_edit', Compact('topic'))
+    return c:view('articles.create_edit', Compact('topic'))
 end
 
 function _M:update(c, id)

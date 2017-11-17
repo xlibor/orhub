@@ -15,7 +15,7 @@
             </a>
             @if(activity.data['topic_type'] == 'article')
                 发布了文章
-                {? topic_title = "《" .. str.limit(activity.data['topic_title'], 100) .. "》" ?}
+                {? topic_title = "《" .. Str.limit(activity.data['topic_title'], 100) .. "》" ?}
             @else
                 在 <a href="{{ route('categories.show', activity.data['topic_category_id']) }}">{{ activity.data['topic_category_name'] }}</a>
                 下发布了话题

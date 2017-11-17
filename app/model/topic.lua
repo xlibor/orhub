@@ -17,6 +17,15 @@ local lx, _M = oo{
 local app, lf, tb, str = lx.kit()
 local route = lx.h.route
 local env = lx.env
+local SiteStatus = lx.use('.app.model.siteStatus')
+local UserRepliedTopic = lx.use('.app.activity.userRepliedTopic')
+
+local static
+
+function _M._init_(this)
+
+    static = this.static
+end
 
 function _M:ctor()
 
@@ -30,30 +39,27 @@ function _M:ctor()
             ['topics.title'] = 10, ['topics.body'] = 5
         }
     }
-    self.presenter = '.app.lxhub.presenter.topic'
+    self.presenter = '.app.core.presenter.topic'
     self.dates = {'deleted_at'}
     self.fillable = {
         'title', 'slug', 'body', 'excerpt', 'is_draft', 'source',
-        'body_original', 'user_id', 'category_id', 'created_at', 'updated_at'
+        'body_original', 'user_id', 'category_id', 'created_at',
+        'updated_at', 'summary'
     }
 end
-
--- manually maintian
-
--- For admin log
--- Don't forget to fill this table
 
 function _M:boot()
 
     self:__super(_M, 'boot')
-    -- static.created(function(topic)
-    --     SiteStatus.newTopic()
-    -- end)
-    -- static.deleted(function(topic)
-    --     for _, reply in pairs(topic.replies) do
-    --         app(UserRepliedTopic):remove(reply.user, reply)
-    --     end
-    -- end)
+    self:created(function(topic)
+
+        SiteStatus.newTopic()
+    end)
+    self:deleted(function(topic)
+        for _, reply in ipairs(topic('replies')) do
+            new(UserRepliedTopic):remove(reply('user'), reply)
+        end
+    end)
 end
 
 function _M:votes()
@@ -68,7 +74,7 @@ end
 
 function _M:votedUsers()
 
-    local user_ids = Vote.where('votable_type', Topic):where('votable_id', self.id):where('is', 'upvote'):lists('user_id'):toArray()
+    local user_ids = Vote.where('votable_type', '.app.model.topic'):where('votable_id', self.id):where('is', 'upvote'):pluck('user_id')
     
     return User.whereIn('id', user_ids):get()
 end
@@ -103,7 +109,7 @@ function _M:blogs()
     return self:belongsToMany(Blog, 'blog_topics')
 end
 
-function _M:appends()
+function _M:appendContents()
 
     return self:hasMany(Append)
 end

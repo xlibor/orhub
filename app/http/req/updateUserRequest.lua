@@ -4,7 +4,7 @@ local lx, _M = oo{
     _ext_ = 'baseFormRequest'
 }
 
-local app, lf, tb, str = lx.kit()
+local app, lf, tb, str, new = lx.kit()
 local is_request_from_api = Ah.is_request_from_api
 
 function _M:ctor()
@@ -52,18 +52,18 @@ function _M:performUpdate(user)
     -- 微信支付二维码
     if file then
 
-        -- upload_status = app('.app.lxhub.handler.imageUploadHandler'):uploadImage(file)
+        -- upload_status = app('.app.core.handler.imageUploadHandler'):uploadImage(file)
         -- data.payment_qrcode = upload_status.filename
     end
     local file = self:file('wechat_qrcode')
     -- 微信二维码
     if file then
-        -- upload_status = app('.app.lxhub.handler.imageUploadHandler'):uploadImage(file)
+        -- upload_status = app('.app.core.handler.imageUploadHandler'):uploadImage(file)
         -- data.wechat_qrcode = upload_status.filename
     end
     user:update(data)
     if user.email and user.email ~= old_email then
-        dispatch(new('sendActivateMail', user))
+        -- dispatch(new('sendActivateMail', user))
     end
     
     return user

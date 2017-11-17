@@ -21,7 +21,7 @@
       <div class="list-group">
         @foreach(topics as topic)
           <a class="list-group-item {{ #topics <= 14 or 'col-md-6' }}" href="{{ topic:link() }}" title="{{ topic.title }}">
-            {{ str.limit(topic.title, '100') }}
+            {{ Str.limit(topic.title, 100) }}
           </a>
         @endforeach
       </div>

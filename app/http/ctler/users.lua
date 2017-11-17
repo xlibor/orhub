@@ -4,9 +4,10 @@ local lx, _M, mt = oo{
     _ext_ = 'controller'
 }
 
-local app, lf, tb, str = lx.kit()
+local app, lf, tb, str, new = lx.kit()
 local try = lx.try
-local redirect, route, lang = lx.h.redirect, lx.h.route, Ah.lang
+local lh = lx.h
+local redirect, route, lang = lh.redirect, lh.route, Ah.lang
 local UserFollowedUser = lx.use('.app.activity.userFollowedUser')
 
 function _M:ctor()
@@ -29,7 +30,7 @@ function _M:show(c, id)
     local user = User.findOrFail(id)
     local topics = Topic.whose(user.id):withoutArticle():withoutBoardTopics():recent():limit(20):get()
     local articles = Topic.whose(user.id):onlyArticle():withoutDraft():recent():with('blogs'):limit(20):get()
-    local blog = user:blogs():first()
+    local blog = user:blogs():first() or false
     local replies = Reply.whose(user.id):recent():limit(20):get()
     
     c:view('users.show', Compact('user', 'blog', 'articles', 'topics', 'replies'))
@@ -73,8 +74,9 @@ end
 function _M:topics(c, id)
 
     local user = User.findOrFail(id)
-    local topics = Topic.whose(user.id):withoutArticle():withoutBoardTopics():recent():paginate(30)
-    
+    local topics = Topic.whose(user.id):withoutArticle()
+        :withoutBoardTopics():recent():paginate(30)
+
     c:view('users.topics', Compact('user', 'topics'))
 end
 
@@ -168,8 +170,9 @@ function _M:editEmailNotify(c, id)
     c:view('users.edit_email_notify', Compact('user'))
 end
 
-function _M:updateEmailNotify(c, id, request)
+function _M:updateEmailNotify(c, id)
 
+    local request = c.req
     local user = User.findOrFail(id)
     self:authorize('update', user)
     user.email_notify_enabled = request.email_notify_enabled == 'on' and 'yes' or 'no'
@@ -189,9 +192,10 @@ end
 
 function _M:updatePassword(c, id, request)
 
+    local request = c:form('resetPasswordRequest')
     local user = User.findOrFail(id)
     self:authorize('update', user)
-    user.password = bcrypt(request.password)
+    user.password = Hash(request.password)
     user:save()
     Flash.success(lang('Operation succeeded.'))
     
@@ -231,7 +235,7 @@ function _M:doFollow(c, id)
         app(UserFollowedUser.__cls):remove(Auth.user(), user)
     else
         Auth.user():follow(id)
-        app('.app.lxhub.notification.notifier'):newFollowNotify(Auth.user(), user)
+        app('.app.core.notification.notifier'):newFollowNotify(Auth.user(), user)
         app(UserFollowedUser.__cls):generate(Auth.user(), user)
     end
     user:update({follower_count = user:followers():count()})
@@ -248,8 +252,9 @@ function _M:editAvatar(c, id)
     c:view('users.edit_avatar', Compact('user'))
 end
 
-function _M:updateAvatar(c, id, request)
+function _M:updateAvatar(c, id)
 
+    local request = c.req
     local user = User.findOrFail(id)
     self:authorize('update', user)
     local file = request:file('avatar')
@@ -258,8 +263,8 @@ function _M:updateAvatar(c, id, request)
             user:updateAvatar(file)
             Flash.success(lang('Update Avatar Success'))
         end)
-        :catch('ImageUploadException', function(e) 
-            Flash.error(lang(e:getMessage()))
+        :catch('imageUploadException', function(e) 
+            Flash.error(lang(e:getMsg()))
         end)
         :run()
     else 

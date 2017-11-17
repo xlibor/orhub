@@ -2,12 +2,25 @@
 local lx, _M, mt = oo{
     _cls_ = '',
     _ext_ = 'controller',
-    -- _bond_ = 'creatorListener'
+    -- _bond_ = 'creatorListener',
 }
 
 local app, lf, tb, str, new = lx.kit()
-local redirect = lx.h.redirect
-local lang = Ah.lang
+local use, try, lh, fs      = lx.use, lx.try, lx.h, lx.fs
+local redirect              = lh.redirect
+local lang                  = Ah.lang
+
+local Class                 = use('class')
+local Topic                 = use('.app.model.topic')
+local Markdown              = use('.app.core.markdown.markdown')
+local Notifier              = use('.app.core.notification.notifier')
+local MentionParser         = use('.app.core.notification.mention')
+local UserPublishedNewTopic = use('.app.activity.userPublishedNewTopic')
+local UserAddedAppend       = use('.app.activity.userAddedAppend')
+local BlogHasNewArticle     = use('.app.activity.blogHasNewArticle')
+local Notification          = use('.app.model.notification')
+local SiteStatus            = use('.app.model.siteStatus')
+local TopicDoer             = use('.app.http.doer.topic')
 
 function _M:ctor()
 
@@ -15,8 +28,9 @@ function _M:ctor()
 end
 
 function _M:index(c)
- 
+
     local request = c.req
+
     local topics = new(Topic):getTopicsWithFilter(request:get('filter', 'index'), 40)
 
     local links = Link.allFromCache()
@@ -26,39 +40,20 @@ function _M:index(c)
     c:view('topics.index', Compact('topics', 'links', 'banners', 'active_users', 'hot_topics'))
 end
 
-function _M:create(c)
-
-    local request = c.req
-    local categoryId = request:input('category_id')
-    local category
-    if categoryId then
-        category = Category.find(categoryId)
-    end
-    local categories = Category.where('id', '!=', app:conf('lxhub.blogCategoryId')):get()
-    
-    return c:view('topics.create_edit', Compact('categories', 'category'))
-end
-
-function _M:store(c)
-
-    local request = c:form('storeTopicRequest')
-    
-    return app('.app.lxhub.creator.topic'):create(self, request:except('_token'))
-end
-
 function _M:show(c, id, fromCode)
 
     local request = c.req
 
     fromCode = fromCode or false
-    local userTopics
-    local blog
-    local user
+    local userTopics, blog, user
     local topic = Topic.where('id', id):with('user', 'lastReplyUser'):firstOrFail()
     if topic:isArticle() and topic.is_draft == 'yes' then
         self:authorize('show_draft', topic)
     end
     -- URL 矫正
+
+    local md = require('discount')
+    local doc, err = md.compile(topic.body_original, "toc" )
 
     local slug = request:param('slug')
 
@@ -90,9 +85,9 @@ function _M:show(c, id, fromCode)
     -- local revisionHistory = topic:revisionHistory():orderBy('created_at', 'desc'):first()
     topic:increment('view_count', 1)
     local cover = topic:cover() or false
+
     if topic:isArticle() then
         if request:is('topics*') then
-            
             return redirect():to(topic:link())
         end
         user = topic('user')
@@ -102,60 +97,64 @@ function _M:show(c, id, fromCode)
         c:view('articles.show', Compact('blog', 'user', 'topic', 'replies', 'categoryTopics', 'category', 'banners', 'cover', 'votedUsers', 'userTopics', 'revisionHistory'))
     else
         userTopics = topic:byWhom(topic.user_id):withoutDraft():withoutBoardTopics():recent():limit(3):get()
-        
-        c:view('topics.show', Compact('topic', 'replies', 'categoryTopics', 'category', 'banners', 'cover', 'votedUsers', 'userTopics', 'revisionHistory'))
+        local appends = topic:appendContents():get()
+        c:view('topics.show', Compact('topic', 'replies', 'categoryTopics', 'category', 'banners', 'cover', 'votedUsers', 'userTopics', 'revisionHistory', 'appends'))
     end
 end
 
-function _M:edit(id)
+function _M:create(c)
+
+    local request = c.req
+    local categoryId = request:input('category_id')
+    local category
+    if categoryId then
+        category = Category.find(categoryId)
+    end
+    local categories = Category.where('id', '!=', app:conf('lxhub.blogCategoryId')):get()
+    
+    return c:view('topics.create_edit', Compact('categories', 'category'))
+end
+
+function _M:store(c)
+
+    local request = c:form('storeTopicRequest')
+    
+    return new(TopicDoer):create(self, request:except('_token'))
+end
+
+function _M:edit(c, id)
 
     local topic = Topic.findOrFail(id)
     self:authorize('update', topic)
-    local categories = Category.where('id', '!=',Conf('lxhub.blogCategoryId')):get()
-    local category = topic.category
+    local categories = Category.where('id', '!=', Conf('lxhub.blogCategoryId')):get()
+    local category = topic('category')
     topic.body = topic.body_original
     
-    return view('topics.create_edit', Compact('topic', 'categories', 'category'))
+    return c:view('topics.create_edit', Compact('topic', 'categories', 'category'))
 end
 
-function _M:append(id, request)
-
+function _M:append(c, id)
+    
+    local request = c.req
     local topic = Topic.findOrFail(id)
     self:authorize('append', topic)
-    local markdown = new('markdown')
+    local markdown = new(Markdown)
     local content = markdown:convertMarkdownToHtml(request:input('content'))
     local append = Append.create({topic_id = topic.id, content = content})
-    app('lxhub\\Notification\\Notifier'):newAppendNotify(Auth.user(), topic, append)
-    app(UserAddedAppend.class):generate(Auth.user(), topic, append)
+    app(Notifier):newAppendNotify(Auth.user(), topic, append)
+    app(UserAddedAppend):generate(Auth.user(), topic, append)
     
-    return response({status = 200, message = lang('Operation succeeded.'), append = append})
+    return c:json({status = 200, message = lang('Operation succeeded.'), append = append:toArr()})
 end
 
-function _M:update(id, request, mentionParser)
+function _M:update(c, id)
 
+    local request = c:form('storeTopicRequest')
     local topic = Topic.findOrFail(id)
     self:authorize('update', topic)
     local data = request:only('title', 'body', 'category_id')
-    data['body'] = mentionParser:parse(data['body'])
-    local markdown = new('markdown')
-    data['body_original'] = data['body']
-    data['body'] = markdown:convertMarkdownToHtml(data['body'])
-    data['excerpt'] = Topic.makeExcerpt(data['body'])
-    if topic:isArticle() and request.subject == 'publish' and topic.is_draft == 'yes' then
-        data['is_draft'] = 'no'
-        -- Topic Published
-        app('lxhub\\Notification\\Notifier'):newTopicNotify(Auth.user(), mentionParser, topic)
-        -- User activity
-        app(UserPublishedNewTopic.class):generate(Auth.user(), topic)
-        app(BlogHasNewArticle.class):generate(Auth.user(), topic, topic:blogs():first())
-        Auth.user():decrement('draft_count', 1)
-        Auth.user():increment('article_count', 1)
-    end
-    topic:update(data)
-    Flash.success(lang('Operation succeeded.'))
-    topic:collectImages()
-    
-    return redirect():to(topic:link())
+
+    return new(TopicDoer):update(request, self, data, topic)
 end
 
 ------------------------------------------
@@ -165,12 +164,12 @@ end
 function _M:upvote(c, id)
 
     local topic = Topic.find(id)
-    app('.app.lxhub.vote.voter'):topicUpVote(topic)
+    app('.app.core.vote.voter'):topicUpVote(topic)
     
     return c:json({status = 200})
 end
 
-function _M:downvote(id)
+function _M:downvote(c, id)
 
     local topic = Topic.find(id)
     app('lxhub\\Vote\\Voter'):topicDownVote(topic)
@@ -182,40 +181,40 @@ end
 -- Admin Topic Management
 ------------------------------------------
 
-function _M:recommend(id)
+function _M:recommend(c, id)
 
     local topic = Topic.findOrFail(id)
     self:authorize('recommend', topic)
     topic.is_excellent = topic.is_excellent == 'yes' and 'no' or 'yes'
     topic:save()
-    Notification.notify('topic_mark_excellent', Auth.user(), topic.user, topic)
+    Notification.notify('topic_mark_excellent', Auth.user(), topic('user'), topic)
     
-    return response({status = 200, message = lang('Operation succeeded.')})
+    return c:json{status = 200, message = lang('Operation succeeded.')}
 end
 
-function _M:pin(id)
+function _M:pin(c, id)
 
     local topic = Topic.findOrFail(id)
     self:authorize('pin', topic)
     topic.order = topic.order > 0 and 0 or 999
     topic:save()
     
-    return response({status = 200, message = lang('Operation succeeded.')})
+    return c:json{status = 200, message = lang('Operation succeeded.')}
 end
 
-function _M:sink(id)
+function _M:sink(c, id)
 
     local topic = Topic.findOrFail(id)
     self:authorize('sink', topic)
     topic.order = topic.order >= 0 and -1 or 0
     topic:save()
-    app(UserPublishedNewTopic.class):remove(Auth.user(), topic)
-    app(BlogHasNewArticle.class):remove(Auth.user(), topic, topic.user:blogs():first())
+    app(UserPublishedNewTopic):remove(Auth.user(), topic)
+    app(BlogHasNewArticle):remove(Auth.user(), topic, topic('user'):blogs():first())
     
-    return response({status = 200, message = lang('Operation succeeded.')})
+    return c:json{status = 200, message = lang('Operation succeeded.')}
 end
 
-function _M:destroy(id)
+function _M:destroy(c, id)
 
     local topic = Topic.findOrFail(id)
     self:authorize('delete', topic)
@@ -230,19 +229,20 @@ function _M:destroy(id)
     else 
         topic:user():decrement('topic_count', 1)
     end
-    app(UserPublishedNewTopic.class):remove(topic.user, topic)
-    app(BlogHasNewArticle.class):remove(topic.user, topic, blog)
+    app(UserPublishedNewTopic):remove(topic('user'), topic)
+    app(BlogHasNewArticle):remove(topic('user'), topic, blog)
     
     return redirect():route('topics.index')
 end
 
 function _M:uploadImage(c)
 
-    local file = c.request:file('file')
+    local file = c.req:file('file')
+    local data = {}
     if file then
         local upload_status
         try(function()
-            upload_status = app('.app.lxhub.handler.imageUploadHandler'):uploadImage(file)
+            upload_status = app('.app.core.handler.imageUploadHandler'):uploadImage(file)
         end)
         :catch('imageUploadException', function(e) 
             

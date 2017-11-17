@@ -34,7 +34,7 @@ end
 
 function _M:handle()
 
-    app('.app.lxhub.handler.emailHandler'):sendNotifyMail(self.type, self.fromUser, self.toUser, self.topic, self.reply, self.body)
+    app('.app.core.handler.emailHandler'):sendNotifyMail(self.type, self.fromUser, self.toUser, self.topic, self.reply, self.body)
 end
 
 return _M

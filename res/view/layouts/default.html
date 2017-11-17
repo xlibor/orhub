@@ -2,30 +2,26 @@
 <!DOCTYPE html>
 <html lang="zh">
 	<head>
-
 		<meta charset="UTF-8">
-
 		<title>
         @section('title')
-        Laravel China 社区 - 高品质的 Laravel 和 PHP 开发者社区
+        orhub 社区 - 高品质的 openresty 和 lua 开发者社区
         @show
-        - Powered by PHPHub
+        - Powered by orhub
         </title>
 
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
-		<meta name="keywords" content="php,laravel,php论坛,laravel论坛,php社区,laravel社区,laravel教程,php教程,laravel视频,php开源,php新手,php7,laravel5" />
-		<meta name="author" content="PHPHub" />
+		<meta name="keywords" content="openresty,lua,openresty论坛,lxlib论坛,lua社区,openresty社区,openresty教程,lua教程,openresty视频,openresty开源,openresty新手,nginx,ngx" />
+		<meta name="author" content="orhub" />
 		<meta name="description" content="
         @section('description')
-            Laravel China 是国内最大的 Laravel 和 PHP 中文社区，致力于推动 Laravel，PHP7、php-fig 等 PHP 新技术，新理念在中国的发展，是国内最靠谱的 PHP 论坛。 
+            orhub 是专业，综合的 openresty, nginx, lua 交流社区，致力于推动 openresty(ngx+lua)技术，理念在中国的发展，是国内靠谱的 openresty 论坛。 
         @show
         " />
         <meta name="_token" content="{{ csrf_token() }}">
-
-        <link rel="stylesheet" href="{{ mix('/css/styles-cb09ac39c5.css') }}">
-
-        <link rel="shortcut icon" href="{{ Ah.cdn('favicon1.png') }}"/>
+        <link rel="stylesheet" href="{{ mix('/css/styles.css') }}">
+        <link rel="shortcut icon" href="{{ Ah.cdn('/favicon.png') }}"/>
 
         <script>
             Config = {
@@ -50,7 +46,7 @@
 
 	    @yield('styles')
 
-		<meta http-equiv="x-pjax-version" content="{{ mix('assets/css/styles.css') }}">
+		<meta http-equiv="x-pjax-version" content="{{ mix('/css/styles.css') }}">
 
 	</head>
 	<body id="body" class="{{ Ah.route_class() }}">
@@ -67,8 +63,7 @@
 
 			@include('layouts.partials.nav')
 
-			<div class="container main-container {{ Req.is('blogs*') or Req.is('articles*') or Ah.is_route('wildcard') and 'blog-container' or '' }}">
-
+			<div class="container main-container {{ (Req.is('blogs*') or Req.is('articles*') or Ah.is_route('wildcard')) and 'blog-container' or '' }}">
 				@if(Auth.check() and not Auth.user().verified and not Req.is('email-verification-required'))
     				<div class="alert alert-warning">
     		            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -91,9 +86,7 @@
 
 		</div>
 
-
-
-        <script src="{{ mix('/js/scripts-7524e7da5f.js') }}"></script>
+        <script src="{{ mix('/js/scripts.js') }}"></script>
 
 	    @yield('scripts')
 
@@ -102,7 +95,6 @@
           ga('create', '{{ getenv('GA_Tracking_ID') }}', 'auto');
           ga('send', 'pageview');
         </script>
-
 
 		<script>
 		// Baidu link submit
@@ -120,8 +112,6 @@
 		})();
 		</script>
         @endif
-
-
 
 	</body>
 </html>

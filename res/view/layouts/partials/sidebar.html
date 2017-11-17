@@ -16,7 +16,6 @@
     <div class="panel-body text-center topic-author-box">
         @include('topics.partials.topic_author_box')
 
-
         @if(Auth.check() and currentUser.id ~= topic('user').id)
             <span class="text-white">
                 {? local isFollowing = currentUser and currentUser:isFollowing(topic('user').id) ?}
@@ -35,7 +34,6 @@
   </div>
   @endif
 
-
   @if(Ctx.userTopics and #userTopics)
   <div class="panel panel-default corner-radius">
     <div class="panel-heading text-center">
@@ -46,7 +44,6 @@
     </div>
   </div>
   @endif
-
 
   @if(Ctx.categoryTopics and #categoryTopics)
   <div class="panel panel-default corner-radius">
@@ -64,9 +61,7 @@
     background-color: transparent;
     border: none;
 ">
-<a href="https://laravel-china.org/topics/3383" rel="nofollow" title="" style="">
-      <img src="https://dn-phphub.qbox.me/uploads/images/201612/09/1/qASrRyKNj0.jpg" style="width: 100%;border-radius: 0px;box-shadow: none;border: 1px solid #ffafaf;"></a>
-</div>
+
 
 @if(Route.currentRouteName() == 'topics.index')
     @include('layouts.partials._resources_panel')
@@ -93,7 +88,6 @@
   </div>
 </div>
 @endif
-
 
   <div class="panel panel-default corner-radius">
     <div class="panel-body text-center sidebar-sponsor-box">
@@ -140,6 +134,7 @@
 
 @endif
 
+@if(not Ctx.topic)
 <div id="sticker">
 
 @include('layouts.partials._resources_panel')
@@ -149,7 +144,7 @@
       <a href="http://estgroupe.com/" style="color:#a5a5a5">
           <img src="https://dn-phphub.qbox.me/uploads/images/201612/12/1/iq7WQc2iuW.png" style="width: 20px;margin-right: 4px;margin-top: -4px;">
           <span style="margin-top: 7px;display: inline-block;">
-              优帆远扬 - 创造不息，交付不止
+              happy codeing
           </span>
       </a>
   </div>
@@ -157,15 +152,28 @@
 
 <div class="panel panel-default corner-radius" style="color:#a5a5a5">
   <div class="panel-body text-center">
-      <a href="{{ Auth.check() and 'https://laravel-china.org/messages/to/1' or 'mailto:summer@yousails.com'}}" style="color:#a5a5a5">
+      <a href="{{ Auth.check() and 'https://orhub.org/messages/to/1' or 'mailto:xlibor@163.com'}}" style="color:#a5a5a5">
           <span style="margin-top: 7px;display: inline-block;">
-              <i class="fa fa-heart" aria-hidden="true" style="color: rgba(232, 146, 136, 0.89);"></i> 建议反馈？请私信 Summer
+              <i class="fa fa-heart" aria-hidden="true" style="color: rgba(232, 146, 136, 0.89);"></i> 建议反馈？请私信 xlibor
           </span>
       </a>
   </div>
 </div>
 
 </div>
+@endif
+
+@if(Ctx.topic)
+<div id="sticker">
+<div class="panel panel-default corner-radius">
+  <div class="panel-heading text-center">
+  <h3 class="panel-title">{{ Ah.lang('Topic Summary') }}</h3>
+  </div>
+{!! topic.summary !!}
+</div>
+</div>
+@endif
+
 </div>
 <div class="clearfix"></div>
 

@@ -64,7 +64,7 @@ function _M:show(id)
         topic.vote_down = downvoted
     end
     topic:increment('view_count', 1)
-    
+
     return self:response():item(topic, new('topicTransformer'))
 end
 

@@ -109,8 +109,8 @@
 
 @section('scripts')
 
-<link rel="stylesheet" href="{{ mix('/css/editor-7d149186af.css') }}">
-<script src="{{ mix('/js/editor-7c1634df3a.js') }}"></script>
+<link rel="stylesheet" href="{{ mix('/css/editor.css') }}">
+<script src="{{ mix('/js/editor.js') }}"></script>
 
 <script type="text/javascript">
 
@@ -138,7 +138,7 @@
             autosave: {
                 enabled: true,
                 delay: 5000,
-                unique_id: "topic_content{{ Ctx.topic and topic.id .. '_' .. str_slug(topic.updated_at) or '' }}"
+                unique_id: "topic_content{{ Ctx.topic and topic.id .. '_' .. Str.slug(topic.updated_at) or '' }}"
             },
             forceSync: true,
             tabSize: 4,

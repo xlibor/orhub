@@ -14,7 +14,7 @@ local conf = {
             port        = 3306,
             pool        = 5,
             charset     = 'utf8mb4',
-            -- strict      = true,
+            strict      = false,
         },
         sqlite = {
             driver = 'sqlite',

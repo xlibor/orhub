@@ -1,8 +1,7 @@
 @extends('layouts.default')
 
 @section('title')
-{{ topic.title }} | 
-  @parent
+{{ topic.title }} | @parent
 @stop
 
 @section('description')
@@ -13,6 +12,7 @@
 @section('wechat_icon')
   @if(cover)
     <img src="{{ Ah.img_crop(cover.link, 512, 512) }}" alt="">
+    }
   @else
     @parent
   @endif
@@ -39,7 +39,8 @@
       </div>
     </div>
     <div class="appends-container" data-lang-append="{{ Ah.lang('Append') }}">
-      @foreach(topic.appends as index, append)
+    
+      @foreach(appends as index, append)
 
           <div class="appends">
               <span class="meta">{{ Ah.lang('Append') }} {{ index }} &nbsp;·&nbsp; <abbr title="{{ append.created_at }}" class="timeago">{{ append.created_at }}</abbr></span>
@@ -75,7 +76,7 @@
     </div>
     @endif
     {? local canManageTopics = currentUser and currentUser:can('manage_topics') and currentUser:roles():count() <= 5 ?}
-    @include('topics.partials.topic_operate', {manage_topics = canManageTopics})
+    @include('topics.partials.topic_operate', {is_article = false, manage_topics = canManageTopics})
   </div>
 
 

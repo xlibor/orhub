@@ -1,7 +1,26 @@
-commands = {}
+commands = {
+   ['lunit.sh'] = {
+      "lunitx/0.8-0"
+   }
+}
 dependencies = {
    discount = {
       ['0.2.1-1'] = {
+         {
+            constraints = {
+               {
+                  op = ">=",
+                  version = {
+                     5, 1, string = "5.1"
+                  }
+               }
+            },
+            name = "lua"
+         }
+      }
+   },
+   gumbo = {
+      ['0.4-1'] = {
          {
             constraints = {
                {
@@ -31,7 +50,7 @@ dependencies = {
       }
    },
    luafilesystem = {
-      ['1.6.3-2'] = {
+      ['1.7.0-2'] = {
          {
             constraints = {
                {
@@ -45,12 +64,32 @@ dependencies = {
          }
       }
    },
-   luasocket = {
-      ['3.0rc1-2'] = {
+   lunitx = {
+      ['0.8-0'] = {
          {
             constraints = {
                {
                   op = ">=",
+                  version = {
+                     5, 1, string = "5.1"
+                  }
+               }, {
+                  op = "<",
+                  version = {
+                     5, 4, string = "5.4"
+                  }
+               }
+            },
+            name = "lua"
+         }
+      }
+   },
+   magick = {
+      ['1.5.0-1'] = {
+         {
+            constraints = {
+               {
+                  op = "==",
                   version = {
                      5, 1, string = "5.1"
                   }
@@ -68,47 +107,134 @@ modules = {
    discount = {
       "discount/0.2.1-1"
    },
+   gumbo = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.Buffer'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.Set'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.constants'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.dom.Attribute'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.dom.AttributeList'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.dom.ChildNode'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.dom.Comment'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.dom.DOMTokenList'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.dom.Document'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.dom.DocumentFragment'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.dom.DocumentType'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.dom.Element'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.dom.ElementList'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.dom.Node'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.dom.NodeList'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.dom.ParentNode'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.dom.Text'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.dom.util'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.ffi-cdef'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.ffi-parse'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.parse'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.sanitize'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.serialize.Indent'] = {
+      "gumbo/0.4-1"
+   },
+   ['gumbo.serialize.html'] = {
+      "gumbo/0.4-1"
+   },
    lfs = {
-      "luafilesystem/1.6.3-2"
+      "luafilesystem/1.7.0-2"
    },
-   ltn12 = {
-      "luasocket/3.0rc1-2"
+   lunit = {
+      "lunitx/0.8-0"
    },
-   mime = {
-      "luasocket/3.0rc1-2"
+   ['lunit.console'] = {
+      "lunitx/0.8-0"
    },
-   ['mime.core'] = {
-      "luasocket/3.0rc1-2"
+   lunitx = {
+      "lunitx/0.8-0"
    },
-   socket = {
-      "luasocket/3.0rc1-2"
+   ['lunitx.atexit'] = {
+      "lunitx/0.8-0"
    },
-   ['socket.core'] = {
-      "luasocket/3.0rc1-2"
+   magick = {
+      "magick/1.5.0-1"
    },
-   ['socket.ftp'] = {
-      "luasocket/3.0rc1-2"
+   ['magick.base_image'] = {
+      "magick/1.5.0-1"
    },
-   ['socket.headers'] = {
-      "luasocket/3.0rc1-2"
+   ['magick.enum'] = {
+      "magick/1.5.0-1"
    },
-   ['socket.http'] = {
-      "luasocket/3.0rc1-2"
+   ['magick.gmwand'] = {
+      "magick/1.5.0-1"
    },
-   ['socket.serial'] = {
-      "luasocket/3.0rc1-2"
+   ['magick.gmwand.data'] = {
+      "magick/1.5.0-1"
    },
-   ['socket.smtp'] = {
-      "luasocket/3.0rc1-2"
+   ['magick.gmwand.image'] = {
+      "magick/1.5.0-1"
    },
-   ['socket.tp'] = {
-      "luasocket/3.0rc1-2"
+   ['magick.gmwand.lib'] = {
+      "magick/1.5.0-1"
    },
-   ['socket.unix'] = {
-      "luasocket/3.0rc1-2"
+   ['magick.thumb'] = {
+      "magick/1.5.0-1"
    },
-   ['socket.url'] = {
-      "luasocket/3.0rc1-2"
+   ['magick.version'] = {
+      "magick/1.5.0-1"
+   },
+   ['magick.wand'] = {
+      "magick/1.5.0-1"
+   },
+   ['magick.wand.data'] = {
+      "magick/1.5.0-1"
+   },
+   ['magick.wand.image'] = {
+      "magick/1.5.0-1"
+   },
+   ['magick.wand.lib'] = {
+      "magick/1.5.0-1"
    }
 }
 repository = {
@@ -120,6 +246,42 @@ repository = {
             dependencies = {},
             modules = {
                discount = "discount.so"
+            }
+         }
+      }
+   },
+   gumbo = {
+      ['0.4-1'] = {
+         {
+            arch = "installed",
+            commands = {},
+            dependencies = {},
+            modules = {
+               gumbo = "gumbo.lua",
+               ['gumbo.Buffer'] = "gumbo/Buffer.lua",
+               ['gumbo.Set'] = "gumbo/Set.lua",
+               ['gumbo.constants'] = "gumbo/constants.lua",
+               ['gumbo.dom.Attribute'] = "gumbo/dom/Attribute.lua",
+               ['gumbo.dom.AttributeList'] = "gumbo/dom/AttributeList.lua",
+               ['gumbo.dom.ChildNode'] = "gumbo/dom/ChildNode.lua",
+               ['gumbo.dom.Comment'] = "gumbo/dom/Comment.lua",
+               ['gumbo.dom.DOMTokenList'] = "gumbo/dom/DOMTokenList.lua",
+               ['gumbo.dom.Document'] = "gumbo/dom/Document.lua",
+               ['gumbo.dom.DocumentFragment'] = "gumbo/dom/DocumentFragment.lua",
+               ['gumbo.dom.DocumentType'] = "gumbo/dom/DocumentType.lua",
+               ['gumbo.dom.Element'] = "gumbo/dom/Element.lua",
+               ['gumbo.dom.ElementList'] = "gumbo/dom/ElementList.lua",
+               ['gumbo.dom.Node'] = "gumbo/dom/Node.lua",
+               ['gumbo.dom.NodeList'] = "gumbo/dom/NodeList.lua",
+               ['gumbo.dom.ParentNode'] = "gumbo/dom/ParentNode.lua",
+               ['gumbo.dom.Text'] = "gumbo/dom/Text.lua",
+               ['gumbo.dom.util'] = "gumbo/dom/util.lua",
+               ['gumbo.ffi-cdef'] = "gumbo/ffi-cdef.lua",
+               ['gumbo.ffi-parse'] = "gumbo/ffi-parse.lua",
+               ['gumbo.parse'] = "gumbo/parse.so",
+               ['gumbo.sanitize'] = "gumbo/sanitize.lua",
+               ['gumbo.serialize.Indent'] = "gumbo/serialize/Indent.lua",
+               ['gumbo.serialize.html'] = "gumbo/serialize/html.lua"
             }
          }
       }
@@ -137,7 +299,7 @@ repository = {
       }
    },
    luafilesystem = {
-      ['1.6.3-2'] = {
+      ['1.7.0-2'] = {
          {
             arch = "installed",
             commands = {},
@@ -148,26 +310,43 @@ repository = {
          }
       }
    },
-   luasocket = {
-      ['3.0rc1-2'] = {
+   lunitx = {
+      ['0.8-0'] = {
+         {
+            arch = "installed",
+            commands = {
+               ['lunit.sh'] = "lunit.sh"
+            },
+            dependencies = {},
+            modules = {
+               lunit = "lunit.lua",
+               ['lunit.console'] = "lunit/console.lua",
+               lunitx = "lunitx.lua",
+               ['lunitx.atexit'] = "lunitx/atexit.lua"
+            }
+         }
+      }
+   },
+   magick = {
+      ['1.5.0-1'] = {
          {
             arch = "installed",
             commands = {},
             dependencies = {},
             modules = {
-               ltn12 = "ltn12.lua",
-               mime = "mime.lua",
-               ['mime.core'] = "mime/core.so",
-               socket = "socket.lua",
-               ['socket.core'] = "socket/core.so",
-               ['socket.ftp'] = "socket/ftp.lua",
-               ['socket.headers'] = "socket/headers.lua",
-               ['socket.http'] = "socket/http.lua",
-               ['socket.serial'] = "socket/serial.so",
-               ['socket.smtp'] = "socket/smtp.lua",
-               ['socket.tp'] = "socket/tp.lua",
-               ['socket.unix'] = "socket/unix.so",
-               ['socket.url'] = "socket/url.lua"
+               magick = "magick/init.lua",
+               ['magick.base_image'] = "magick/base_image.lua",
+               ['magick.enum'] = "magick/enum.lua",
+               ['magick.gmwand'] = "magick/gmwand.lua",
+               ['magick.gmwand.data'] = "magick/gmwand/data.lua",
+               ['magick.gmwand.image'] = "magick/gmwand/image.lua",
+               ['magick.gmwand.lib'] = "magick/gmwand/lib.lua",
+               ['magick.thumb'] = "magick/thumb.lua",
+               ['magick.version'] = "magick/version.lua",
+               ['magick.wand'] = "magick/wand.lua",
+               ['magick.wand.data'] = "magick/wand/data.lua",
+               ['magick.wand.image'] = "magick/wand/image.lua",
+               ['magick.wand.lib'] = "magick/wand/lib.lua"
             }
          }
       }

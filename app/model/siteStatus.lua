@@ -1,10 +1,19 @@
 
 local lx, _M = oo{
-    _cls_ = '',
-    _ext_ = 'model'
+    _cls_       = '',
+    _ext_       = 'model',
+    _static_    = {
+    }
 }
 
-local app, lf, tb, str = lx.kit()
+local app, lf, tb, str, new = lx.kit()
+
+local static
+
+function _M._init_(this)
+
+    static = this.static
+end
 
 function _M.s__.newUser(driver)
 
@@ -33,31 +42,30 @@ function _M.s__.newImage()
 end
 
 -- Collection site status
--- @param  [string] action
-
 
 function _M.s__.collect(subject)
 
-    local today = Carbon.now():toDateString()
+    local today = Dt.now():toDateString()
     local todayStatus = SiteStatus.where('day', today):first()
-    if not (todayStatus) then
-        todayStatus = new('siteStatus')
+    if not todayStatus then
+        todayStatus = new('.app.model.siteStatus')
         todayStatus.day = today
     end
     local st = subject
     if st == 'new_user' then
-        todayStatus.register_count = todayStatus.register_count + 1
+        todayStatus.register_count = (todayStatus.register_count or 0) + 1
     elseif st == 'new_topic' then
-        todayStatus.topic_count = todayStatus.topic_count + 1
+        todayStatus.topic_count = (todayStatus.topic_count or 0) + 1
     elseif st == 'new_reply' then
-        todayStatus.reply_count = todayStatus.reply_count + 1
+        todayStatus.reply_count = (todayStatus.reply_count or 0) + 1
     elseif st == 'new_image' then
-        todayStatus.image_count = todayStatus.image_count + 1
+        todayStatus.image_count = (todayStatus.image_count or 0) + 1
     elseif st == 'new_user_from_github' then
-        todayStatus.github_regitster_count = todayStatus.github_regitster_count + 1
+        todayStatus.github_regitster_count = (todayStatus.github_regitster_count or 0) + 1
     elseif st == 'new_user_from_wechat' then
-        todayStatus.wechat_registered_count = todayStatus.wechat_registered_count + 1
+        todayStatus.wechat_registered_count = (todayStatus.wechat_registered_count or 0) + 1
     end
+
     todayStatus:save()
 end
 

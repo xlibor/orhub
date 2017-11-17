@@ -82,7 +82,7 @@
 
                         @if(Auth.check() and currentUser.id ~= topic('user').id)
                             <span class="text-white">
-                                {? isFollowing = currentUser and currentUser:isFollowing(topic('user').id) ?}
+                                {? local isFollowing = currentUser and currentUser:isFollowing(topic('user').id) ?}
                                 <hr>
                                 <a data-method="post" class="btn btn-{{ not isFollowing and 'warning' or 'default' }} btn-block" href="javascript:void(0);" data-url="{{ route('users.doFollow', topic('user').id) }}" id="user-edit-button">
                                    <i class="fa {{not isFollowing and 'fa-plus' or 'fa-minus'}}"></i> {{ not isFollowing and '关注 Ta' or '已关注' }}

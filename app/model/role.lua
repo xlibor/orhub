@@ -1,10 +1,19 @@
 
 local lx, _M = oo{
-    _cls_   = '',
-    _ext_   = 'entrustRole',
+    _cls_       = '',
+    _ext_       = 'entrustRole',
+    _static_    = {
+    }
 }
 
 local app, lf, tb, str, new = lx.kit()
+
+local static
+
+function _M._init_(this)
+
+    static = this.static
+end
 
 function _M:ctor()
 
@@ -21,11 +30,11 @@ function _M:boot()
     -- end)
 end
 
-function _M:addRole(name, display_name, description)
+function _M.t__.addRole(this, name, display_name, description)
 
-    local role = Role.query():where('name', name):first()
+    local role = new(this):where('name', name):first()
     if not role then
-        role = new(Role, {name = name})
+        role = new(this, {name = name})
     end
     role.display_name = display_name
     role.description = description

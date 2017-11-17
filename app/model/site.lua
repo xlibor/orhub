@@ -10,7 +10,7 @@ local app, lf, tb, str = lx.kit()
 
 function _M:ctor()
 
-    self.presenter = '.app.lxhub.presenter.site'
+    self.presenter = '.app.core.presenter.site'
     self.guarded = {'id'}
 end
 

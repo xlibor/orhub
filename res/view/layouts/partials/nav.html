@@ -14,7 +14,7 @@
 
     <div id="top-navbar-collapse" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li class=""><a href="/"><font color="green"><b>lxlib</b></font></a> </li>
+        <li class=""><a href="/"><font color="green" size="4"><b>orhub</b></font></a> </li>
         <li class="{{ Req.is('topics*') and not Req.is('categories*') and ' active' or '' }}"><a href="{{ route('topics.index') }}">{{ Ah.lang('Topics') }}</a></li>
         <li class="{{ Req.is('categories/' ..Conf('lxhub.blogCategoryId')) and ' active' or '' }}"><a href="{{ route('categories.show',Conf('lxhub.blogCategoryId')) }}">专栏</a></li>
         <li class="{{ Req.is('categories/1') and ' active' or '' }}"><a href="{{ route('categories.show', 1) }}">{{ Ah.lang('Jobs') }}</a></li>

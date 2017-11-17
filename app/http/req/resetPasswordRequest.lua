@@ -13,7 +13,10 @@ end
 
 function _M:rules()
 
-    return {email = 'required|email', password = 'required|confirmed|min:6'}
+    return {
+        email = 'required|email',
+        password = 'required|confirmed|min:6'
+    }
 end
 
 return _M

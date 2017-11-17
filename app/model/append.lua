@@ -13,7 +13,7 @@ end
 
 function _M:topic()
 
-    return self:belongsTo('Topic')
+    return self:belongsTo('.app.model.topic')
 end
 
 return _M

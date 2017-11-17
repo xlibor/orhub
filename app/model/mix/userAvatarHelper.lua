@@ -3,8 +3,10 @@ local lx, _M = oo{
     _cls_ = ''
 }
 
-local app, lf, tb, str = lx.kit()
+local app, lf, tb, str, new = lx.kit()
 local fs = lx.fs
+
+local ImageUploadHandler = lx.use('.app.core.handler.imageUploadHandler')
 
 function _M:cacheAvatar()
 
@@ -12,13 +14,13 @@ function _M:cacheAvatar()
     local hc = new('net.http.client')
     local response = hc:get(self.image_url)
     --Get ext
-    local content_type = str.split(response:getHeader('Content-Type')[1], '/')
+    local content_type = str.split(response:getHeader('Content-Type'), '/')
     local ext = tb.pop(content_type)
-    local avatar_name = self.id .. '_' .. time() .. '.' .. ext
-    local save_path = public_path('uploads/avatars/') .. avatar_name
+    local avatar_name = self.id .. '_' .. lf.time() .. '.' .. ext
+    local save_path = lx.dir('pub', 'uploads/avatars/') .. avatar_name
     --Save File
-    local content = response:getBody():getContents()
-    file_put_contents(save_path, content)
+    local content = response:getBody()
+    fs.put(save_path, content)
     --Delete old file
     if self.avatar then
         fs.delete(lx.dir('tmp', 'upload/avatars/') .. self.avatar)
@@ -30,7 +32,7 @@ end
 
 function _M:updateAvatar(file)
 
-    local upload_status = app('.app.lxhub.handler.imageUploadHandler'):uploadAvatar(file, self)
+    local upload_status = new(ImageUploadHandler):uploadAvatar(file, self)
     self.avatar = upload_status['filename']
     self:save()
     

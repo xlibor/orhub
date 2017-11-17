@@ -17,7 +17,7 @@
               {!! Ah.lang('You dont have permission to proceed.') !!}
             </div>
             @if(not currentUser)
-                @include('auth._login_form')
+                @include('auth._login_form', {login_required = false})
             @endif
 
         </div>

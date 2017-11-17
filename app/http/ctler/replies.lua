@@ -18,13 +18,13 @@ function _M:store(c)
 
     local req = c:form('storeReplyRequest')
     
-    return new('.app.lxhub.creator.reply'):create(self, req:except('_token'))
+    return new('.app.http.doer.reply'):create(self, req:except('_token'))
 end
 
 function _M:vote(c, id)
 
     local reply = Reply.findOrFail(id)
-    local voteInfo = app('.app.lxhub.vote.voter'):replyUpVote(reply)
+    local voteInfo = app('.app.core.vote.voter'):replyUpVote(reply)
     
     return c:json({
         status = 200, message = lang('Operation succeeded.'),
