@@ -4,36 +4,14 @@ local lx, _M, mt = oo{
 }
 
 local app, lf, tb, str = lx.kit()
+local lh = lx.h
+local response, redirect = lh.response, lh.redirect
 
-function _M:new()
+function _M:handle(c, next)
 
-    local this = {
-        auth = nil
-    }
-    
-    return oo(this, mt)
-end
-
--- The Guard implementation.
--- @var Guard
--- Create a new middleware instance.
--- @param  Guard  auth
-
-
-function _M:ctor(auth)
-
-    self.auth = auth
-end
-
--- Handle an incoming request.
--- @param  \Illuminate\Http\Request  request
--- @param  \Closure  next
--- @return mixed
-
-function _M:handle(request, next)
-
-    if self.auth:guest() then
-        if request:ajax() then
+    local request = c.req
+    if Auth.guest() then
+        if request.ajax then
             
             return response('Unauthorized.', 401)
         else 
@@ -42,7 +20,7 @@ function _M:handle(request, next)
         end
     end
     
-    return next(request)
+    return next(c)
 end
 
 return _M

@@ -50,11 +50,11 @@ elixir(function(mix) {
 
         .copy([
             'node_modules/social-share.js/dist/fonts'
-        ], 'public/build/assets/fonts/iconfont')
+        ], 'pub/build/fonts/iconfont')
 
         .copy([
             'res/asset/fonts/googlefont'
-        ], 'public/build/assets/fonts/googlefont')
+        ], 'pub/build/fonts/googlefont')
 
         .sass([
             'base.scss',

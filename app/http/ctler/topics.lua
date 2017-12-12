@@ -12,6 +12,7 @@ local lang                  = Ah.lang
 
 local Class                 = use('class')
 local Topic                 = use('.app.model.topic')
+local Tag                   = use('.app.model.tag')
 local Markdown              = use('.app.core.markdown.markdown')
 local Notifier              = use('.app.core.notification.notifier')
 local MentionParser         = use('.app.core.notification.mention')
@@ -22,9 +23,26 @@ local Notification          = use('.app.model.notification')
 local SiteStatus            = use('.app.model.siteStatus')
 local TopicDoer             = use('.app.http.doer.topic')
 
+local ssub, sfind = string.sub, string.find
+local e = lh.e
+
 function _M:ctor()
 
     self:setBar('auth', {except = {'index', 'show'}})
+end
+
+function _M:removeDiv(html, className)
+
+    while true do
+        local firstPos = str.find(html, "<div [^>]-" .. str.quote(className))
+        if not firstPos then break end
+        local over = str.findTagEnd(html, 'div', _, firstPos + 3)
+        if not over then break end
+        html = ssub(html, 1, firstPos - 1) .. ssub(html, over + 1)
+        -- echo(firstPos, ',', over)
+    end
+
+    return html
 end
 
 function _M:index(c)
@@ -50,11 +68,8 @@ function _M:show(c, id, fromCode)
     if topic:isArticle() and topic.is_draft == 'yes' then
         self:authorize('show_draft', topic)
     end
+ 
     -- URL 矫正
-
-    local md = require('discount')
-    local doc, err = md.compile(topic.body_original, "toc" )
-
     local slug = request:param('slug')
 
     if not lf.isEmpty(topic.slug) and topic.slug ~= slug and not fromCode then
@@ -86,6 +101,11 @@ function _M:show(c, id, fromCode)
     topic:increment('view_count', 1)
     local cover = topic:cover() or false
 
+    local tags = false
+    if topic.is_tagged == 'yes' then
+        tags = topic('tags')
+    end
+
     if topic:isArticle() then
         if request:is('topics*') then
             return redirect():to(topic:link())
@@ -94,11 +114,12 @@ function _M:show(c, id, fromCode)
         blog = topic:blogs():first()
         userTopics = blog:topics():withoutDraft():onlyArticle():orderBy('vote_count', 'desc'):limit(5):get()
 
-        c:view('articles.show', Compact('blog', 'user', 'topic', 'replies', 'categoryTopics', 'category', 'banners', 'cover', 'votedUsers', 'userTopics', 'revisionHistory'))
+        c:view('articles.show', Compact('blog', 'user', 'topic', 'replies', 'categoryTopics', 'category', 'tags', 'banners', 'cover', 'votedUsers', 'userTopics', 'revisionHistory'))
     else
         userTopics = topic:byWhom(topic.user_id):withoutDraft():withoutBoardTopics():recent():limit(3):get()
         local appends = topic:appendContents():get()
-        c:view('topics.show', Compact('topic', 'replies', 'categoryTopics', 'category', 'banners', 'cover', 'votedUsers', 'userTopics', 'revisionHistory', 'appends'))
+
+        c:view('topics.show', Compact('topic', 'replies', 'categoryTopics', 'category', 'tags', 'banners', 'cover', 'votedUsers', 'userTopics', 'revisionHistory', 'appends'))
     end
 end
 
@@ -111,26 +132,30 @@ function _M:create(c)
         category = Category.find(categoryId)
     end
     local categories = Category.where('id', '!=', app:conf('lxhub.blogCategoryId')):get()
-    
-    return c:view('topics.create_edit', Compact('categories', 'category'))
+    local tags = Tag.all()
+    local topicTags = false
+
+    return c:view('topics.create_edit', Compact('categories', 'tags', 'topicTags', 'category'))
 end
 
 function _M:store(c)
 
     local request = c:form('storeTopicRequest')
-    
-    return new(TopicDoer):create(self, request:except('_token'))
+
+    return new(TopicDoer):create(self, Auth.user(), request:except('_token'), true)
 end
 
 function _M:edit(c, id)
 
     local topic = Topic.findOrFail(id)
     self:authorize('update', topic)
+    topic.body = topic.body_original
     local categories = Category.where('id', '!=', Conf('lxhub.blogCategoryId')):get()
     local category = topic('category')
-    topic.body = topic.body_original
+    local tags = Tag.all()
+    local topicTags = tb.flip(topic:tagNames(), true)
     
-    return c:view('topics.create_edit', Compact('topic', 'categories', 'category'))
+    return c:view('topics.create_edit', Compact('topic', 'categories', 'tags', 'topicTags', 'category'))
 end
 
 function _M:append(c, id)
@@ -150,11 +175,12 @@ end
 function _M:update(c, id)
 
     local request = c:form('storeTopicRequest')
+
     local topic = Topic.findOrFail(id)
     self:authorize('update', topic)
-    local data = request:only('title', 'body', 'category_id')
+    local data = request:only('title', 'body', 'category_id', 'tags')
 
-    return new(TopicDoer):update(request, self, data, topic)
+    return new(TopicDoer):update(self, Auth.user(), data, topic, request:input('subject'))
 end
 
 ------------------------------------------

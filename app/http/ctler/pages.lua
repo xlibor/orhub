@@ -12,15 +12,8 @@ local ActivityCtler, TopicsCtler, BlogsCtler = use('activity', 'topics', 'blogs'
 function _M:home(c)
     
     local request = c.req
-
-    if Auth.check() then
-        
-        return new(ActivityCtler):index(c)
-    else
-        local topics = new(Topic):getTopicsWithFilter('excellent')
-
-        c:view('pages.home', Compact('topics', 'banners'))
-    end
+    local topics = new(Topic):getTopicsWithFilter('excellent')
+    c:view('pages.home', Compact('topics', 'banners'))
 end
 
 function _M:about(c)
@@ -68,7 +61,7 @@ end
 function _M:feed()
 
     local topics = Topic.excellent():recent():limit(20):get()
-    local channel = {title = 'Laravel China 社区', description = '我们是 PHP 和 Laravel 的中文社区，在这里我们讨论技术, 分享技术。', link = url(route('feed'))}
+    local channel = {title = 'orhub 社区', description = '我们是 PHP 和 Laravel 的中文社区，在这里我们讨论技术, 分享技术。', link = url(route('feed'))}
     local feed = Rss.feed('2.0', 'UTF-8')
     feed:channel(channel)
     for _, topic in pairs(topics) do

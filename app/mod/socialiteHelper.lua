@@ -13,6 +13,7 @@ local oauthDrivers = {github = 'github', wechat = 'wechat', qq = 'qq'}
 function _M:oauth(c)
 
     local driver = c:input('driver')
+
     driver = not oauthDrivers[driver] and 'github' or oauthDrivers[driver]
     if Auth.check() and Auth.user().register_source == driver then
         

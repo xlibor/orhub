@@ -17,7 +17,7 @@ function _M:run()
         weight = 100,
         name = '招聘',
         slug = 'zhao-pin',
-        description = 'orhub 是综合的 openresty & lua 社区，招聘、求职、外包等相关的话题，都可以在此主题下发布。<br>请遵照 <a href="https://laravel-china.org/topics/817">orhub 招聘贴发布规范</a>，不遵循规范，会被视为对用户的不尊重，管理员会做沉贴操作，沉贴后用户基本上看不到帖子。符合规范，我们会为话题加精并推荐到网站首页、手机端首页、精华帖周报邮件、<a href="http://weibo.com/xlibor">orhub 资讯微博</a>。',
+        description = 'orhub 是openresty & lua 社区，招聘、求职、外包等相关的话题，都可以在此主题下发布。<br>请遵照 <a href="https://laravel-china.org/topics/817">orhub 招聘贴发布规范</a>，不遵循规范，会被视为对用户的不尊重，管理员会做沉贴操作，沉贴后用户基本上看不到帖子。符合规范，我们会为话题加精并推荐到网站首页、手机端首页、精华帖周报邮件、<a href="http://weibo.com/xlibor">orhub 资讯微博</a>。',
         created_at = '2016-07-03 10:00:00',
         updated_at = '2016-07-03 10:00:00',
         deleted_at = nil
@@ -81,7 +81,19 @@ function _M:run()
         created_at = '2016-07-03 10:00:00',
         updated_at = '2016-07-03 10:00:00',
         deleted_at = nil
-    }
+    },
+    {
+        id = 9,
+        parent_id = 0,
+        post_count = 0,
+        weight = 98,
+        name = '邮件组',
+        slug = 'google-groups',
+        description = 'google-groups镜像。',
+        created_at = '2016-07-03 10:00:00',
+        updated_at = '2016-07-03 10:00:00',
+        deleted_at = nil
+    },
     })
 end
 

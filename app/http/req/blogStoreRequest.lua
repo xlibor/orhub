@@ -21,8 +21,8 @@ function _M:rules()
     elseif action == 'store' then
         
         return {
-            slug = 'between:2,25|regex:^[A-Za-z0-9\\-\\_]+$|required|unique:blogs',
-            name = 'between:2,20|required|unique:blogs',
+            slug = 'between:2,45|regex:^[A-Za-z0-9\\-\\_]+$|required|unique:blogs',
+            name = 'between:2,45|required|unique:blogs',
             description = 'max:250',
             cover = 'required|image'
         }
@@ -30,8 +30,8 @@ function _M:rules()
         blog = Blog.findOrFail(self:param('id'))
         
         return {
-            slug = 'between:2,25|regex:^[A-Za-z0-9\\-\\_]+$|required|unique:blogs,slug,' .. blog.id,
-            name = 'between:2,20|required|unique:blogs,name,' .. blog.id,
+            slug = 'between:2,45|regex:^[A-Za-z0-9\\-\\_]+$|required|unique:blogs,slug,' .. blog.id,
+            name = 'between:2,45|required|unique:blogs,name,' .. blog.id,
             description = 'max:250',
             cover = 'image'
         }

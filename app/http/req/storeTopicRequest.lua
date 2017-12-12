@@ -6,6 +6,11 @@ local lx, _M = oo{
 
 local app, lf, tb, str = lx.kit()
 
+function _M:ctor()
+
+    self.req:nestArgs()
+end
+
 function _M:authorize()
 
     return true

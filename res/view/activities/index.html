@@ -1,12 +1,16 @@
 @extends('layouts.default')
 
 @section('title')
-    @if(Ah.if_query('view'))
-    我关注的动态 | @parent
-    @elseif(Ah.if_query('view', 'all'))
-    所有动态 | @parent
-    @elseif(Ah.if_query('view', 'mine'))
-    我的动态 | @parent
+    @if(Auth.check())
+        @if(viewType == 'subscribed')
+        我关注的动态 | @parent
+        @elseif(viewType == 'all')
+        所有动态 | @parent
+        @elseif(viewType == 'mine')
+        我的动态 | @parent
+        @endif
+    @else
+        所有动态 | @parent
     @endif
 @stop
 
@@ -18,9 +22,13 @@
 
         <div class="panel-heading">
             <ul class="nav nav-tabs">
-                <li role="presentation" class="{{ Ah.active_class(Ah.if_query('view')) }}"><a href="{{ route('home') }}"><i class="fa fa-eye" aria-hidden="true"></i> 我的关注</a></li>
-                <li role="presentation" class="{{ Ah.active_class(Ah.if_query('view', 'all')) }}"><a href="{{ route('home', {view = 'all'}) }}"><i class="fa fa-rss" aria-hidden="true"></i> 所有动态</a></li>
-                <li role="presentation" class="{{ Ah.active_class(Ah.if_query('view', 'mine')) }}"><a href="{{ route('home', {view = 'mine'}) }}"><i class="fa fa-calendar-minus-o" aria-hidden="true"></i> 我的动态</a></li>
+                @if(Auth.check())
+                <li role="presentation" class="{{ Ah.active_class(Ah.if_query('view')) }}"><a href="{{ route('activity') }}"><i class="fa fa-eye" aria-hidden="true"></i> 我的关注</a></li>
+                <li role="presentation" class="{{ Ah.active_class(Ah.if_query('view', 'all')) }}"><a href="{{ route('activity', {view = 'all'}) }}"><i class="fa fa-rss" aria-hidden="true"></i> 所有动态</a></li>
+                <li role="presentation" class="{{ Ah.active_class(Ah.if_query('view', 'mine')) }}"><a href="{{ route('activity', {view = 'mine'}) }}"><i class="fa fa-calendar-minus-o" aria-hidden="true"></i> 我的动态</a></li>
+                @else
+                <li role="presentation" class="{{ Ah.active_class(true) }}"><a href="{{ route('activity', {view = 'all'}) }}"><i class="fa fa-rss" aria-hidden="true"></i> 所有动态</a></li>
+                @endif
             </ul>
         </div>
 

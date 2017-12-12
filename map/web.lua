@@ -3,6 +3,7 @@ return function(route)
 
     ------------------ Page Route------------------------
     route:get('/', 'pages@home'):name('home')
+    route:get('/activity', 'activity@index'):name('activity')
     route:get('/about', 'pages@about'):name('about')
     route:get('/search', 'pages@search'):name('search')
     route:get('/feed', 'pages@feed'):name('feed')
@@ -49,7 +50,7 @@ return function(route)
     route:get('/email-verification-required', 'users@emailVerificationRequired'):name('email-verification-required')
     route:post('/users/send-verification-mail', 'users@sendVerificationMail'):name('users.send-verification-mail')
     ------------------ Authentication------------------------
-    route:get('/login', 'auth.auth@oauth'):name('login')
+    route:get('/login', 'auth.auth@loginRequired'):name('login')
     route:get('/auth/login', 'auth.auth@signin'):name('auth.login')
     route:post('/auth/login', 'auth.auth@login'):name('auth.login')
     route:get('/login-required', 'auth.auth@loginRequired'):name('login-required')
@@ -112,6 +113,10 @@ return function(route)
     route:post('/blogs/{id}/update', 'blogs@update'):name('blogs.update')
     route:post('/blogs/{blog}/subscribe', 'blogs@subscribe'):name('blogs.subscribe')
     route:post('/blogs/{blog}/unsubscribe', 'blogs@unsubscribe'):name('blogs.unsubscribe')
+    route:get('/blogs/{id}/summary/edit', "blogs@editSummary"):name('blogs.editSummary')
+    route:post('/blogs/{id}/summary/update', "blogs@updateSummary"):name('blogs.updateSummary')
+    route:get('/b/{blog}', 'blogs@show'):name('blogs.show')
+
     -- Article
     route:get("/articles/create", "articles@create"):name('articles.create'):bar('verified_email')
     route:post("/topics/{id}/transform", "articles@transform"):name('articles.transform')
@@ -119,7 +124,11 @@ return function(route)
     route:get("/articles/{id}/edit", "articles@edit"):name('articles.edit')
     route:get('/topics/{id}/{slug?}', 'topics@show'):name('topics.show')
     route:get('/articles/{id}/{slug?}', "topics@show"):name('articles.show')
-    route:get('/other/{name}', 'pages@wildcard'):name('wildcard')
+    -- route:get('/other/{name}', 'pages@wildcard'):name('blogs.show')
+
+    ------------------ Tags------------------------
+    route:get('/tags/{id}/{slug?}', 'tags@show'):name('tags.show')
+    route:get('/tagged/topics/{tag}', 'tags@topics'):name('tagged.topics')
 
 end
 

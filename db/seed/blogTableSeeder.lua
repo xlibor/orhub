@@ -12,9 +12,9 @@ function _M:run()
     Db.table('blogs'):inserts({
     {
         id = 1,
-        name = '我的专栏',
-        slug = 'myblog',
-        description = '记录工作日志',
+        name = 'openresty最佳实践',
+        slug = 'openresty-best-practices',
+        description = 'openresty best practices 镜像',
         cover = 'https://dn-phphub.qbox.me/uploads/images/201701/16/1/9Il9wyivOg.png',
         user_id = 1,
         article_count = 0,
@@ -26,9 +26,9 @@ function _M:run()
     },
     {
         id = 2,
-        name = '望洋路12号',
-        slug = 'road12',
-        description = '记录生活',
+        name = 'ngx+lua中文文档',
+        slug = 'ngx-lua-module-zh-wiki',
+        description = 'ngx+lua中文文档镜像',
         cover = 'https://dn-phphub.qbox.me/uploads/images/201701/16/1/9Il9wyivOg.png',
         user_id = 2,
         article_count = 0,

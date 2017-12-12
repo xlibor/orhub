@@ -57,14 +57,6 @@ function _M:run()
         cover = 'https://dn-phphub.qbox.me/testerhome-logo.png',
         created_at = '2015-05-17 11:37:40',
         updated_at = '2015-05-17 11:37:40'
-    },
-    {
-        id = 7,
-        title = 'Laravel So',
-        link = 'http://laravel.so/',
-        cover = 'http://laravel.so/img/site-logo.png',
-        created_at = '2015-05-17 11:37:40',
-        updated_at = '2015-05-17 11:37:40'
     }
     })
 end

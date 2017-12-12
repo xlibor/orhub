@@ -9,7 +9,8 @@ local lx, _M = oo{
         -- 'revisionableMix',
         'searchableMix',
         'presentableMix',
-        'softDelete'
+        'softDelete',
+        'tagging.taggable',
     },
     _static_ = {}
 }
@@ -44,7 +45,7 @@ function _M:ctor()
     self.fillable = {
         'title', 'slug', 'body', 'excerpt', 'is_draft', 'source',
         'body_original', 'user_id', 'category_id', 'created_at',
-        'updated_at', 'summary'
+        'updated_at', 'summary', 'is_tagged'
     }
 end
 
@@ -82,11 +83,6 @@ end
 function _M:category()
 
     return self:belongsTo(Category)
-end
-
-function _M:tag()
-
-    return self:hasMany(Tag)
 end
 
 function _M:user()

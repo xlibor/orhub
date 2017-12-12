@@ -5,6 +5,11 @@
   @parent
 @stop
 
+@section('styles')
+<link rel="stylesheet" href="{{ mix('/css/editor.css') }}">
+<link href="//cdn.bootcss.com/select2/4.0.3/css/select2.min.css" rel="stylesheet">
+@endsection
+
 @section('content')
 
 <div class="topic_create">
@@ -27,7 +32,7 @@
       @endif
         {!! csrf_field() !!}
         <div class="form-group">
-            <select class="selectpicker form-control" name="category_id" id="category-select" required="require">
+          <select class="selectpicker form-control" name="category_id" id="category-select" required="require">
 
               <option value="" disabled {{ Ctx.category or 'selected' }}>{{ Ah.lang('Pick a category') }}</option>
 
@@ -42,7 +47,6 @@
             </select>
         </div>
 
-
         @foreach(categories as cat)
             <div class="category-hint alert alert-warning category-{{ cat.id }} {{ Ctx.category and cat.id == category.id and 'animated rubberBand ' or ''}}" style="{{ Ctx.category and cat.id == category.id and '' or 'display:none' }}">
                 {!! cat.description !!}
@@ -50,7 +54,20 @@
         @endforeach
 
         <div class="form-group">
-            <input class="form-control" id="topic-title" placeholder="{{ Ah.lang('Please write down a topic') }}" name="title" type="text" value="{{ not Ctx.topic and '' or topic.title }}" required="require">
+          <input class="form-control" id="topic-title" placeholder="{{ Ah.lang('Please write down a topic') }}" name="title" type="text" value="{{ not Ctx.topic and '' or topic.title }}" required="require">
+        </div>
+
+        <div class="form-group">
+        <select id="post-tags" name="tags[]" class="form-control" multiple>
+ 
+        @foreach(tags as tag)
+            @if(topicTags and topicTags[tag.name])
+                <option value="{{ tag.name }}" selected>{{ tag.name }}</option>
+            @else
+                <option value="{{ tag.name }}">{{ tag.name }}</option>
+            @endif
+        @endforeach
+        </select>
         </div>
 
         @include('topics.partials.composing_help_block', {without_box = false})
@@ -109,11 +126,14 @@
 
 @section('scripts')
 
-<link rel="stylesheet" href="{{ mix('/css/editor.css') }}">
 <script src="{{ mix('/js/editor.js') }}"></script>
+<script src="//cdn.bootcss.com/select2/4.0.3/js/select2.min.js"></script>
 
 <script type="text/javascript">
-
+    $("#post-tags").select2({
+        tags: false,
+        placeholder: '请选择标签'
+    });
     $(document).ready(function()
     {
         @if(not Ctx.topic)
@@ -196,8 +216,5 @@
             }
         });
     });
-
-
-
 </script>
 @stop

@@ -11,13 +11,20 @@ function _M:index(c)
     local request = c.req
     local activities
     local view = request:input('view')
+    local viewType = view
 
-    if view == 'all' then
-        activities = Activity.recent():paginate(50)
-    elseif view == 'mine' then
-        activities = Auth.user():activities()
+    if Auth.check() then
+        if view == 'all' then
+            activities = Activity.recent():paginate(50)
+        elseif view == 'mine' then
+            activities = Auth.user():activities()
+        else
+            activities = Auth.user():subscribedActivityFeeds()
+            viewType = 'subscribed'
+        end
     else
-        activities = Auth.user():subscribedActivityFeeds()
+        activities = Activity.recent():paginate(50)
+        viewType = 'all'
     end
 
     local links = Link.allFromCache()
@@ -25,7 +32,7 @@ function _M:index(c)
     local hot_topics = HotTopic.fetchAll()
     local images = Image.fromActivities(activities)
 
-    c:view('activities.index', Compact('activities', 'links', 'banners', 'active_users', 'hot_topics', 'images'))
+    c:view('activities.index', Compact('activities', 'viewType', 'links', 'banners', 'active_users', 'hot_topics', 'images'))
 end
 
 return _M

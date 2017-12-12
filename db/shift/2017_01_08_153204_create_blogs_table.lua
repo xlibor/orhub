@@ -22,6 +22,8 @@ function _M:up(schema)
         table:integer('subscriber_count'):unsigned():default(0)
         table:tinyInteger('is_recommended'):unsigned():default(0)
         table:tinyInteger('is_blocked'):unsigned():default(0)
+        table:text('summary'):nullable()
+        table:text('summary_original'):nullable()
         table:timestamps()
     end)
 end

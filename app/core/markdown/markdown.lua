@@ -4,13 +4,12 @@ local lx, _M, mt = oo{
 }
 
 local app, lf, tb, str, new = lx.kit()
-local ParseDown = lx.use('.app.core.markdown.parseDown')
+
+local Doc           = require('lxlib.dom.base.xmlDoc')
 
 function _M:new()
 
     local this = {
-        htmlParser = nil,
-        markdownParser = nil
     }
     
     return oo(this, mt)
@@ -18,31 +17,85 @@ end
 
 function _M:ctor()
 
-    -- self.htmlParser = new('htmlConverter', {header_style = 'atx'})
-    self.markdownParser = new(ParseDown)
 end
 
 function _M:convertHtmlToMarkdown(html)
 
-    return self.htmlParser:convert(html)
 end
 
 function _M:convertMarkdownToHtml(markdown, clean)
 
     clean = lf.needTrue(clean)
-    local convertedHtml = self.markdownParser:text(markdown)
-    -- if clean then
-    --     convertedHtml = clean(convertedHtml, 'user_comment_content')
-    -- end
-    convertedHtml = str.gsub(convertedHtml, '<pre><code>', '<pre><code class=" language-lua">')
-    
-    return convertedHtml
 
-    -- local convertedHtml = self.markdownParser:setBreaksEnabled(true):text(markdown)
-    -- convertedHtml = Purifier.clean(convertedHtml, 'user_topic_body')
-    -- convertedHtml = str.replace(convertedHtml, "<pre><code>", '<pre><code class=" language-php">')
-    
-    -- return convertedHtml
+    local convertedHtml = app('markdown'):md2html(markdown)
+
+    convertedHtml = str.gsub(convertedHtml, '<code class="(%w+)">', '<code class=" language-%1">')
+    convertedHtml = str.gsub(convertedHtml, '<pre><code>', '<pre><code class=" language-lua">')
+
+    return convertedHtml
+end
+
+function _M:parseTopicSummary(html)
+
+    local index = 0
+    local tagLevel = 1
+    local rootUl = Doc.new('ul', {id="topicSummary", class = 'topicSummary'})
+    local wrap = rootUl
+    local wrapParent
+    local li, tl, text, ul
+    local pat = [[<a name="(.+)"><\/a>\n<h([1234]+)>(.+)<\/h]]
+
+    html = str.regsub(html, pat, function(m)
+        index = index + 1
+        tl, text = m[2], m[3]
+ 
+        if index == 1 or tl == tagLevel then
+            wrap:addtag('li' ):addtag('a', {href = '#topicHeader' .. index})
+            :text(text):up()
+        elseif tl > tagLevel then
+            wrap = wrap:addtag('ul', {class = 'topicSummary'}):addtag('li'):addtag('a', {href = '#topicHeader' .. index})
+            :text(text):up():up():last()
+        elseif tl < tagLevel then
+            if tl == 1 then
+                wrap:addtag('li'):addtag('a', {href = '#topicHeader' .. index})
+                    :text(text):up()
+                wrap = rootUl
+            else
+                wrapParent = wrap.parent or wrap
+                wrapParent:up():addtag('li')
+                :addtag('a', {href = '#topicHeader' .. index})
+                    :text(text):up()
+                wrap = wrapParent
+            end
+        end
+
+        tagLevel = tl
+
+        return '<a name="topicHeader' .. index .. '"></a>\n<h' ..
+            tl .. '>' .. text .. '</h'
+    end)
+
+    return html, rootUl
+end
+
+function _M:parseBlogSummary(html, articles)
+
+    html = self:convertMarkdownToHtml(html)
+
+    local pat = [[(\(aid:(\d+)\))]]
+    html = str.regsub(html, pat, function(m)
+        local aid = m[2]
+        local article = articles:find(aid)
+        if article then
+            return '<a href="/articles/' .. aid .. '/' ..
+                article.slug .. '">' .. article.title ..
+                '</a>'
+        else
+            return m[1]
+        end
+    end)
+
+    return html
 end
 
 return _M

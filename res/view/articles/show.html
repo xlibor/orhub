@@ -38,6 +38,7 @@
                             ⋅
                             <i class="fa fa-comments-o"></i> {{ topic.reply_count }}
 
+                            @include('topics.partials.tags')
                         </div>
 
                         <div class="entry-content">
@@ -67,11 +68,11 @@
         @endif
 
         <div class="col-md-3 main-col pull-left">
-            @include('blogs._info')
+            @include('blogs._info', {showActionItem = false})
 
-            <div id="sticker">
+            <div id="{{ Str.len(topic.summary) > 0 and '' or 'sticker' }}">
 
-                <div class="panel panel-default corner-radius">
+                <div style="display: none"  class="panel panel-default corner-radius">
 
                   <div class="panel-heading text-center">
                     <h3 class="panel-title">作者：{{ topic('user').name }}</h3>
@@ -97,8 +98,34 @@
                 </div>
             </div>
 
-
-            @if(#userTopics)
+            @if(topic.summary)
+            <div id="sticker">
+            <div class="panel panel-default corner-radius">
+              <div id="blog-summary-area" style="display: none">
+                <div class="panel-heading text-center">
+                  <button type="button" id="to-topic-summary" class="btn btn-default btn-sm btn-right" >
+                  <span class="glyphicon glyphicon-th-list popover-with-html " aria-hidden="true" data-content="切换至文章目录" data-original-title="" title=""> {{ Ah.lang('Blog Summary') }}</span>
+                  </button>
+                </div>
+                @if(blog.summary)
+                <div id="blog-summary" style="overflow-y:scroll;max-height: 530px;">
+                    {!! blog.summary !!}
+                </div>
+                @endif
+              </div>
+              <div id="topic-summary-area">
+                <div class="panel-heading text-center">
+                <button type="button" id="to-blog-summary" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-list popover-with-html" aria-hidden="true" data-content="切换至专栏目录" data-original-title="" title=""> {{ Ah.lang('Article Summary') }} </span>
+                </button>
+                </div>
+                <div id="topic-summary" style="overflow-y:scroll;max-height: 530px;">
+                    {!! topic.summary !!}
+                </div>
+              </div>
+            </div>
+            </div>
+            @elseif(#userTopics)
 
             <div class="recommended-wrap">
                 <div class="panel panel-default corner-radius recommended-articles">
@@ -142,6 +169,15 @@
             [];
         @endif
         PHPHub.initAutocompleteAtUser();
+        $('#to-blog-summary').click(function() {
+            $('#blog-summary-area').show();
+            $('#topic-summary-area').hide();
+        })
+        $('#to-topic-summary').click(function() {
+            $('#blog-summary-area').hide();
+            $('#topic-summary-area').show();
+        })
+ 
     });
 
 </script>

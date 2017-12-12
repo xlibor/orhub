@@ -41,7 +41,7 @@ function _M:link(params)
 
     params = params or {}
     
-    return route('wildcard', tb.merge({self.slug}, params))
+    return route('blogs.show', tb.merge({self.slug}, params))
 end
 
 return _M

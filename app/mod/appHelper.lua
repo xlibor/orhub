@@ -6,7 +6,7 @@ local lx, _M = oo{
 local app, lf, tb, str, new = lx.kit()
 local use, lh, env = lx.use, lx.h, lx.env
 local trans = lh.trans
--- local SlugTranslate = use('.app.core.handler.slugTranslate')
+local SlugTranslate = require('.app.core.handler.slugTranslate')
 local pow = math.pow
 local sfind, slen = string.find, string.len
 
@@ -164,7 +164,7 @@ end
 
 function _M.get_platform()
 
-    return Req.header('X-Client-Platform')
+    return app:isCmdMode() and 'cmd' or Req.header('x-client-platform')
 end
 
 function _M.is_request_from_api()
@@ -235,7 +235,7 @@ function _M.get_images_from_html(html)
     local img_tags = doc:getElementsByTagName('img')
     local result = {}
     for _, img in ipairs(img_tags) do
-        tapd(result, img.attributes.src)
+        tapd(result, img.src)
     end
 
     return result
@@ -243,8 +243,7 @@ end
 
 function _M.slug_trans(word)
 
-    return str.random(8)
-    -- return SlugTranslate.translate(word)
+    return SlugTranslate.translate(word)
 end
 
 -- Shortens a number and attaches K, M, B, etc. accordingly

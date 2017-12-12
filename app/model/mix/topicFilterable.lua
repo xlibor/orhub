@@ -20,6 +20,14 @@ function _M:getCategoryTopicsWithFilter(filter, category_id, limit)
     return self:applyFilter(filter == 'default' and 'category' or filter):where('category_id', '=', category_id):with('user', 'category', 'lastReplyUser'):paginate(limit)
 end
 
+function _M:getTaggedTopicsWithFilter(filter, tag, limit)
+
+    limit = limit or 20
+    filter = self:getTopicFilter(filter)
+
+    return self:applyFilter(filter):withAnyTag(tag.name):with('user', 'category', 'lastReplyUser'):paginate(limit)
+end
+
 function _M:getTopicFilter(request_filter)
 
     local filters = {'noreply', 'vote', 'excellent', 'recent', 'wiki', 'jobs', 'excellent-pinned', 'index'}

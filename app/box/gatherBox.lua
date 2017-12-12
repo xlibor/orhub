@@ -26,6 +26,8 @@ function _M:boot()
         context.banners = Banner.allByPosition()
         context.siteStat = app('.app.core.stat.stat'):getSiteStat()
     end)
+
+    view:gather('layouts.partials.hot_tags', '.app.http.gather.hotTags')
 end
 
 return _M

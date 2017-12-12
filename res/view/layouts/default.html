@@ -22,7 +22,7 @@
         <meta name="_token" content="{{ csrf_token() }}">
         <link rel="stylesheet" href="{{ mix('/css/styles.css') }}">
         <link rel="shortcut icon" href="{{ Ah.cdn('/favicon.png') }}"/>
-
+        @yield('styles')
         <script>
             Config = {
                 'cdnDomain': '{{ Ah.get_cdn_domain() }}',
@@ -43,11 +43,7 @@
 
 			var ShowCrxHint = '{{ 'no' }}';
         </script>
-
-	    @yield('styles')
-
 		<meta http-equiv="x-pjax-version" content="{{ mix('/css/styles.css') }}">
-
 	</head>
 	<body id="body" class="{{ Ah.route_class() }}">
 
@@ -63,7 +59,7 @@
 
 			@include('layouts.partials.nav')
 
-			<div class="container main-container {{ (Req.is('blogs*') or Req.is('articles*') or Ah.is_route('wildcard')) and 'blog-container' or '' }}">
+			<div class="container main-container {{ (Req.is('blogs*') or Req.is('articles*') or Ah.is_route('blogs.show')) and 'blog-container' or '' }}">
 				@if(Auth.check() and not Auth.user().verified and not Req.is('email-verification-required'))
     				<div class="alert alert-warning">
     		            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>

@@ -19,8 +19,11 @@
           <div class="">
               <h2><i class="fa fa-paper-plane" aria-hidden="true"></i> {{ blog.id and '编辑专栏' or '新建专栏' }}
                   @if(blog.id)
-                      <a href="{{ route('articles.create') }}" class="btn btn-primary no-pjax">
-                      <i class="fa fa-paint-brush" aria-hidden="true"></i>  创作文章
+                    <a href="{{ route('articles.create') }}" class="btn btn-primary no-pjax">
+                    <i class="fa fa-paint-brush" aria-hidden="true"></i>  创作文章
+                    </a>
+                    <a href="{{ route('blogs.editSummary', blog.id) }}" class="btn btn-primary no-pjax">
+                    <i class="fa fa-paint-brush" aria-hidden="true"></i>  编辑目录
                     </a>
                   @endif
               </h2>
@@ -88,7 +91,7 @@
                 <div class="col-sm-offset-2 col-sm-6">
                   <input class="btn btn-primary" id="user-edit-submit" type="submit" value="{{ Ah.lang('Apply Changes') }}">
                 </div>
-              </div>
+            </div>
         </form>
       </div>
 

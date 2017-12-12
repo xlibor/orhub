@@ -5,6 +5,11 @@
     @parent
 @stop
 
+@section('styles')
+<link rel="stylesheet" href="{{ mix('/css/editor.css') }}">
+<link href="//cdn.bootcss.com/select2/4.0.3/css/select2.min.css" rel="stylesheet">
+@endsection
+
 @section('content')
 
 <div class="blog-pages">
@@ -36,6 +41,19 @@
                     <input class="form-control" id="article-title" placeholder="{{ Ah.lang('Please write down a topic') }}" name="title" type="text" value="{{ old('title') or topic.title }}" required="require">
                 </div>
 
+                <div class="form-group">
+                <select id="post-tags" name="tags[]" class="form-control" multiple>
+         
+                @foreach(tags as tag)
+                    @if(topicTags and topicTags[tag.name])
+                        <option value="{{ tag.name }}" selected>{{ tag.name }}</option>
+                    @else
+                        <option value="{{ tag.name }}">{{ tag.name }}</option>
+                    @endif
+                @endforeach
+                </select>
+                </div>
+        
                 @include('topics.partials.composing_help_block', {without_box = false})
 
                 <div class="form-group">
@@ -63,12 +81,15 @@
 @stop
 
 @section('scripts')
-
-<link rel="stylesheet" href="{{ mix('/css/editor.css') }}">
+ 
 <script src="{{ mix('/js/editor.js') }}"></script>
+<script src="//cdn.bootcss.com/select2/4.0.3/js/select2.min.js"></script>
 
 <script type="text/javascript">
-
+    $("#post-tags").select2({
+        tags: false,
+        placeholder: '请选择标签'
+    });
     $(document).ready(function()
     {
         @if(lf.isEmpty(topic.id))

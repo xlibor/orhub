@@ -5,9 +5,10 @@ local lx, _M, mt = oo{
 }
 
 local app, lf, tb, str, new = lx.kit()
-local try = lx.try
-local redirect, lang = lx.h.redirect, Ah.lang
-local UserSubscribedBlog = lx.use('.app.activity.userSubscribedBlog')
+local try, use              = lx.try, lx.use
+local redirect, lang        = lx.h.redirect, Ah.lang
+local Markdown              = use('.app.core.markdown.markdown')
+local UserSubscribedBlog    = use('.app.activity.userSubscribedBlog')
 
 function _M:ctor()
 
@@ -35,7 +36,6 @@ end
 
 function _M:store(c)
 
-
     local file = c.req:file('cover')
     local request = c:form('blogStoreRequest')
     
@@ -56,11 +56,20 @@ function _M:store(c)
     return redirect():route('blogs.edit', blog.id)
 end
 
+function _M.__:validateCreator(blog, user)
+
+    local creatorId = blog.user_id
+    if not lf.eq(creatorId, user.id) then
+        error('you are not the author of blog ' ..blog.id)
+    end
+end
+
 function _M:edit(c, id)
 
     local user = Auth.user()
     local blog = Blog.findOrFail(id)
-    
+    self:validateCreator(blog, user)
+
     return c:view('blogs.create_edit', Compact('blog', 'user'))
 end
 
@@ -68,6 +77,7 @@ function _M:update(c, id)
 
     local request = c:form('blogStoreRequest')
     local blog = Blog.findOrFail(id)
+    self:validateCreator(blog, Auth.user())
 
     local ok, ret = try(function()
         request:performUpdate(blog)
@@ -105,6 +115,36 @@ function _M:unsubscribe(c, id)
     app(UserSubscribedBlog):remove(Auth.user(), blog)
     
     return redirect():back()
+end
+
+function _M:editSummary(c, id)
+
+    local user = Auth.user()
+    local blog = Blog.findOrFail(id)
+
+    c:view('blogs.summary.create_edit', Compact('blog', 'user'))
+end
+
+function _M:updateSummary(c, id)
+
+    local request = c.req
+
+    local blog = Blog.findOrFail(id)
+    local user = Auth.user()
+    self:validateCreator(blog, user)
+    local articles = blog:topics()
+        :onlyArticle()
+        :get('id', 'slug', 'title'):col()
+
+    local markdown = new(Markdown)
+    local summary = request:input('summary')
+
+    blog.summary_original = summary
+    summary = markdown:parseBlogSummary(summary, articles)
+    blog.summary = summary
+    blog:save()
+
+    return redirect():route('blogs.editSummary', blog.id)
 end
 
 return _M

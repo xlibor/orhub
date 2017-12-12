@@ -10,6 +10,7 @@ local use, lh       = lx.use, lx.h
 local redirect      = lh.redirect
 local lang          = Ah.lang
 local TopicDoer     = use('.app.http.doer.topic')
+local Tag           = use('.app.model.tag')
 
 function _M:ctor()
 
@@ -29,14 +30,18 @@ function _M:create(c)
     local blogId = request:input('blog_id')
     local blog = blogId and Blog.findOrFail(blogId) or Auth.user():blogs():first()
     self:authorize('create-article', blog)
-    
-    return c:view('articles.create_edit', Compact('topic', 'user', 'blog'))
+
+    local tags = Tag.all()
+    local topicTags = false
+
+    return c:view('articles.create_edit', Compact('topic', 'user', 'blog', 'tags', 'topicTags'))
 end
 
 function _M:store(c)
 
     local request = c:form('storeTopicRequest')
     
+    local user = Auth.user()
     local data = request:except('_token')
     local blog = Blog.findOrFail(request.blog_id)
     self:authorize('create-article', blog)
@@ -45,7 +50,7 @@ function _M:store(c)
         data.is_draft = 'yes'
     end
     
-    return new(TopicDoer):create(self, data, blog)
+    return new(TopicDoer):create(self, user, data, true, blog)
 end
 
 function _M:transform(c, id)
@@ -80,8 +85,10 @@ end
 function _M:edit(c, id)
 
     local topic = Topic.findOrFail(id)
-    
-    return c:view('articles.create_edit', Compact('topic'))
+    local tags = Tag.all()
+    local topicTags = tb.flip(topic:tagNames(), true)
+
+    return c:view('articles.create_edit', Compact('topic', 'tags', 'topicTags'))
 end
 
 function _M:update(c, id)

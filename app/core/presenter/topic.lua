@@ -14,7 +14,10 @@ function _M:topicFilter(filter)
     local category_append = ''
     if Req.is('categories*') and category_id then
         link = url('categories', category_id) .. '?filter=' .. filter
-    else 
+    elseif Req.is('tagged*') then
+        local tagName = Req.segment(3)
+        link = url('tagged/topics', tagName) .. '?filter=' .. filter
+    else
         query_append = ''
         query = Req.except('filter', '_pjax')
         if query then
@@ -22,7 +25,10 @@ function _M:topicFilter(filter)
         end
         link = Url.to('topics') .. '?filter=' .. filter .. query_append .. category_append
     end
-    local selected = Req.get('filter') and Req.get('filter') == filter and ' class="active"' or '' or (filter == 'default' and ' class="active"' or '')
+    local selected = Req.get('filter')
+        and Req.get('filter') == filter
+        and ' class="active"' or ''
+        or(filter == 'default' and ' class="active"' or '')
     
     return 'href="' .. link .. '"' .. selected
 end
