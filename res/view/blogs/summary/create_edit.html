@@ -1,0 +1,51 @@
+@extends('layouts.default')
+
+@section('title')
+{{ blog.summary and '编辑目录' or '新建目录' }} | @parent
+@stop
+
+@section('content')
+
+<div class="users-show  row">
+
+  <div class="col-md-3">
+        @include('users.partials.basicinfo')
+  </div>
+
+  <div class="panel main-col col-md-9 left-col">
+
+      <div class="panel-body ">
+
+          <div class="">
+              <h2><i class="fa fa-paper-plane" aria-hidden="true"></i> {{ blog.summary and '编辑专栏目录' or '新建专栏目录' }}
+              </h2>
+          </div>
+
+          <hr>
+
+          @include('layouts.partials.errors')
+
+          <form class="form-horizontal" method="POST" action="{{ route('blogs.updateSummary', blog.id) }}" accept-charset="UTF-8" id="summary-edit-form" >
+
+              {!! csrf_field() !!}
+
+            <div class="form-group">
+                <div class="col-sm-6">
+                  <textarea class="form-control" rows="7" name="summary" cols="50" style="font-size: 14px;line-height: 20px;">{{ old('summary') or blog.summary_original }}</textarea>
+                </div>
+                <div class="col-sm-4 help-block">
+                      {!! blog.summary !!}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-6">
+                  <input class="btn btn-primary" id="user-edit-submit" type="submit" value="{{ Ah.lang('Apply Changes') }}">
+                </div>
+            </div>
+          </form>
+      </div>
+  </div>
+</div>
+
+@stop

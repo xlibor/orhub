@@ -1,0 +1,7 @@
+
+&nbsp;&nbsp;标签:
+@if(tags)
+  @foreach(tags as tag)
+    <a href="{{ route('tagged.topics', tag.name) }}">{{ tag.name }}</a>
+  @endforeach
+@endif
