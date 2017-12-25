@@ -7,7 +7,7 @@
             <div class="media-left">
               <div class="image">
                   @if(currentUser and currentUser.id == user.id)
-                  <a href="{{ route('users.edit_avatar', user.id) }}" class="popover-with-html" data-content="修改头像">
+                  <a href="{{ route('users.edit_avatar') }}" class="popover-with-html" data-content="修改头像">
                       <img class="media-object avatar-112 avatar img-thumbnail" src="{{ user:present():gravatar(200) }}">
                   </a>
                   @else
@@ -140,7 +140,7 @@
         @endif
 
         @if(currentUser and currentUser.id == user.id)
-          <a class="btn btn-primary btn-block" href="{{ route('users.edit', user.id) }}" id="user-edit-button">
+          <a class="btn btn-primary btn-block" href="{{ route('users.edit') }}" id="user-edit-button">
             <i class="fa fa-edit"></i> {{ Ah.lang('Edit Profile') }}
           </a>
         @endif

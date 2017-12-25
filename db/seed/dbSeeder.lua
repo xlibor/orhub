@@ -13,8 +13,7 @@ function _M:new()
         seeders = {
             'usersTableSeeder', 'linksTableSeeder',
             'categoriesTableSeeder', 'blogTableSeeder',
-            'topicsTableSeeder', 'repliesTableSeeder',
-            'bannersTableSeeder', 'followersTableSeeder',
+            'topicsTableSeeder', 'repliesTableSeeder', 'followersTableSeeder',            'bannersTableSeeder',
             'activeUsersTableSeeder', 'hotTopicsTableSeeder',
             'sitesTableSeeder', 'oauthClientsTableSeeder'
         }

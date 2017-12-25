@@ -34,28 +34,6 @@
   </div>
   @endif
 
-  @if(Ctx.userTopics and #userTopics)
-  <div class="panel panel-default corner-radius">
-    <div class="panel-heading text-center">
-      <h3 class="panel-title">{{ topic('user').name }} 的其他话题</h3>
-    </div>
-    <div class="panel-body">
-      @include('layouts.partials.sidebar_topics', {sidebarTopics = userTopics, numbered = false})
-    </div>
-  </div>
-  @endif
-
-  @if(Ctx.categoryTopics and #categoryTopics)
-  <div class="panel panel-default corner-radius">
-    <div class="panel-heading text-center">
-      <h3 class="panel-title">{{ Ah.lang('Same Category Topics') }}</h3>
-    </div>
-    <div class="panel-body">
-      @include('layouts.partials.sidebar_topics', {sidebarTopics = categoryTopics, numbered = false})
-    </div>
-  </div>
-  @endif
-
 <div class="panel panel-default corner-radius" style="
     text-align: center;
     background-color: transparent;
@@ -88,18 +66,18 @@
 </div>
 @endif
 
+@if(banners['sidebar-sponsor'])
   <div class="panel panel-default corner-radius">
     <div class="panel-body text-center sidebar-sponsor-box">
-        @if(banners['sidebar-sponsor'])
             @foreach(banners['sidebar-sponsor'] as banner)
                 <a class="sidebar-sponsor-link" href="{{ banner.link }}" target="_blank">
                     <img src="{{ banner.image_url }}" class="popover-with-html" data-content="{{ banner.title }}" width="100%">
                 </a>
                 <hr>
             @endforeach
-        @endif
   </div>
   </div>
+@endif
 
 @if(Route.currentRouteName() ~= 'home')
   @if(Ctx.links and #links)
@@ -166,13 +144,14 @@
 <div id="sticker">
 <div class="panel panel-default corner-radius">
   <div class="panel-heading text-center">
-  <h2 class="panel-title">{{ Ah.lang('Topic Summary') }}</h2>
+    <h2 class="panel-title">{{ Ah.lang('Topic Summary') }}</h2>
   </div>
-{!! topic.summary !!}
+  <div id="topic-summary" class="summary" style="overflow-y:auto;max-height: 530px;text-align: left;">
+      {!! topic.summary !!}
+  </div>
 </div>
 </div>
 @endif
 
 </div>
 <div class="clearfix"></div>
-

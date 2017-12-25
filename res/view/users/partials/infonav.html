@@ -19,7 +19,7 @@
 
   @if(Auth.check() and Auth.id() == user.id)
   <!-- <li class="{{ Ah.navViewActive('users.access_tokens') }}">
-    <a href="{{ route('users.access_tokens', user.id) }}" >{{ Ah.lang('Access Tokens') }}</a>
+    <a href="{{ route('users.access_tokens') }}" >{{ Ah.lang('Access Tokens') }}</a>
   </li> -->
   @endif
 </ul>

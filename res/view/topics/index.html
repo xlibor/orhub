@@ -42,18 +42,14 @@
         </div>
 
         @if(not topics:isEmpty())
-
-            <div class="jscroll">
-                <div class="panel-body remove-padding-horizontal">
-                    @include('topics.partials.topics')
-                </div>
-
-                <div class="panel-footer text-right remove-padding-horizontal pager-footer">
-                    <!-- Pager -->
-                    {!! topics:appends(Req.except('page', '_pjax')):render() !!}
-                </div>
+            <div class="panel-body remove-padding-horizontal">
+                @include('topics.partials.topics')
             </div>
 
+            <div class="panel-footer text-right remove-padding-horizontal pager-footer">
+                <!-- Pager -->
+                {!! topics:appends(Req.except('page', '_pjax')):render() !!}
+            </div>
         @else
             <div class="panel-body">
                 <div class="empty-block">{{ Ah.lang('Dont have any data Yet') }}~~</div>

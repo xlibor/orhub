@@ -15,11 +15,11 @@ local lx, _M = oo{
     _static_ = {}
 }
 
-local app, lf, tb, str = lx.kit()
-local route = lx.h.route
-local env = lx.env
-local SiteStatus = lx.use('.app.model.siteStatus')
-local UserRepliedTopic = lx.use('.app.activity.userRepliedTopic')
+local app, lf, tb, str  = lx.kit()
+local route             = lx.h.route
+local env               = lx.env
+local SiteStatus        = lx.use('.app.model.siteStatus')
+local UserRepliedTopic  = lx.use('.app.activity.userRepliedTopic')
 
 local static
 
@@ -45,7 +45,7 @@ function _M:ctor()
     self.fillable = {
         'title', 'slug', 'body', 'excerpt', 'is_draft', 'source',
         'body_original', 'user_id', 'category_id', 'created_at',
-        'updated_at', 'summary', 'is_tagged'
+        'updated_at', 'summary', 'is_tagged', 'extra'
     }
 end
 

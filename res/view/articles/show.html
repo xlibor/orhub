@@ -29,7 +29,9 @@
                             </div>
                         @endif
 
-                        <div class="article-meta text-center">
+                        <div class="article-meta text-center meta">
+                            <a class="author" href="{{ route('users.show', topic('user').id) }}">{{ topic('user').name }}</a>
+                            ⋅
                             <i class="fa fa-clock-o"></i> <abbr title="{{ topic.created_at }}" class="timeago">{{ topic.created_at }}</abbr>
                             ⋅
                             <i class="fa fa-eye"></i> {{ topic.view_count }}
@@ -62,41 +64,12 @@
               @include('topics.partials.show_segment')
         </div>
 
-
         @if(topic('user').payment_qrcode)
             @include('topics.partials.payment_qrcode_modal')
         @endif
 
         <div class="col-md-3 main-col pull-left">
             @include('blogs._info', {showActionItem = false})
-
-            <div id="{{ Str.len(topic.summary) > 0 and '' or 'sticker' }}">
-
-                <div style="display: none"  class="panel panel-default corner-radius">
-
-                  <div class="panel-heading text-center">
-                    <h3 class="panel-title">作者：{{ topic('user').name }}</h3>
-                  </div>
-
-                    <div class="panel-body text-center topic-author-box">
-                        @include('topics.partials.topic_author_box')
-
-                        @if(Auth.check() and currentUser.id ~= topic('user').id)
-                            <span class="text-white">
-                                {? local isFollowing = currentUser and currentUser:isFollowing(topic('user').id) ?}
-                                <hr>
-                                <a data-method="post" class="btn btn-{{ not isFollowing and 'warning' or 'default' }} btn-block" href="javascript:void(0);" data-url="{{ route('users.doFollow', topic('user').id) }}" id="user-edit-button">
-                                   <i class="fa {{not isFollowing and 'fa-plus' or 'fa-minus'}}"></i> {{ not isFollowing and '关注 Ta' or '已关注' }}
-                                </a>
-
-                                <a class="btn btn-default btn-block" href="{{ route('messages.create', topic('user').id) }}" >
-                                   <i class="fa fa-envelope-o"></i> 发私信
-                                </a>
-                            </span>
-                        @endif
-                    </div>
-                </div>
-            </div>
 
             @if(topic.summary)
             <div id="sticker">
@@ -108,7 +81,7 @@
                   </button>
                 </div>
                 @if(blog.summary)
-                <div id="blog-summary" style="overflow-y:scroll;max-height: 530px;">
+                <div id="blog-summary" class="summary" style="overflow-y:scroll;max-height: 530px;">
                     {!! blog.summary !!}
                 </div>
                 @endif
@@ -119,7 +92,7 @@
                     <span class="glyphicon glyphicon-list popover-with-html" aria-hidden="true" data-content="切换至专栏目录" data-original-title="" title=""> {{ Ah.lang('Article Summary') }} </span>
                 </button>
                 </div>
-                <div id="topic-summary" style="overflow-y:scroll;max-height: 530px;">
+                <div id="topic-summary" class="summary" style="overflow-y:auto;max-height: 530px;">
                     {!! topic.summary !!}
                 </div>
               </div>
@@ -137,11 +110,8 @@
                     </div>
                 </div>
             </div>
-
             @endif
-
         </div>
-
 </div>
 
 @stop
@@ -168,16 +138,37 @@
         @else
             [];
         @endif
-        PHPHub.initAutocompleteAtUser();
+        lxhub.initAutocompleteAtUser();
         $('#to-blog-summary').click(function() {
             $('#blog-summary-area').show();
+            $('.blog-info').parent().hide();
             $('#topic-summary-area').hide();
+            var blogSummaryLinks = $('#blog-summary a');
+            var blogSummary = $('#blog-summary');
+            blogSummaryLinks.each(function() {
+                currUrl = window.location.href;
+                href = $(this).attr('href');
+                if (currUrl.indexOf(href) > 0 ) {
+                    $(this).addClass('current');
+                    blogSummary.animate({scrollTop: $(this).offset().top - blogSummary.offset().top + blogSummary.scrollTop() - 30 }, 0, null, function() {
+
+                    });
+
+                    return false;
+                }
+            });
         })
         $('#to-topic-summary').click(function() {
             $('#blog-summary-area').hide();
             $('#topic-summary-area').show();
         })
- 
+
+        $("#topic-summary").navScrollSpy({
+            navContainer: "#topic-summary",
+            current:"current",
+            speed: 0
+        });
+        $("#topicSummary > li > a").addClass('current');
     });
 
 </script>

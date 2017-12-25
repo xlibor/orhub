@@ -12,9 +12,9 @@ local lx, _M, mt = oo{
 }
 
 local app, lf, tb, str, new = lx.kit()
-local try = lx.try
-local redirect, route = lx.h.redirect, lx.h.route
-local lang = Ah.lang
+local try, lh               = lx.try, lx.h
+local redirect, route       = lh.redirect, lh.route
+local lang                  = Ah.lang
 
 function _M:ctor()
     
@@ -115,7 +115,7 @@ function _M:userCreated(user)
     Session.forget('oauthData')
     Flash.success(lang('Congratulations and Welcome!'))
     
-    return redirect(route('users.edit', Auth.user().id))
+    return redirect(route('users.edit'))
 end
 
 ------------------------------------------
@@ -161,7 +161,7 @@ function _M:userFound(user)
     Session.forget('oauthData')
     Flash.success(lang('Login Successfully.'))
     
-    return redirect(route('users.edit', Auth.user().id))
+    return redirect(route('users.edit'))
 end
 
 -- 用户屏蔽

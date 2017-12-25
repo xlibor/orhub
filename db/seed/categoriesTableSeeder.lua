@@ -87,7 +87,7 @@ function _M:run()
         parent_id = 0,
         post_count = 0,
         weight = 98,
-        name = '邮件组',
+        name = '邮件',
         slug = 'google-groups',
         description = 'google-groups镜像。',
         created_at = '2016-07-03 10:00:00',

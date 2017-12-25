@@ -31,20 +31,6 @@ function _M:ctor()
     self:setBar('auth', {except = {'index', 'show'}})
 end
 
-function _M:removeDiv(html, className)
-
-    while true do
-        local firstPos = str.find(html, "<div [^>]-" .. str.quote(className))
-        if not firstPos then break end
-        local over = str.findTagEnd(html, 'div', _, firstPos + 3)
-        if not over then break end
-        html = ssub(html, 1, firstPos - 1) .. ssub(html, over + 1)
-        -- echo(firstPos, ',', over)
-    end
-
-    return html
-end
-
 function _M:index(c)
 
     local request = c.req
@@ -91,7 +77,6 @@ function _M:show(c, id, fromCode)
         return redirect():route('topics.index')
     end
     local replies = topic:getRepliesWithLimit(app:conf('lxhub.repliesPerpage'), request.order_by)
-    local categoryTopics = topic:getSameCategoryTopics()
     local votedUsers = topic:votes()
         :orderBy('id', 'desc'):with('user')
         :get():col():pluck(function(item)
@@ -112,14 +97,12 @@ function _M:show(c, id, fromCode)
         end
         user = topic('user')
         blog = topic:blogs():first()
-        userTopics = blog:topics():withoutDraft():onlyArticle():orderBy('vote_count', 'desc'):limit(5):get()
 
-        c:view('articles.show', Compact('blog', 'user', 'topic', 'replies', 'categoryTopics', 'category', 'tags', 'banners', 'cover', 'votedUsers', 'userTopics', 'revisionHistory'))
+        c:view('articles.show', Compact('blog', 'user', 'topic', 'replies', 'category', 'tags', 'banners', 'cover', 'votedUsers', 'revisionHistory'))
     else
-        userTopics = topic:byWhom(topic.user_id):withoutDraft():withoutBoardTopics():recent():limit(3):get()
         local appends = topic:appendContents():get()
 
-        c:view('topics.show', Compact('topic', 'replies', 'categoryTopics', 'category', 'tags', 'banners', 'cover', 'votedUsers', 'userTopics', 'revisionHistory', 'appends'))
+        c:view('topics.show', Compact('topic', 'replies', 'category', 'tags', 'banners', 'cover', 'votedUsers', 'revisionHistory', 'appends'))
     end
 end
 
@@ -131,7 +114,7 @@ function _M:create(c)
     if categoryId then
         category = Category.find(categoryId)
     end
-    local categories = Category.where('id', '!=', app:conf('lxhub.blogCategoryId')):get()
+    local categories = new(Category):topicAttachable():get()
     local tags = Tag.all()
     local topicTags = false
 

@@ -1,14 +1,15 @@
 
 local lx, _M, mt = oo{
     _cls_ = '',
-    _ext_ = 'controller'
+    _ext_ = 'controller',
+    _mix_ = {'socialiteHelper'}
 }
 
 local app, lf, tb, str, new = lx.kit()
-local try = lx.try
-local lh = lx.h
+local try, lh, use          = lx.try, lx.h, lx.use
 local redirect, route, lang = lh.redirect, lh.route, Ah.lang
-local UserFollowedUser = lx.use('.app.activity.userFollowedUser')
+local UserFollowedUser      = use('.app.activity.userFollowedUser')
+local empty                 = lf.isEmpty
 
 function _M:ctor()
 
@@ -36,19 +37,19 @@ function _M:show(c, id)
     c:view('users.show', Compact('user', 'blog', 'articles', 'topics', 'replies'))
 end
 
-function _M:edit(c, id)
+function _M:edit(c)
 
-    local user = User.findOrFail(id)
+    local user = Auth.user()
     self:authorize('update', user)
     
     c:view('users.edit', Compact('user', 'topics', 'replies'))
 end
 
-function _M:update(c, id)
+function _M:update(c)
 
     local request = c:form('updateUserRequest')
 
-    local user = User.findOrFail(id)
+    local user = Auth.user()
     self:authorize('update', user)
 
     try(function()
@@ -60,7 +61,7 @@ function _M:update(c, id)
     end)
     :run()
 
-    return redirect(route('users.edit', id))
+    return redirect(route('users.edit'))
 end
 
 function _M:replies(c, id)
@@ -124,13 +125,9 @@ function _M:followers(c, id)
     c:view('users.followers', Compact('user', 'users'))
 end
 
-function _M:accessTokens(c, id)
+function _M:accessTokens(c)
 
-    if not Auth.check() or Auth.id() ~= id then
-        
-        return redirect(route('users.show', id))
-    end
-    local user = User.findOrFail(id)
+    local user = Auth.user()
     local sessions = OAuthSession.where({owner_type = 'user', owner_id = Auth.id()}):with('token'):lists('id') or {}
     local tokens = AccessToken.whereIn('session_id', sessions):get()
     
@@ -147,7 +144,7 @@ function _M:revokeAccessToken(c, token)
         Flash.success(lang('Revoke success'))
     end
     
-    return redirect(route('users.access_tokens', Auth.id()))
+    return redirect(route('users.access_tokens'))
 end
 
 function _M:blocking(c, id)
@@ -162,44 +159,44 @@ function _M:blocking(c, id)
     return redirect(route('users.show', id))
 end
 
-function _M:editEmailNotify(c, id)
+function _M:editEmailNotify(c)
 
-    local user = User.findOrFail(id)
+    local user = Auth.user()
     self:authorize('update', user)
     
     c:view('users.edit_email_notify', Compact('user'))
 end
 
-function _M:updateEmailNotify(c, id)
+function _M:updateEmailNotify(c)
 
     local request = c.req
-    local user = User.findOrFail(id)
+    local user = Auth.user()
     self:authorize('update', user)
     user.email_notify_enabled = request.email_notify_enabled == 'on' and 'yes' or 'no'
     user:save()
     Flash.success(lang('Operation succeeded.'))
     
-    return redirect(route('users.edit_email_notify', id))
+    return redirect(route('users.edit_email_notify'))
 end
 
-function _M:editPassword(c, id)
+function _M:editPassword(c)
 
-    local user = User.findOrFail(id)
+    local user = Auth.user()
     self:authorize('update', user)
     
     c:view('users.edit_password', Compact('user'))
 end
 
-function _M:updatePassword(c, id, request)
+function _M:updatePassword(c)
 
     local request = c:form('resetPasswordRequest')
-    local user = User.findOrFail(id)
+    local user = Auth.user()
     self:authorize('update', user)
     user.password = Hash(request.password)
     user:save()
     Flash.success(lang('Operation succeeded.'))
     
-    return redirect(route('users.edit_password', id))
+    return redirect(route('users.edit_password'))
 end
 
 function _M:githubApiProxy(c, username)
@@ -244,18 +241,18 @@ function _M:doFollow(c, id)
     return redirect():back()
 end
 
-function _M:editAvatar(c, id)
+function _M:editAvatar(c)
 
-    local user = User.findOrFail(id)
+    local user = Auth.user()
     self:authorize('update', user)
     
     c:view('users.edit_avatar', Compact('user'))
 end
 
-function _M:updateAvatar(c, id)
+function _M:updateAvatar(c)
 
     local request = c.req
-    local user = User.findOrFail(id)
+    local user = Auth.user()
     self:authorize('update', user)
     local file = request:file('avatar')
     if file then
@@ -271,7 +268,7 @@ function _M:updateAvatar(c, id)
         Flash.error(lang('Update Avatar Failed'))
     end
     
-    return redirect(route('users.edit_avatar', id))
+    return redirect(route('users.edit_avatar'))
 end
 
 function _M:sendVerificationMail(c)
@@ -295,12 +292,37 @@ function _M:sendVerificationMail(c)
     return redirect():intended('/')
 end
 
-function _M:editSocialBinding(c, id)
+function _M:editSocialBinding(c)
 
-    local user = User.findOrFail(id)
+    local user = Auth.user()
     self:authorize('update', user)
     
-    c:view('users.edit_social_binding', Compact('user'))
+    local bindings = {
+        {name = 'github', lang = 'GitHub', binded = user.github_id > 0},
+        {name = 'wechat', lang = 'WeChat', binded = not empty(user.wechat_openid), iclass = 'weixin'},
+        {name = 'qq',     lang = 'QQ',     binded = not empty(user.qq_openid)}
+    }
+
+    for _, binding in ipairs(bindings) do
+        if user.register_source == binding.name then
+            binding.isRegister = true
+        end
+    end
+    
+    c:view('users.edit_social_binding', Compact('user', 'bindings'))
+end
+
+function _M:socialUnbinding(c)
+
+    local request = c.req
+    local user = Auth.user()
+    self:authorize('update', user)
+    local driver = request:input('driver')
+    self:unbindSocialiteUser(driver)
+
+    Flash.success(lang('Already unbinded') .. ' ' .. lang(driver))
+
+    return redirect(route('users.edit_social_binding'))
 end
 
 function _M:emailVerificationRequired(c)

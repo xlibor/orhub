@@ -23,7 +23,7 @@
 
         @include('layouts.partials.errors')
 
-        <form method="POST" action="{{ route('users.update_avatar', user.id) }}" enctype="multipart/form-data" accept-charset="UTF-8">
+        <form method="POST" action="{{ route('users.update_avatar') }}" enctype="multipart/form-data" accept-charset="UTF-8">
             <input name="_method" type="hidden" value="PATCH">
             {!! csrf_field() !!}
 

@@ -23,7 +23,7 @@
 
         @include('layouts.partials.errors')
 
-        <form class="form-horizontal" method="POST" action="{{ route('users.update_email_notify', user.id) }}" accept-charset="UTF-8">
+        <form class="form-horizontal" method="POST" action="{{ route('users.update_email_notify') }}" accept-charset="UTF-8">
 
             {!! csrf_field() !!}
 

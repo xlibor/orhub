@@ -21,7 +21,7 @@
         " />
         <meta name="_token" content="{{ csrf_token() }}">
         <link rel="stylesheet" href="{{ mix('/css/styles.css') }}">
-        <link rel="shortcut icon" href="{{ Ah.cdn('/favicon.png') }}"/>
+        <link rel="shortcut icon" href="{{ Ah.cdn('/assets/images/favicon.png') }}"/>
         @yield('styles')
         <script>
             Config = {
@@ -68,7 +68,7 @@
                 @elseif(Auth.check() and lf.isEmpty(Auth.user().password))
                     <div class="alert alert-warning">
     		            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-    		            未设置登录密码，请前往 <a href="{{ route('users.edit_password', {Auth.id()}) }}">修改密码</a> 页面进行设置。设置后将可以在移动设备上使用邮箱登录网站。
+    		            未设置登录密码，请前往 <a href="{{ route('users.edit_password') }}">修改密码</a> 页面进行设置。设置后将可以在移动设备上使用邮箱登录网站。
     		        </div>
 				@endif
 

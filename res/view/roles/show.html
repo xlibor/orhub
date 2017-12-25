@@ -19,7 +19,7 @@
             <div class="card {{ index % 2 == 0 and 'add-margin-right' or 'add-margin-left' }}">
 
                 @if(currentUser and currentUser.id == user.id)
-                <a class="pull-right popover-with-html text-lg animated rubberBand edit-btn" href="{{ route('users.edit', user.id) }}" data-content="{{ Ah.lang('Edit Profile') }}">
+                <a class="pull-right popover-with-html text-lg animated rubberBand edit-btn" href="{{ route('users.edit') }}" data-content="{{ Ah.lang('Edit Profile') }}">
                     <i class="fa fa-cog"></i>
                 </a>
                 @endif

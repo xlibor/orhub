@@ -103,10 +103,10 @@ function _M.__:saveData(data, user, isCreate)
     local currTime = lf.datetime()
     if isCreate then
         data.user_id = user.id
-        data.created_at = currTime
+        data.created_at = data.created_at or currTime
         data.category_id = tonumber(data.category_id)
     end
-    data.updated_at = currTime
+    data.updated_at = data.updated_at or currTime
 
     local body, summary
     body = self.mentionParser:parse(data.body)

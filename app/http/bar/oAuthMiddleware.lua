@@ -30,7 +30,7 @@ end
 
 -- Handle an incoming request.
 -- @param \Illuminate\Http\Request                request
--- @param func|\PHPHub\Http\Middleware\Closure next
+-- @param func|\lxhub\Http\Middleware\Closure next
 -- @param type
 -- @return mixed
 -- @throws AccessDeniedException

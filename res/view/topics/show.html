@@ -114,7 +114,16 @@
         @else
             [];
         @endif
-        PHPHub.initAutocompleteAtUser();
+        lxhub.initAutocompleteAtUser();
+
+        if ($("#topic-summary").length > 0) {
+          $("#topicSummary > li > a").addClass('current');
+          $("#topic-summary").navScrollSpy({
+              navContainer: "#topic-summary",
+              current:"current",
+              speed: 0
+          });
+        }
     });
 
 </script>

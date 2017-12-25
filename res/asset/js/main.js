@@ -4,7 +4,7 @@
     var original_title = document.title;
     var nCount = 0;
 
-    var PHPHub = {
+    var lxhub = {
         init: function(){
             var self = this;
             $(document).pjax('a:not(a[target="_blank"])', 'body', {
@@ -1031,12 +1031,12 @@
         },
 
     };
-    window.PHPHub = PHPHub;
+    window.lxhub = lxhub;
 })(jQuery);
 
 $(document).ready(function()
 {
-    PHPHub.init();
+    lxhub.init();
 });
 
 // reply a reply

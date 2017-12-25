@@ -14,10 +14,10 @@
         <li class=""><a href="/"><font color="green" size="4"><b>orhub</b></font></a> </li>
         <li class="{{ Req.is('topics*') and not Req.is('categories*') and ' active' or '' }}"><a href="{{ route('topics.index') }}">{{ Ah.lang('Topics') }}</a></li>
         <li class="{{ Req.is('activity') and ' active' or '' }}"><a href="{{ route('activity') }}">动态</a></li>
-        <li class="{{ Req.is('categories/' ..Conf('lxhub.blogCategoryId')) and ' active' or '' }}"><a href="{{ route('categories.show', Conf('lxhub.blogCategoryId')) }}">专栏</a></li>
-        <li class="{{ Req.is('categories/1') and ' active' or '' }}"><a href="{{ route('categories.show', 1) }}">{{ Ah.lang('Jobs') }}</a></li>
+        <li class="{{ Req.is('c/' ..Conf('lxhub.blogCategoryId')) and ' active' or '' }}"><a href="{{ route('categories.show', Conf('lxhub.blogCategoryId')) }}">专栏</a></li>
+        <li class="{{ Req.is('c/1') and ' active' or '' }}"><a href="{{ route('categories.show', 1) }}">{{ Ah.lang('Jobs') }}</a></li>
         <li class="{{ Req.is('tags*') and ' active' or '' }}"><a href="{{ route('tags.show', 22) }}">专题</a></li>
-        <li class="{{ Req.is('categories/' ..Conf('lxhub.qaCategoryId')) and ' active' or '' }}"><a href="{{ route('categories.show',Conf('lxhub.qaCategoryId')) }}">问答</a></li>
+        <li class="{{ Req.is('c/' ..Conf('lxhub.qaCategoryId')) and ' active' or '' }}"><a href="{{ route('categories.show',Conf('lxhub.qaCategoryId')) }}">问答</a></li>
         <li ><a href="https://laravel-china.org/news" class="no-pjax">资讯</a></li>
 <!--         <li class="{{ Req.is('wiki') and ' active' or '' }} hidden-sm"><a href="{{ route('wiki') }}">Wiki</a></li> -->
         <li class="nav-docs hidden-sm"><a href="http://d.laravel-china.org" class="no-pjax" target="_blank">文档</a></li>
@@ -101,7 +101,7 @@
                           </a>
                       </li>
                       <li>
-                          <a class="button" href="{{ route('users.edit', currentUser.id) }}" >
+                          <a class="button" href="{{ route('users.edit') }}" >
                               <i class="fa fa-cog text-md"></i> 编辑资料
                           </a>
                       </li>

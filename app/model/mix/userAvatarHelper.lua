@@ -4,11 +4,15 @@ local lx, _M = oo{
 }
 
 local app, lf, tb, str, new = lx.kit()
-local fs = lx.fs
+local fs                    = lx.fs
 
-local ImageUploadHandler = lx.use('.app.core.handler.imageUploadHandler')
+local ImageUploadHandler    = lx.use('.app.core.handler.imageUploadHandler')
 
 function _M:cacheAvatar()
+
+    if lf.isEmpty(self.image_url) then
+        return
+    end
 
     --Download Image
     local hc = new('net.http.client')

@@ -7,6 +7,7 @@ local conf = {
     activedTimeForUpdate = 'actived_time_for_update',
     activedTimeData = 'actived_time_data',
     blogCategoryId = env('blogCategoryId'),
+    googleGroupsCategoryId = env('googleGroupsCategoryId'),
     qaCategoryId = env('qaCategoryId'),
     wikiTopicId = env('wikiTopicId') or 1,
     adminBoardCid = env('adminBoardCid') or 0,

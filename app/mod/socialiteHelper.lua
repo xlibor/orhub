@@ -42,7 +42,7 @@ function _M:callback(c)
             Flash.success(lang('Bind Successfully!', {driver = lang(driver)}))
         end
         
-        return redirect(route('users.edit_social_binding', Auth.id()))
+        return redirect(route('users.edit_social_binding'))
     else 
         if user then
             
@@ -56,6 +56,7 @@ end
 function _M:bindSocialiteUser(oauthUser, driver)
 
     local currentUser = Auth.user()
+
     if driver == 'github' then
         currentUser.github_id = oauthUser.id
         currentUser.github_url = oauthUser.url
@@ -65,6 +66,24 @@ function _M:bindSocialiteUser(oauthUser, driver)
     elseif driver == 'qq' then
         currentUser.qq_openid = oauthUser.id
         currentUser.qq_unionid = oauthUser.unionid
+    end
+    
+    currentUser:save()
+end
+
+function _M:unbindSocialiteUser(driver)
+
+    local currentUser = Auth.user()
+
+    if driver == 'github' then
+        currentUser.github_id = 0
+        currentUser.github_url = ''
+    elseif driver == 'wechat' then
+        currentUser.wechat_openid = ''
+        currentUser.wechat_unionid = ''
+    elseif driver == 'qq' then
+        currentUser.qq_openid = ''
+        currentUser.qq_unionid = ''
     end
     
     currentUser:save()

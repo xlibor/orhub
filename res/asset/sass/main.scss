@@ -2141,7 +2141,7 @@ a.anchorific, a.anchorjs-link  {
 }
 
 .blog-container.container {
-    margin-top: 50px;
+    margin-top: 15px;
 
     h1 {
         margin: 1.1em auto 1em;
@@ -2552,4 +2552,55 @@ hr {
         border: 0;
         border-top: 1px solid #dde2e8;
     }
+}
+
+.tag-nav {
+    border-top: 1px solid #eee;
+    padding-top: 1px;
+    padding-bottom: 0px;
+
+    line-height: 30px;
+    position: relative;
+    margin: auto;
+    background-color: #fdfdfd;
+    width: 96%;
+}
+.tag-nav a.normal {
+    color: #9e9e9e;
+    font-size: 13px;
+    margin-left: 30px;
+    text-decoration: none;
+}
+.tag-nav a.normal:hover {
+    color: #333;
+}
+
+.summary {
+  li {
+ 
+  }
+
+  a {
+    text-decoration: none;
+    display: block;
+    color: #333;
+    padding-top:3px;
+    padding-bottom:3px;
+  }
+
+  a:hover {
+    background: rgba(241, 244, 247, 0.38);
+  }
+
+  a.current {
+    background: rgba(241, 244, 247, 0.78);
+    border-right: 2px solid #009A61;
+    color:#009a61;
+  }
+
+  a:active {
+    border-bottom: 1px solid #009A61;
+    border-right: 0px solid #333;
+    margin-bottom: -1px;
+  }
 }

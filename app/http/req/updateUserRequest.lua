@@ -27,7 +27,7 @@ function _M:rules()
         github_id = 'unique:users',
         github_name = 'string',
         wechat_openid = 'string',
-        email = 'email|unique:users,email,' .. self.req.id,
+        email = 'email|unique:users,email,' .. Auth.id(),
         github_url = 'url',
         image_url = 'url',
         wechat_unionid = 'string',

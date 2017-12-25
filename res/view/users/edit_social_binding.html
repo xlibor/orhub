@@ -27,69 +27,29 @@
           {{ Ah.lang('Setup multiple Bindings allow you to login to the same account with different binding site account.') }}
         </div>
 
-        <form class="form-horizontal" method="POST" action="{{ route('users.update_email_notify', user.id) }}" accept-charset="UTF-8">
+        <form class="form-horizontal" method="POST" action="{{ route('users.update_email_notify') }}" accept-charset="UTF-8">
 
             {!! csrf_field() !!}
 
+            @foreach(bindings as binding)
             <div class="form-group">
-
-                <label for="inputEmail3" class="col-sm-3 control-label">{{ Ah.lang('Register Binding') }}</label>
-                <div class="col-sm-9">
-                    <a class="btn btn-success login-btn qq-login-btn {{ user.register_source == 'qq' and '' or 'hide' }}" role="button">
-                      <i class="fa fa-qq"></i>
-                      {{ Ah.lang('QQ') }}
-                    </a>
-
-                    <a class="btn btn-success login-btn weichat-login-btn {{ user.register_source == 'wechat' and '' or 'hide' }}" role="button">
-                      <i class="fa fa-weixin"></i>
-                      {{ Ah.lang('WeChat') }}
-                    </a>
-
-                    <a class="btn btn-info login-btn {{ user.register_source == 'github' and '' or 'hide' }}" role="button">
-                      <i class="fa fa-github-alt"></i>
-                      {{ Ah.lang('GitHub') }}
-                    </a>
-
-                    <span class="padding-sm">{{ Ah.lang('Not allow to change register binding account') }}</span>
-
-                </div>
-
+              <div class="col-sm-4">
+                <a class="btn btn-{{ binding.binded and 'success' or 'default' }} {{ binding.name }}-login-btn " role="button">
+                  <i class="fa fa-{{ binding.iclass or binding.name }}"></i>
+                </a>
+                &nbsp;{{ Ah.lang(binding.lang) }}
               </div>
-
-            <div class="form-group">
-
-                <label for="inputEmail3" class="col-sm-3 control-label">{{ Ah.lang('Available Bindings') }}</label>
-                <div class="col-sm-9">
-
-                    @if(user.register_source ~= 'wechat')
-                    @if(user.wechat_openid)
-                    <a href="javascript:void(0);" class="btn btn-success login-btn">
-                    @else
-                    <a href="{{ Url.route('auth.oauth', {driver = 'wechat'}) }}" class="btn btn-default login-btn">
-                    @endif
-                      <i class="fa fa-weixin"></i>
-                      {{ Ah.lang('WeChat') }}
-                    </a>
-                    @endif
-
-                    @if(user.register_source ~= 'github')
-                        @if(user.github_id > 0)
-                        <a href="javascript:void(0);" class="btn btn-info login-btn">
-                        @else
-                        <a href="{{ Url.route('auth.oauth', {driver = 'github'}) }}" class="btn btn-default login-btn">
-                        @endif
-                          <i class="fa fa-github-alt"></i>
-                          {{ Ah.lang('GitHub') }}
-                        </a>
-                    @endif
-
-                    @if(user.github_id > 0 and user.wechat_openid)
-                        <span class="padding-sm">{{ Ah.lang('Already binded to this account') }}</span>
-                    @else
-                        <span class="padding-sm">{{ Ah.lang('Click to bind to this account') }}</span>
-                    @endif
-                </div>
+              <div class="col-sm-6 help-block">
+                @if(binding.isRegister)
+                  {{ Ah.lang('Already binded') }} &nbsp;({{ Ah.lang('Not allow to change register binding account') }})
+                @elseif(binding.binded)
+                  {{ Ah.lang('Already binded') }} &nbsp;.&nbsp;<a href="{{ Url.route('users.social_unbinding', {driver = binding.name}) }}">{{ Ah.lang('Unbind to this account') }}</a>
+                @else
+                  <a href="{{ Url.route('auth.oauth', {driver = binding.name}) }}">{{ Ah.lang('Bind to this account') }}</a>
+                @endif
               </div>
+            </div>
+            @endforeach
 <br>
 <br>
       </form>

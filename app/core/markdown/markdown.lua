@@ -6,6 +6,8 @@ local lx, _M, mt = oo{
 local app, lf, tb, str, new = lx.kit()
 
 local Doc           = require('lxlib.dom.base.xmlDoc')
+local sgsub, sfind  = string.gsub, string.find
+
 
 function _M:new()
 
@@ -42,13 +44,16 @@ function _M:parseTopicSummary(html)
     local rootUl = Doc.new('ul', {id="topicSummary", class = 'topicSummary'})
     local wrap = rootUl
     local wrapParent
-    local li, tl, text, ul
+    local li, tl, text, pureText, ul
     local pat = [[<a name="(.+)"><\/a>\n<h([1234]+)>(.+)<\/h]]
 
     html = str.regsub(html, pat, function(m)
         index = index + 1
         tl, text = m[2], m[3]
- 
+        pureText = text
+        text = sgsub(text, "<[^>]->", '')
+        text = sgsub(text, "&hellip;", "...")
+        
         if index == 1 or tl == tagLevel then
             wrap:addtag('li' ):addtag('a', {href = '#topicHeader' .. index})
             :text(text):up()
@@ -72,7 +77,7 @@ function _M:parseTopicSummary(html)
         tagLevel = tl
 
         return '<a name="topicHeader' .. index .. '"></a>\n<h' ..
-            tl .. '>' .. text .. '</h'
+            tl .. '>' .. pureText .. '</h'
     end)
 
     return html, rootUl

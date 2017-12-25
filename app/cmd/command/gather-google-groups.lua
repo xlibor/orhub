@@ -11,20 +11,65 @@ local Markdown              = use('.app.core.markdown.markdown')
 local TopicDoer             = use('.app.http.doer.topic')
 local User                  = use('.app.model.user')
 local Blog                  = use('.app.model.blog')
-
+local Topic                 = use('.app.model.topic')
 local slug_trans            = Ah.slug_trans
 local Html2md               = require(".app.core.markdown.html2md")
 local sfind, ssub, sgsub    = string.find, string.sub, string.gsub
 local regsub                = str.regsub
+local dtFormat              = "%y-%m-%d %H:%M:%S"
 
 function _M:ctor()
 
     self.csvDir = '/vagrant/res/google-groups/'
     self.slugPrefix = 'google-groups-'
     self.topics = {}
+    self.topicList = {}
+
 end
 
 function _M:run()
+
+    local csv = self:parseCsv()
+
+    for i, topic in ipairs(csv) do
+        self:gatherTopic(topic)
+        -- echo(i, '-----------')
+    end
+
+    tb.sort(self.topicList, function(a, b)
+        return a.created_at < b.created_at
+    end)
+
+    self:createTopics()
+end
+
+function _M:createTopics()
+
+    local user = self:getUser()
+    local createdCount, updatedCount, nothingCount = 0, 0, 0
+
+    for i, topic in ipairs(self.topicList) do
+        local oldTopic = new(Topic):where('extra', topic.extra):first()
+        if oldTopic then
+            if topic.updated_at > oldTopic.updated_at then
+                echo('update:', topic.title)
+                new(TopicDoer):update(self, user, topic, oldTopic)
+                updatedCount = updatedCount + 1
+            else
+                nothingCount = nothingCount + 1
+            end
+        else
+            echo('create:', topic.title)
+            new(TopicDoer):create(self, user, topic, false)
+            createdCount = createdCount + 1
+        end
+    end
+
+    echo('created:', createdCount, 'updated:', updatedCount,
+        'nothing:', nothingCount)
+end
+
+function _M.__:parseCsv()
 
     local csvPath = self.csvDir .. 'data.csv'
 
@@ -37,49 +82,43 @@ function _M:run()
             }
         }
     )
- 
-    for i, topic in ipairs(csv) do
- 
-        echo(i, '  ', topic.title)
-        -- if sfind(topic.title, '用Nginx记日志') then
-        --     self:createTopic(topic)
-        --     break
-        -- end
-        self:createTopic(topic)
 
-        echo('====================')
- 
-    end
+    return csv
 end
 
-function _M.__:cleanup()
+function _M.__:gatherTopic(data)
 
-end
-
-function _M.__:createTopic(data)
-
-    local user = self:getUser()
     local title = data.title
 
     local href = data.href
     local slug = self.slugPrefix .. slug_trans(title)
     local html = data.content
 
-    local topicAuthor, replies = self:parseTopicInfo(html)
+    local replies = self:parseTopicInfo(html)
+    title = title .. ' (' .. #replies .. ')'
+    if not replies then return end
 
-    if not topicAuthor then return end
+    local firstReply = replies[1]
+    if not firstReply then
+        echo('miss:', title)
+        return
+    end
+    local lastReplay = replies[#replies]
 
-    local md = self:generateMd(topicAuthor, replies)
+    local md = self:generateMd(data, replies)
 
     local data = {
         title = title,
         slug = slug,
         body = md,
         category_id = 9,
-        tags = nil
+        tags = nil,
+        extra = href,
+        created_at = firstReply.replyTime:format(dtFormat),
+        updated_at = lastReplay.replyTime:format(dtFormat)
     }
 
-    return new(TopicDoer):create(self, user, data, false)
+    tapd(self.topicList, data)
 end
 
 function _M.__:parseTopicInfo(html)
@@ -88,14 +127,9 @@ function _M.__:parseTopicInfo(html)
     -- lx.fs.put(lx.dir('tmp', 'app') .. 'some.html', html)
 
     local dom = new('domDocument'):loadHtml(html)
-    
-    -- do return end
-
-    -- dom = dom:removedBy('.F0XO1GC-Db-b')
-    --         :removedBy('.F0XO1GC-Db-a')
-
+ 
     local rows = dom:find("div.F0XO1GC-nb-W[tabindex]")
-    local topicAuthor, replier, replyTime, replyText
+    local replier, replyTime, replyText
     local nodes
     local replies = {}
 
@@ -103,9 +137,6 @@ function _M.__:parseTopicInfo(html)
         nodes = row(".F0XO1GC-D-a")
         if #nodes > 0 then
             replier = nodes[1].textContent
-            if not topicAuthor then
-                topicAuthor = replier
-            end
         end
 
         nodes = row(".F0XO1GC-nb-Q")
@@ -132,7 +163,7 @@ function _M.__:parseTopicInfo(html)
         end
 
         if replyTime then
-            local pat = [[(\d+)年(\d+)月(\d+)日.+UTC\+8(.+)(\d+):(\d+):(\d+)]]
+            local pat = [[(\d+)年(\d+)月(\d+)日.+UTC\+8([上午|下午]+)(\d+):(\d+):(\d+)]]
             local m = str.rematch(replyTime, pat)
 
             local year, month, day, halfday, hour, minute, sec = 
@@ -142,20 +173,20 @@ function _M.__:parseTopicInfo(html)
             end
             replyTime = year .. '-' .. month .. '-' .. day .. ' ' ..
                 hour .. ':' .. minute .. ':' .. sec
-        else
-            replyTime = 'unknown'
+            replyTime = new('datetime', year, month, day, hour, minute, sec)
+
+            tapd(replies, {
+                replier = replier,
+                replyTime = replyTime,
+                replyText = replyText or 'unknown'
+            })
         end
 
-        tapd(replies, {
-            replier = replier,
-            replyTime = replyTime,
-            replyText = replyText or 'unknown'
-        })
         replyText = nil
         replyTime = nil
     end
 
-    return topicAuthor, replies
+    return replies
 end
 
 function _M.__:preFilter(html)
@@ -166,7 +197,6 @@ function _M.__:preFilter(html)
     html = regsub(html, [[<blockquote class="gmail_quote"[\s\S]*?</blockquote>]], '')
     html = sgsub(html, [[邮件来自列表.-agentzh%-nginx%-tutorials%-zhcn%.<wbr>html</a>]],
             '')
-    -- html = sgsub(html, [[>([^'<]-'[^'<]-)<]], '> %1<')
     html = sgsub(html, '>', '> ')
     html = sgsub(html, ">'", "> '")
     html = sgsub(html, '>"', '> "')
@@ -208,19 +238,20 @@ function _M.__:filterReplyHtml(html)
     return html
 end
 
-function _M.__:generateMd(topicAuthor, replies)
+function _M.__:generateMd(topic, replies)
 
     local md = {}
-    -- tapd(md, '### 发帖人:' .. topicAuthor)
 
     for i, reply in ipairs(replies) do
-        tapd(md, '## 作者: ' .. reply.replier ..
-            ', ' .. reply.replyTime)
+
+        tapd(md, '### ** ' .. reply.replier ..
+            '**, *' .. reply.replyTime:format("%y-%m-%d %H:%M") .. '* \n\n')
 
         tapd(md, reply.replyText)
-        tapd(md, '\n-----')
+        tapd(md, '\n\n## ')
     end
 
+    tapd(md, '> 原帖: ' .. topic.href)
     return str.join(md, '\n')
 end
 

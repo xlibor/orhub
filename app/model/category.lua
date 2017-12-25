@@ -21,5 +21,12 @@ function _M:topics(filter)
     return self:hasMany('Topic'):getTopicsWithFilter(filter)
 end
 
+function _M:scopeTopicAttachable(query)
+
+    return query
+        :where('id', '!=', app:conf('lxhub.blogCategoryId'))
+        :where('id', '!=', app:conf('lxhub.googleGroupsCategoryId'))
+end
+
 return _M
 
