@@ -10,7 +10,7 @@
 <div class="users-show  row">
 
   <div class="col-md-3">
-        @include('users.partials.basicinfo')
+        @include('users.base.basicinfo')
   </div>
 
   <div class="main-col col-md-9 left-col">
@@ -30,7 +30,7 @@
 
         <div class="panel-body">
             @if(#articles and blog)
-              @include('users.partials.articles')
+              @include('users.base.articles')
             @elseif(currentUser and currentUser.id == user.id)
                 <div class="empty-block">
                     <a href="{{ route('articles.create') }}" class="btn btn-primary no-pjax">
@@ -50,7 +50,7 @@
 
         <div class="panel-body">
             @if(#topics)
-              @include('users.partials.topics')
+              @include('users.base.topics')
             @else
               <div class="empty-block">{{ Ah.lang('Dont have any data Yet') }}~~</div>
             @endif
@@ -62,7 +62,7 @@
         </div>
         <div class="panel-body">
             @if(#replies)
-              @include('users.partials.replies')
+              @include('users.base.replies')
             @else
               <div class="empty-block">{{ Ah.lang('Dont have any comment yet') }}~~</div>
             @endif

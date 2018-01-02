@@ -41,7 +41,7 @@ function _M:run()
         weight = 99,
         name = '问答',
         slug = 'wen-da',
-        description = '新手问答，请仔细阅读 <a href="https://laravel-china.org/topics/535">关于《提问的智慧》</a>，质量太低的问题，不遵循规范，会被视为对用户的不尊重，管理员会做沉贴操作，沉贴后用户基本上看不到帖子。排版清晰，信息完整的，我们会为话题加精，加精后的帖子将会被推荐到网站首页、手机端首页、精华帖周报邮件、<a href="http://weibo.com/laravelnews">Laravel 资讯微博</a>。',
+        description = '新手问答，请仔细阅读 <a href="https://laravel-china.org/topics/535">关于《提问的智慧》</a>，质量太低的问题，不遵循规范，会被视为对用户的不尊重，管理员会做沉贴操作，沉贴后用户基本上看不到帖子。排版清晰，信息完整的，我们会为话题加精，加精后的帖子将会被推荐到网站首页、手机端首页、精华帖周报邮件、<a href="http://weibo.com/orhubnews">orhub 资讯微博</a>。',
         created_at = '2016-07-03 10:00:00',
         updated_at = '2016-07-03 10:00:00',
         deleted_at = nil
@@ -53,7 +53,7 @@ function _M:run()
         weight = 98,
         name = '分享',
         slug = 'fen-xiang',
-        description = '分享创造，分享知识，分享灵感，分享创意，分享美好的东西。排版清晰，内容精良的话，我们会为话题加精，加精后的帖子将会被推荐到网站首页、手机端首页、精华帖周报邮件、<a href="http://weibo.com/laravelnews">Laravel 资讯微博</a>上。',
+        description = '分享创造，分享知识，分享灵感，分享创意，分享美好的东西。排版清晰，内容精良的话，我们会为话题加精，加精后的帖子将会被推荐到网站首页、手机端首页、精华帖周报邮件、<a href="http://weibo.com/orhubnews">orhub 资讯微博</a>上。',
         created_at = '2016-07-03 10:00:00',
         updated_at = '2016-07-03 10:00:00',
         deleted_at = nil

@@ -9,7 +9,7 @@
 <div class="users-show  row">
 
   <div class="col-md-3">
-        @include('users.partials.basicinfo')
+        @include('users.base.basicinfo')
   </div>
 
   <div class="panel main-col col-md-9 left-col">
@@ -23,7 +23,7 @@
 
           <hr>
 
-          @include('layouts.partials.errors')
+          @include('layouts.base.errors')
 
           <form class="form-horizontal" method="POST" action="{{ route('blogs.updateSummary', blog.id) }}" accept-charset="UTF-8" id="summary-edit-form" >
 

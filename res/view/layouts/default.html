@@ -57,7 +57,7 @@
         </div>
 		<div id="wrap">
 
-			@include('layouts.partials.nav')
+			@include('layouts.base.nav')
 
 			<div class="container main-container {{ (Req.is('blogs*') or Req.is('articles*') or Ah.is_route('blogs.show')) and 'blog-container' or '' }}">
 				@if(Auth.check() and not Auth.user().verified and not Req.is('email-verification-required'))
@@ -78,7 +78,7 @@
 
 			</div>
 
-@include('layouts.partials.footer')
+@include('layouts.base.footer')
 
 		</div>
 

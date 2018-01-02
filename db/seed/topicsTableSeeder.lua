@@ -36,7 +36,7 @@ function _M:run()
     Topic.inserts(admin_articles:toArr())
     
     -- Building connections
-    app:run('topics:blog_topics')
+    app:run('lxhub/topics:blog_topics')
 end
 
 return _M

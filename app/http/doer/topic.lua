@@ -77,7 +77,7 @@ function _M:update(observer, user, data, topic, subject)
     if topic:isArticle() and subject == 'publish' and topic.is_draft == 'yes' then
         data.is_draft = 'no'
         -- Topic Published
-        app(Notifier):newTopicNotify(user, mentionParser, topic)
+        app(Notifier):newTopicNotify(user, self.mentionParser, topic)
         -- User activity
         app(UserPublishedNewTopic):generate(user, topic)
         app(BlogHasNewArticle):generate(user, topic, topic:blogs():first())

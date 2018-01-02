@@ -7475,7 +7475,7 @@ var QRCode;!function(){function t(t){this.mode=l.MODE_8BIT_BYTE,this.data=t,this
         //导航变化
         changeNav: function(self,$parent){
             var current = self.options.current;
-            console.log(current);
+            // console.log(current);
             self.$ele.find("."+current).removeClass(current);
             $parent.addClass(current);
         },
@@ -7497,14 +7497,26 @@ var QRCode;!function(){function t(t){this.mode=l.MODE_8BIT_BYTE,this.data=t,this
             var st = $(window).scrollTop();
             var wH = $(window).height();
             //临界条件: $("#id").offset().top－$(window).scrollTop()>$(window).height()/2;
+
             for(var box in this.boxs){
-                if(st >= this.boxs[box]-parseInt(wH/2)){
+                if(st >= this.boxs[box]-parseInt(wH/9)){
                     var $parent = this.$ele.find('a[href="#'+box+'"]');
-                    console.log($parent.attr('href'));
+                    // console.log($parent.attr('href'));
                     this.changeNav(this,$parent);
                 }
             };
 
+            var current = this.$ele.find("."+this.options.current);
+            if (current.length > 0 ) {
+                var container = $(this.options.navContainer);
+                var offset = $(current).offset().top - container.offset().top + container.scrollTop();
+                if ($(current).offset().top - container.offset().top < 0) {
+                    container.scrollTop(offset - container.height()*0.15);
+                }
+                if ($(current).offset().top - container.offset().top > container.height()) {
+                    container.scrollTop(offset - container.height()*0.85);
+                }
+            }
         },
 
         //点击切换
@@ -7514,16 +7526,13 @@ var QRCode;!function(){function t(t){this.mode=l.MODE_8BIT_BYTE,this.data=t,this
             var $parent = $a;
             var self = this;
             var target = "a[name='"+$a.attr("href").substring(1)+"']"; //新的a #id
-            if(!$parent.hasClass(self.options.current)){
-                //导航切换
-                self.changeNav(self,$parent);
+            
+            //滚动开始
+            self.scrollTo(target, function(){
 
-                //滚动开始
-                self.scrollTo(target, function(){
-
-                });
-
-            }
+            });
+            //导航切换
+            self.changeNav(self,$parent);
 
             e.preventDefault();   //有current阻止冒泡
         },
@@ -7533,6 +7542,7 @@ var QRCode;!function(){function t(t){this.mode=l.MODE_8BIT_BYTE,this.data=t,this
             //获取目标元素的TOP值
             var offset = $(target).offset().top;
             var $el = $('html,body');
+
             if(!$el.is(":animated")){
                 $el.animate({
                     scrollTop: offset

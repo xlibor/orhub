@@ -10,7 +10,7 @@
 <div class="users-show row">
 
   <div class="col-md-3">
-        @include('users.partials.basicinfo')
+        @include('users.base.basicinfo')
   </div>
 
   <div class="main-col col-md-9 left-col">
@@ -26,7 +26,7 @@
     <div class="panel-body">
 
       @if(#topics)
-	      @include('users.partials.topics', {is_article = true})
+	      @include('users.base.topics', {is_article = true})
 	      <div class="pull-right add-padding-vertically"> {!! topics:render() !!} </div>
       @else
         <div class="empty-block">{{ Ah.lang('Dont have any votes yet') }}~~</div>

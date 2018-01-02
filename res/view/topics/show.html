@@ -27,15 +27,15 @@
 
       <h1 class="panel-title topic-title">{{ topic.title }}</h1>
 
-      @include('topics.partials.meta')
+      @include('topics.base.meta')
     </div>
 
     <div class="content-body entry-content panel-body ">
 
-      @include('topics.partials.body', {body = topic.body})
+      @include('topics.base.body', {body = topic.body})
 
       <div data-lang-excellent="{{ Ah.lang('This topic has been mark as Excenllent Topic.') }}" data-lang-wiki="{{ Ah.lang('This is a Community Wiki.') }}" class="ribbon-container">
-        @include('topics.partials.ribbon')
+        @include('topics.base.ribbon')
       </div>
     </div>
     <div class="appends-container" data-lang-append="{{ Ah.lang('Append') }}">
@@ -76,20 +76,20 @@
     </div>
     @endif
     {? local canManageTopics = currentUser and currentUser:can('manage_topics') and currentUser:roles():count() <= 5 ?}
-    @include('topics.partials.topic_operate', {is_article = false, manage_topics = canManageTopics})
+    @include('topics.base.topic_operate', {is_article = false, manage_topics = canManageTopics})
   </div>
 
-  @include('topics.partials.show_segment')
+  @include('topics.base.show_segment')
 
 </div>
 
 @if(topic('user').payment_qrcode)
-    @include('topics.partials.payment_qrcode_modal')
+    @include('topics.base.payment_qrcode_modal')
 @endif
 
-@include('layouts.partials.sidebar')
+@include('layouts.base.sidebar')
 
-@include('layouts.partials.bottombanner')
+@include('layouts.base.bottombanner')
 
 @stop
 
@@ -116,9 +116,11 @@
         @endif
         lxhub.initAutocompleteAtUser();
 
-        if ($("#topic-summary").length > 0) {
-          $("#topicSummary > li > a").addClass('current');
-          $("#topic-summary").navScrollSpy({
+        var topicSummary = $("#topic-summary");
+        if (topicSummary.length > 0) {
+          var windowHeight = $(window).height();
+          topicSummary.css("max-height", windowHeight*0.8+"px");
+          topicSummary.navScrollSpy({
               navContainer: "#topic-summary",
               current:"current",
               speed: 0

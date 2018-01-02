@@ -131,7 +131,7 @@ ul.list {
 }
 
 .left-col {
-  padding-left: 15px;
+  padding-left: 5px;
   padding-right: 0px;
 }
 .add-padding-vertically {
@@ -1230,7 +1230,7 @@ background-color: #fff;
 }
 .popover-content {
     font-size: 14px;
-    line-height: 24px;
+    line-height: 9px;
     font-weight: 400;
 }
 .popover-content a {
@@ -2046,6 +2046,10 @@ a.anchorific, a.anchorjs-link  {
     margin-right: -12px;
 }
 
+.col-self {
+    width: 20% !important;
+}
+
 .projects-card {
     padding-left: 12px;
     padding-right: 12px;
@@ -2058,10 +2062,11 @@ a.anchorific, a.anchorjs-link  {
 
     .caption {
         text-align: center;
+        padding: 2px;
     }
 
     .card-title a{
-        font-size: 1.2em;
+        font-size: 1.1em;
         color: #676464;
     }
     .card-description {
@@ -2075,8 +2080,19 @@ a.anchorific, a.anchorjs-link  {
     overflow: visible;
 }
 
+@media (max-width: 993px) {
+
+    .col-self {
+        width: 25% !important;
+    }
+
+}
 
 @media (max-width: 767px) {
+
+    .col-self {
+        width: 33.3% !important;
+    }
     .projects-card {
         padding-left: 5px;
         padding-right: 5px;
@@ -2102,6 +2118,14 @@ a.anchorific, a.anchorjs-link  {
     .topbanner {
         margin-left: -5px;
         margin-right: -5px;
+    }
+
+}
+
+@media (max-width: 479px) {
+
+    .col-self {
+        width: 50% !important;
     }
 
 }

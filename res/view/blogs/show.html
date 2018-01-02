@@ -23,7 +23,7 @@
                     </h1>
 
                       @if(#topics)
-                        @include('users.partials.topics', {is_article = true, is_blog = true})
+                        @include('users.base.topics', {is_article = true, is_blog = true})
                         <div class="pull-right add-padding-vertically">
                             {!! topics:render() !!}
                         </div>

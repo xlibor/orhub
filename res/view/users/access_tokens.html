@@ -11,7 +11,7 @@
 <div class="users-show">
 
   <div class="col-md-3 box" style="padding: 15px 15px;">
-    @include('users.partials.basicinfo')
+    @include('users.base.basicinfo')
   </div>
 
   <div class="main-col col-md-9 left-col">
@@ -19,7 +19,7 @@
 
   <div class="panel panel-default">
 
-    @include('users.partials.infonav', {current = 'access_tokens'})
+    @include('users.base.infonav', {current = 'access_tokens'})
 
     <div class="panel-body remove-padding-vertically remove-padding-horizontal">
 

@@ -9,7 +9,7 @@
 <div class="users-show">
 
   <div class="col-md-3 main-col ">
-    @include('users.partials.setting_nav')
+    @include('users.base.setting_nav')
   </div>
 
   <div class="main-col col-md-9 left-col">
@@ -21,7 +21,7 @@
         <h2><i class="fa fa-picture-o" aria-hidden="true"></i> {{ Ah.lang('Please Choose a Photo') }}</h2>
         <hr>
 
-        @include('layouts.partials.errors')
+        @include('layouts.base.errors')
 
         <form method="POST" action="{{ route('users.update_avatar') }}" enctype="multipart/form-data" accept-charset="UTF-8">
             <input name="_method" type="hidden" value="PATCH">

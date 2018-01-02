@@ -22,7 +22,7 @@
           {!! Ah.lang('be_nice') !!}
       </div>
 
-      @include('layouts.partials.errors')
+      @include('layouts.base.errors')
 
       @if(Ctx.topic)
         <form method="POST" action="{{ route('topics.update', topic.id) }}" accept-charset="UTF-8" id="topic-edit-form" class="topic-form">
@@ -70,7 +70,7 @@
         </select>
         </div>
 
-        @include('topics.partials.composing_help_block', {without_box = false})
+        @include('topics.base.composing_help_block', {without_box = false})
 
         <div class="form-group">
             <textarea required="require" class="form-control" rows="20" style="overflow:hidden" id="reply_content" placeholder="{{ Ah.lang('Please using markdown.') }}" name="body" cols="50">{{ not Ctx.topic and '' or topic.body_original }}</textarea>

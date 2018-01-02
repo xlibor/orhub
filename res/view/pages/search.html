@@ -28,13 +28,13 @@
 
         @if(#users > 0)
             @foreach(users as user_result)
-                @include('pages.partials.users_result')
+                @include('pages.base.users_result')
             @endforeach
         @endif
 
         @if(topics:count() > 0)
             @foreach(topics as topic)
-                @include('pages.partials.topics_result')
+                @include('pages.base.topics_result')
             @endforeach
         @endif
 

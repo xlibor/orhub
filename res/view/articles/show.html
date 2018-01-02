@@ -40,11 +40,11 @@
                             ⋅
                             <i class="fa fa-comments-o"></i> {{ topic.reply_count }}
 
-                            @include('topics.partials.tags')
+                            @include('topics.base.tags')
                         </div>
 
                         <div class="entry-content">
-                            @include('topics.partials.body', {body = topic.body})
+                            @include('topics.base.body', {body = topic.body})
                         </div>
 
 
@@ -56,16 +56,16 @@
                         <br>
                         <br>
                         {? local canManageTopics = currentUser and currentUser:can("manage_topics") and currentUser:roles():count() <= 5 ?}
-                        @include('topics.partials.topic_operate', {is_article = true, manage_topics = canManageTopics})
+                        @include('topics.base.topic_operate', {is_article = true, manage_topics = canManageTopics})
                   </div>
 
               </div>
 
-              @include('topics.partials.show_segment')
+              @include('topics.base.show_segment')
         </div>
 
         @if(topic('user').payment_qrcode)
-            @include('topics.partials.payment_qrcode_modal')
+            @include('topics.base.payment_qrcode_modal')
         @endif
 
         <div class="col-md-3 main-col pull-left">
@@ -76,8 +76,8 @@
             <div class="panel panel-default corner-radius">
               <div id="blog-summary-area" style="display: none">
                 <div class="panel-heading text-center">
-                  <button type="button" id="to-topic-summary" class="btn btn-default btn-sm btn-right" >
-                  <span class="glyphicon glyphicon-th-list popover-with-html " aria-hidden="true" data-content="切换至文章目录" data-original-title="" title=""> {{ Ah.lang('Blog Summary') }}</span>
+                  <button type="button" id="to-topic-summary" class="btn btn-default btn-sm btn-right glyphicon glyphicon-th-list popover-with-html " aria-hidden="true" data-content="切换至文章目录" data-original-title="" title="">
+                  {{ Ah.lang('Blog Summary') }}
                   </button>
                 </div>
                 @if(blog.summary)
@@ -88,8 +88,8 @@
               </div>
               <div id="topic-summary-area">
                 <div class="panel-heading text-center">
-                <button type="button" id="to-blog-summary" class="btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-list popover-with-html" aria-hidden="true" data-content="切换至专栏目录" data-original-title="" title=""> {{ Ah.lang('Article Summary') }} </span>
+                <button type="button" id="to-blog-summary" class="btn btn-default btn-sm glyphicon glyphicon-list popover-with-html" aria-hidden="true" data-content="切换至专栏目录" data-original-title="" title="">
+                {{ Ah.lang('Article Summary') }}
                 </button>
                 </div>
                 <div id="topic-summary" class="summary" style="overflow-y:auto;max-height: 530px;">
@@ -106,7 +106,7 @@
                       <h3 class="panel-title">专栏推荐</h3>
                     </div>
                     <div class="panel-body">
-                      @include('layouts.partials.sidebar_topics', {sidebarTopics = userTopics, is_article = true, numbered = false})
+                      @include('layouts.base.sidebar_topics', {sidebarTopics = userTopics, is_article = true, numbered = false})
                     </div>
                 </div>
             </div>
@@ -139,6 +139,11 @@
             [];
         @endif
         lxhub.initAutocompleteAtUser();
+
+        var windowHeight = $(window).height();
+        $('#blog-summary').css("max-height", windowHeight*0.8+"px");
+        $('#topic-summary').css("max-height", windowHeight*0.8+"px");
+
         $('#to-blog-summary').click(function() {
             $('#blog-summary-area').show();
             $('.blog-info').parent().hide();
@@ -150,7 +155,7 @@
                 href = $(this).attr('href');
                 if (currUrl.indexOf(href) > 0 ) {
                     $(this).addClass('current');
-                    blogSummary.animate({scrollTop: $(this).offset().top - blogSummary.offset().top + blogSummary.scrollTop() - 30 }, 0, null, function() {
+                    blogSummary.animate({scrollTop: $(this).offset().top - blogSummary.offset().top + blogSummary.scrollTop() - blogSummary.height()*0.15 }, 0, null, function() {
 
                     });
 
@@ -168,7 +173,6 @@
             current:"current",
             speed: 0
         });
-        $("#topicSummary > li > a").addClass('current');
     });
 
 </script>

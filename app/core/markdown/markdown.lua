@@ -45,7 +45,7 @@ function _M:parseTopicSummary(html)
     local wrap = rootUl
     local wrapParent
     local li, tl, text, pureText, ul
-    local pat = [[<a name="(.+)"><\/a>\n<h([1234]+)>(.+)<\/h]]
+    local pat = [[<a name="(.+)"><\/a>\n<h([12345]+)>(.+)<\/h]]
 
     html = str.regsub(html, pat, function(m)
         index = index + 1

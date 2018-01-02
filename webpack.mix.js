@@ -79,11 +79,9 @@ mix
         'pub/css/styles.css',
         'pub/js/scripts.js',
 
-        // API Web View
         'pub/css/api.css',
         'pub/js/api.js',
 
-        // API Web View
         'pub/css/editor.css',
         'pub/js/editor.js',
     ])

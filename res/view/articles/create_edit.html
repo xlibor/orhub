@@ -21,7 +21,7 @@
             <h2 class="text-center"> {{ topic.id and '编辑文章' or '创作文章' }}</h2>
             <hr>
 
-            @include('layouts.partials.errors')
+            @include('layouts.base.errors')
 
             @if(topic.id)
             <form method="POST" action="{{ route('topics.update', topic.id) }}" accept-charset="UTF-8" id="article-edit-form">
@@ -54,7 +54,7 @@
                 </select>
                 </div>
         
-                @include('topics.partials.composing_help_block', {without_box = false})
+                @include('topics.base.composing_help_block', {without_box = false})
 
                 <div class="form-group">
                   <textarea required="require" class="form-control" rows="20" style="overflow:hidden" id="reply_content" placeholder="{{ Ah.lang('Please using markdown.') }}" name="body" cols="50">{{ old('body') or topic.body_original }}</textarea>

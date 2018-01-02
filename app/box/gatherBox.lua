@@ -9,8 +9,6 @@ local Banner = lx.use('.app.model.banner')
 
 function _M:reg()
 
-	-- app:bindNs('.app.http.gather', lx.dir('app', 'http/gather'))
-
 end
 
 function _M:boot()
@@ -21,13 +19,13 @@ function _M:boot()
         context.currentUser = Auth.user() or false
     end)
 
-    view:gather({'layouts.partials.footer', 'users.index'}, function(context)
+    view:gather({'layouts.base.footer', 'users.index'}, function(context)
 
         context.banners = Banner.allByPosition()
         context.siteStat = app('.app.core.stat.stat'):getSiteStat()
     end)
 
-    view:gather('layouts.partials.hot_tags', '.app.http.gather.hotTags')
+    view:gather('layouts.base.hot_tags', '.app.http.gather.hotTags')
 end
 
 return _M
