@@ -19,8 +19,6 @@
         <li class="{{ Req.is('tags*') and ' active' or '' }}"><a href="{{ route('tags.show', 22) }}">专题</a></li>
         <li class="{{ Req.is('c/' ..Conf('lxhub.qaCategoryId')) and ' active' or '' }}"><a href="{{ route('categories.show',Conf('lxhub.qaCategoryId')) }}">问答</a></li>
         <li ><a href="https://laravel-china.org/news" class="no-pjax">资讯</a></li>
-<!--         <li class="{{ Req.is('wiki') and ' active' or '' }} hidden-sm"><a href="{{ route('wiki') }}">Wiki</a></li> -->
-        <li class="nav-docs hidden-sm"><a href="http://d.laravel-china.org" class="no-pjax" target="_blank">文档</a></li>
         <li class="hidden-sm"><a href="https://fsdhub.com/books/laravel-essential-training-5.1" class="no-pjax" target="_blank">教程</a></li>
       </ul>
 
@@ -125,6 +123,6 @@
 
   </div>
 
-    @include('layouts.partials.hot_tags')
+    @include('layouts.base.hot_tags')
 
 </div>

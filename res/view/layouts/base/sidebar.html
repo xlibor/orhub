@@ -14,7 +14,7 @@
       </div>
 
     <div class="panel-body text-center topic-author-box">
-        @include('topics.partials.topic_author_box')
+        @include('topics.base.topic_author_box')
 
         @if(Auth.check() and currentUser.id ~= topic('user').id)
             <span class="text-white">
@@ -41,7 +41,7 @@
 ">
 
 @if(Route.currentRouteName() == 'topics.index')
-    @include('layouts.partials._resources_panel')
+    @include('layouts.base._resources_panel')
 @endif
 
 @if(Ctx.active_users and #active_users)
@@ -50,7 +50,7 @@
         <h3 class="panel-title">{{ Ah.lang('Active Users') }}（<a href="{{ route('hall_of_fames') }}"><i class="fa fa-star" aria-hidden="true"></i> {{ Ah.lang('Hall of Fame') }}</a>）</h3>
       </div>
       <div class="panel-body">
-        @include('topics.partials.active_users')
+        @include('topics.base.active_users')
       </div>
     </div>
 @endif
@@ -61,7 +61,7 @@
     <h3 class="panel-title">七天内最热</h3>
   </div>
   <div class="panel-body">
-    @include('layouts.partials.sidebar_topics', {sidebarTopics = hot_topics, numbered = true})
+    @include('layouts.base.sidebar_topics', {sidebarTopics = hot_topics, numbered = true})
   </div>
 </div>
 @endif
@@ -114,7 +114,7 @@
 @if(not Ctx.topic)
 <div id="sticker">
 
-@include('layouts.partials._resources_panel')
+@include('layouts.base._resources_panel')
 
 <div class="panel panel-default corner-radius" style="color:#a5a5a5">
   <div class="panel-body text-center">

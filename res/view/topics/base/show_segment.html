@@ -71,7 +71,7 @@
     <div class="panel-body">
 
       @if(#replies)
-        @include('topics.partials.replies', {manage_topics = currentUser and currentUser:can("manage_topics") or false})
+        @include('topics.base.replies', {manage_topics = currentUser and currentUser:can("manage_topics") or false})
         <div id="replies-empty-block" class="empty-block hide">{{ Ah.lang('No comments') }}~~</div>
       @else
         <ul class="list-group row"></ul>
@@ -88,13 +88,13 @@
   <!-- Reply Box -->
   <div class="reply-box form box-block">
 
-    @include('layouts.partials.errors')
+    @include('layouts.base.errors')
 
     <form method="POST" action="{{ route('replies.store') }}" accept-charset="UTF-8" id="reply-form">
       {!! csrf_field() !!}
       <input type="hidden" name="topic_id" value="{{ topic.id }}" />
 
-        @include('topics.partials.composing_help_block', {without_box = false})
+        @include('topics.base.composing_help_block', {without_box = false})
 
         <div class="form-group">
             @if(currentUser)
