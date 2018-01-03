@@ -91,12 +91,12 @@ end
 
 function _M:scopeOnlyArticle(query)
 
-    return query:where('category_id', '=', app:conf('lxhub.blogCategoryId'))
+    return query:where('category_id', '=', app:conf('orhub.blogCategoryId'))
 end
 
 function _M:scopeWithoutArticle(query)
 
-    return query:where('category_id', '!=', app:conf('lxhub.blogCategoryId'))
+    return query:where('category_id', '!=', app:conf('orhub.blogCategoryId'))
 end
 
 function _M:scopeRecent(query)
@@ -141,9 +141,9 @@ end
 
 function _M:scopeWithoutBoardTopics(query)
 
-    if app:conf('lxhub.adminBoardCid') and (not Auth.check() or not Auth.user():can('access_board')) then
+    if app:conf('orhub.adminBoardCid') and (not Auth.check() or not Auth.user():can('access_board')) then
         
-        return query:where('category_id', '!=', app:conf('lxhub.adminBoardCid'))
+        return query:where('category_id', '!=', app:conf('orhub.adminBoardCid'))
     end
     
     return query
@@ -151,9 +151,9 @@ end
 
 function _M:scopeWithoutQA(query)
 
-    if app:conf('lxhub.qaCategoryId') then
+    if app:conf('orhub.qaCategoryId') then
 
-        return query:where('category_id', '!=', app:conf('lxhub.qaCategoryId'))
+        return query:where('category_id', '!=', app:conf('orhub.qaCategoryId'))
     end
     
     return query

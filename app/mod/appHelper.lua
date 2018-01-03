@@ -93,7 +93,7 @@ function _M.lang(text, parameters)
 
     parameters = parameters or {}
 
-    return str.replace(trans('lxhub.' .. text, parameters), 'lxhub.', '')
+    return str.replace(trans('orhub.' .. text, parameters), 'orhub.', '')
 end
 
 function _M.admin_link(title, path, id)

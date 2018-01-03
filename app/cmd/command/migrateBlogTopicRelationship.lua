@@ -13,7 +13,7 @@ end
 
 function _M:run()
 
-    local topics = Topic.where('category_id', app:conf('lxhub.blogCategoryId'))
+    local topics = Topic.where('category_id', app:conf('orhub.blogCategoryId'))
         :get()
 
     for _, topic in ipairs(topics) do

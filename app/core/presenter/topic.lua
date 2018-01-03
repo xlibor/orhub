@@ -49,7 +49,7 @@ function _M:replyFloorFromIndex(index)
     index = index + 1
     local current_page = Req.input('page') or 1
 
-    return (current_page - 1) * app:conf('lxhub.repliesPerpage') + index
+    return (current_page - 1) * app:conf('orhub.repliesPerpage') + index
 end
 
 return _M

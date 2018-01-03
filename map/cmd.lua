@@ -1,11 +1,11 @@
 
 return function(cmd)
     
-    cmd:add('lxhub/install', 'install')
+    cmd:add('orhub/install', 'install')
     
-    cmd:add('lxhub/topics/blog_topics', 'migrateBlogTopicRelationship@run')
-    cmd:add('lxhub/calculateActiveUser', 'calculateActiveUser@run')
-    cmd:add('lxhub/calculateHotTopic', 'calculateHotTopic@run')
-    cmd:add('lxhub/initRbac', 'initRbac@run')
+    cmd:add('orhub/topics/blog_topics', 'migrateBlogTopicRelationship@run')
+    cmd:add('orhub/calculateActiveUser', 'calculateActiveUser@run')
+    cmd:add('orhub/calculateHotTopic', 'calculateHotTopic@run')
+    cmd:add('orhub/initRbac', 'initRbac@run')
 end
 

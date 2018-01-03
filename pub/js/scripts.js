@@ -7566,7 +7566,7 @@ var QRCode;!function(){function t(t){this.mode=l.MODE_8BIT_BYTE,this.data=t,this
     var original_title = document.title;
     var nCount = 0;
 
-    var lxhub = {
+    var orhub = {
         init: function(){
             var self = this;
             $(document).pjax('a:not(a[target="_blank"])', 'body', {
@@ -8593,12 +8593,12 @@ var QRCode;!function(){function t(t){this.mode=l.MODE_8BIT_BYTE,this.data=t,this
         },
 
     };
-    window.lxhub = lxhub;
+    window.orhub = orhub;
 })(jQuery);
 
 $(document).ready(function()
 {
-    lxhub.init();
+    orhub.init();
 });
 
 // reply a reply

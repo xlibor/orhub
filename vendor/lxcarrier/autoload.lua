@@ -11,8 +11,8 @@ local namespace = {
 	["magick"] = vendor .. "magick",
 	["resty.http_headers"] = vendor .. "resty.http_headers",
 	["resty.http"] = vendor .. "resty.http",
-	["lfs"] = "lxhub-lfs",
-	["discount"] = "lxhub-discount",
+	["lfs"] = "orhub-lfs",
+	["discount"] = "orhub-discount",
 	["ftcsv"] = vendor .. "ftcsv"
 }
 

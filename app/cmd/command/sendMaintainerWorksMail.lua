@@ -9,7 +9,7 @@ local app, lf, tb, str = lx.kit()
 function _M:new()
 
     local this = {
-        signature = 'lxhub:send-maintainer-works-mail {start_time} {end_time}',
+        signature = 'orhub:send-maintainer-works-mail {start_time} {end_time}',
         description = 'Send maintainer works mail'
     }
     

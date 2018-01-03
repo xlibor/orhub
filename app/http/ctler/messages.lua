@@ -78,7 +78,7 @@ function _M:store(c)
     -- Recipient
     thread:addParticipant(recipient.id)
     -- Notify user by Email
-    -- local job = (new('sendNotifyMail', 'new_message', Auth.user(), recipient, nil, nil, message)):delay(config('lxhub.notifyDelay'))
+    -- local job = (new('sendNotifyMail', 'new_message', Auth.user(), recipient, nil, nil, message)):delay(config('orhub.notifyDelay'))
     -- dispatch(job)
     -- notifications count
     recipient.message_count = recipient.message_count + 1

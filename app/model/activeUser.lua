@@ -18,7 +18,7 @@ end
 
 function _M:fetchAll()
 
-    local data = Cache.remember('lxhub_active_users', 30, function()
+    local data = Cache.remember('orhub_active_users', 30, function()
         
         return self:with('user')
             :orderBy('weight', 'desc')

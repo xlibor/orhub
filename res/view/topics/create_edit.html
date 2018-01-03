@@ -39,7 +39,7 @@
               @foreach(categories as value)
                   {{-- 如果用户可以发布公告，并且是 id == 3 的话 --}}
                   @if(value.id ~= 3 or Auth.user():can('compose_announcement'))
-                      @if(value.id ~=Conf('lxhub.adminBoardCid') or Auth.user():can('access_board'))
+                      @if(value.id ~=Conf('orhub.adminBoardCid') or Auth.user():can('access_board'))
                           <option value="{{ value.id }}" {{ Ctx.category and value.id == category.id and 'selected' or '' }} >{{ value.name }}</option>
                       @endif
                   @endif

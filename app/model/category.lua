@@ -24,8 +24,8 @@ end
 function _M:scopeTopicAttachable(query)
 
     return query
-        :where('id', '!=', app:conf('lxhub.blogCategoryId'))
-        :where('id', '!=', app:conf('lxhub.googleGroupsCategoryId'))
+        :where('id', '!=', app:conf('orhub.blogCategoryId'))
+        :where('id', '!=', app:conf('orhub.googleGroupsCategoryId'))
 end
 
 return _M

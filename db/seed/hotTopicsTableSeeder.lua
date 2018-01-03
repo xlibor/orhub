@@ -8,7 +8,7 @@ local app, lf, tb, str = lx.kit()
 
 function _M:run()
 
-    app:run('lxhub:calculateHotTopic', {})
+    app:run('orhub:calculateHotTopic', {})
 end
 
 return _M

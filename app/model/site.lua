@@ -18,14 +18,14 @@ function _M:boot()
 
     self:__super(_M, 'boot')
     -- static.saving(function(model)
-    --     Cache.forget('lxhub_sites')
+    --     Cache.forget('orhub_sites')
     -- end)
 end
 
 function _M.s__.allFromCache(expire)
 
     expire = expire or 1440
-    local data = Cache.remember('lxhub_sites', 60, function()
+    local data = Cache.remember('orhub_sites', 60, function()
         local raw_sites = Site:orderBy('order', 'desc'):orderBy('created_at', 'desc'):get()
         local sorted = {}
         sorted.site = raw_sites:filter(function(item)

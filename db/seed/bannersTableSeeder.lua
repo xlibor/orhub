@@ -81,7 +81,7 @@ function _M:run()
         order = 7,
         image_url = 'https://dn-phphub.qbox.me/uploads/banners/HCNo4rSRxIpK12yDL13U.png',
         title = 'nginx开发指南',
-        link = 't/1',
+        link = 'topics/1/nginx-development-guide',
         target = '_blank',
         description = 'nginx开发指南',
         created_at = '2017-10-05 11:34:07',

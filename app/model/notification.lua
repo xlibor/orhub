@@ -72,7 +72,7 @@ function _M.s__.batchNotify(type, fromUser, users, topic, reply, content)
         Notification.inserts(data)
         for _, toUser in ipairs(users) do
             -- todo
-            -- job = (new('sendNotifyMail', type, fromUser, toUser, topic, reply, content)):delay(config('lxhub.notifyDelay'))
+            -- job = (new('sendNotifyMail', type, fromUser, toUser, topic, reply, content)):delay(config('orhub.notifyDelay'))
             -- dispatch(job)
         end
     end
@@ -109,7 +109,7 @@ function _M.s__.notify(type, fromUser, toUser, topic, reply)
     }
     toUser:increment('notification_count', 1)
     Notification.insert(data)
-    -- local job = new('sendNotifyMail', type, fromUser, toUser, topic, reply):delay(config('lxhub.notifyDelay'))
+    -- local job = new('sendNotifyMail', type, fromUser, toUser, topic, reply):delay(config('orhub.notifyDelay'))
     -- dispatch(job)
     static.pushNotification(data)
 end

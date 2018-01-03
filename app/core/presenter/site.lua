@@ -8,7 +8,7 @@ local app, lf, tb, str = lx.kit()
 
 function _M:linkWithUTMSource()
 
-    local append = 'utm_source=laravel-china.org'
+    local append = 'utm_source=orhub.org'
     
     return str.strpos(self.link, '?') == false and self.link .. '?' .. append or self.link .. '&' .. append
 end

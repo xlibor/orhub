@@ -16,7 +16,7 @@ function _M:run()
     app:run('shift/reset')
     app:run('shift')
     app:run('seed')
-    app:run('lxhub/initRbac')
+    app:run('orhub/initRbac')
 end
 
 return _M

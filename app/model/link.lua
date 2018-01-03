@@ -22,7 +22,7 @@ function _M:boot()
 
     self:__super(_M, 'boot')
     -- static.saving(function(model)
-    --     Cache.forget('lxhub_links')
+    --     Cache.forget('orhub_links')
     -- end)
 end
 
@@ -50,7 +50,7 @@ function _M:allFromCache(expire)
 
     expire = expire or 1440
     
-    return Cache.remember('lxhub_links', expire, function()
+    return Cache.remember('orhub_links', expire, function()
         
         return self:where('is_enabled', 'yes'):get()
     end)

@@ -22,7 +22,7 @@ function _M:boot()
 
     self:__super(_M, 'boot')
     -- static.saving(function(article)
-    --     Cache.forget('lxhub_banner')
+    --     Cache.forget('orhub_banner')
     -- end)
 end
 
@@ -48,7 +48,7 @@ end
 
 function _M.s__.allByPosition()
 
-    local data = Cache.remember('lxhub_banner', 60, function()
+    local data = Cache.remember('orhub_banner', 60, function()
         local ret = {}
         local data = Banner.orderBy({'position', 'desc'}, {'order', 'ASC'}):get()
 

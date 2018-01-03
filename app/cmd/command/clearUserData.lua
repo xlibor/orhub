@@ -9,7 +9,7 @@ local app, lf, tb, str = lx.kit()
 function _M:new()
 
     local this = {
-        signature = 'lxhub:clear-user-data {user_id}',
+        signature = 'orhub:clear-user-data {user_id}',
         description = 'Clear user data
                             {user_id : User ID }
                             '

@@ -37,7 +37,7 @@ function _M:store(request)
     end
     local data = tb.merge(request:except('_token'), {category_id = request.category_id})
     
-    return app('lxhub\\Creators\\TopicCreator'):create(self, data)
+    return app('orhub\\Creators\\TopicCreator'):create(self, data)
 end
 
 function _M:show(id)
@@ -84,7 +84,7 @@ end
 function _M:voteUp(id)
 
     local topic = Topic.find(id)
-    app('lxhub\\Vote\\Voter'):topicUpVote(topic)
+    app('orhub\\Vote\\Voter'):topicUpVote(topic)
     
     return response({['vote-up'] = true, vote_count = topic.vote_count})
 end
@@ -92,7 +92,7 @@ end
 function _M:voteDown(id)
 
     local topic = Topic.find(id)
-    app('lxhub\\Vote\\Voter'):topicDownVote(topic)
+    app('orhub\\Vote\\Voter'):topicDownVote(topic)
     
     return response({['vote-down'] = true, vote_count = topic.vote_count})
 end

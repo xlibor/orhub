@@ -31,7 +31,7 @@
             @endif
                 {!! csrf_field() !!}
 
-                <input name="category_id" type="hidden" value="{{Conf('lxhub.blogCategoryId') }}">
+                <input name="category_id" type="hidden" value="{{Conf('orhub.blogCategoryId') }}">
 
                 @if(Ctx.blog)
                     <input name="blog_id" type="hidden" value="{{ blog.id }}">

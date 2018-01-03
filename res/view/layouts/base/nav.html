@@ -14,10 +14,10 @@
         <li class=""><a href="/"><font color="green" size="4"><b>orhub</b></font></a> </li>
         <li class="{{ Req.is('topics*') and not Req.is('categories*') and ' active' or '' }}"><a href="{{ route('topics.index') }}">{{ Ah.lang('Topics') }}</a></li>
         <li class="{{ Req.is('activity') and ' active' or '' }}"><a href="{{ route('activity') }}">动态</a></li>
-        <li class="{{ Req.is('c/' ..Conf('lxhub.blogCategoryId')) and ' active' or '' }}"><a href="{{ route('categories.show', Conf('lxhub.blogCategoryId')) }}">专栏</a></li>
+        <li class="{{ Req.is('c/' ..Conf('orhub.blogCategoryId')) and ' active' or '' }}"><a href="{{ route('categories.show', Conf('orhub.blogCategoryId')) }}">专栏</a></li>
         <li class="{{ Req.is('c/1') and ' active' or '' }}"><a href="{{ route('categories.show', 1) }}">{{ Ah.lang('Jobs') }}</a></li>
         <li class="{{ Req.is('tags*') and ' active' or '' }}"><a href="{{ route('tags.show', 22) }}">专题</a></li>
-        <li class="{{ Req.is('c/' ..Conf('lxhub.qaCategoryId')) and ' active' or '' }}"><a href="{{ route('categories.show',Conf('lxhub.qaCategoryId')) }}">问答</a></li>
+        <li class="{{ Req.is('c/' ..Conf('orhub.qaCategoryId')) and ' active' or '' }}"><a href="{{ route('categories.show',Conf('orhub.qaCategoryId')) }}">问答</a></li>
         <li ><a href="https://laravel-china.org/news" class="no-pjax">资讯</a></li>
         <li class="hidden-sm"><a href="https://fsdhub.com/books/laravel-essential-training-5.1" class="no-pjax" target="_blank">教程</a></li>
       </ul>
@@ -87,7 +87,7 @@
 
                         @if(Auth.user():can('access_board'))
                             <li>
-                                <a class="button" href="{{ route('categories.show',Conf('lxhub.adminBoardCid')) }}">
+                                <a class="button" href="{{ route('categories.show',Conf('orhub.adminBoardCid')) }}">
                                     <i class="fa fa-users "></i> 站务
                                 </a>
                             </li>

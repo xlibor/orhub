@@ -132,7 +132,7 @@ end
 
 function _M:getSameCategoryTopics()
 
-    local data = Cache.remember('lxhub_hot_topics_' .. self.category_id, 30, function()
+    local data = Cache.remember('orhub_hot_topics_' .. self.category_id, 30, function()
         
         return Topic.where('category_id', '=', self.category_id):recent():with('user'):take(3):get()
     end)
@@ -176,7 +176,7 @@ end
 
 function _M:getRandomExcellent()
 
-    local data = Cache.remember('lxhub_random_topics', 10, function()
+    local data = Cache.remember('orhub_random_topics', 10, function()
         topic = new('topic')
         
         return topic:getTopicsWithFilter('random-excellent', 5)
@@ -187,7 +187,7 @@ end
 
 function _M:isArticle()
 
-    return self.category_id == app:conf('lxhub.blogCategoryId')
+    return self.category_id == app:conf('orhub.blogCategoryId')
 end
 
 function _M:link(params)

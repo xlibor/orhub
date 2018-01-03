@@ -3,7 +3,7 @@ local lx = require('lxlib')
 local env = lx.env
 
 local conf = {
-    name            = env('appName', 'lxhub'),
+    name            = env('appName', 'orhub'),
     debug           = env('appDebug', false),
     url             = env('appUrl'),
     urlStatic       = env('urlStatic'),

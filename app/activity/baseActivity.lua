@@ -16,7 +16,7 @@ function _M:addTopicActivity(user, topic, extra_data, indentifier)
 
     extra_data = extra_data or {}
     -- 站务不显示
-    if topic.category_id == app:conf('lxhub.adminBoardCid') then
+    if topic.category_id == app:conf('orhub.adminBoardCid') then
         
         return
     end

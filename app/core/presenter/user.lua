@@ -117,7 +117,7 @@ end
 
 function _M:lastActivedAt()
 
-    local show_key =Conf('lxhub.actived_time_data')
+    local show_key =Conf('orhub.actived_time_data')
     local show_data = Cache.get(show_key)
     if not show_data[self.id] then
         show_data[self.id] = self.last_actived_at

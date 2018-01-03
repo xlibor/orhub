@@ -13,6 +13,7 @@ local StaticTopic           = use('.app.model.topic')
 
 local get_platform, slug_trans = Ah.get_platform, Ah.slug_trans
 local tconcat               = table.concat
+local slen                  = string.len
 
 function _M:new()
 
@@ -48,7 +49,7 @@ function _M:create(observer, user, data, socialize, blog)
         end
     end
 
-    if socialize and topic.is_draft ~= 'yes' and topic.category_id ~= app:conf('lxhub.adminBoardCid') then
+    if socialize and topic.is_draft ~= 'yes' and topic.category_id ~= app:conf('orhub.adminBoardCid') then
         new(Notifier):newTopicNotify(user, self.mentionParser, topic)
         new(UserPublishedNewTopic):generate(user, topic)
     end
@@ -115,8 +116,11 @@ function _M.__:saveData(data, user, isCreate)
     body = markdown:convertMarkdownToHtml(body)
     body, summary = markdown:parseTopicSummary(body)
     data.body = body
-    data.summary = tostring(summary)
-
+    summary = tostring(summary)
+    if slen(summary) > 1000 then
+        summary = summary .. '<br>'
+    end
+    data.summary = summary
     data.excerpt = StaticTopic.makeExcerpt(body)
     data.source = get_platform()
     if lf.isEmpty(data.slug) then

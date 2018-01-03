@@ -47,7 +47,7 @@ function _M:boot()
     --     dispatch(new('sendActivateMail', user))
     -- end)
     -- static.deleted(function(user)
-    --     \Artisan.call('lxhub:clear-user-data', {user_id = user.id})
+    --     \Artisan.call('orhub:clear-user-data', {user_id = user.id})
     -- end)
 end
 
@@ -60,7 +60,7 @@ end
 
 function _M.s__.byRolesName(name)
 
-    local data = Cache.remember('lxhub_roles_' .. name, 60, function()
+    local data = Cache.remember('orhub_roles_' .. name, 60, function()
         
         return User.isRole(name):orderBy('last_actived_at', 'desc'):get()
     end)
@@ -168,11 +168,11 @@ end
 function _M:recordLastActivedAt()
 
     local now = Carbon.now():toDateTimeString()
-    local update_key = app:conf('lxhub.activedTimeForUpdate')
+    local update_key = app:conf('orhub.activedTimeForUpdate')
     local update_data = Cache.get(update_key)
     update_data[self.id] = now
     Cache.forever(update_key, update_data)
-    local show_key =Conf('lxhub.actived_time_data')
+    local show_key =Conf('orhub.actived_time_data')
     local show_data = Cache.get(show_key)
     show_data[self.id] = now
     Cache.forever(show_key, show_data)

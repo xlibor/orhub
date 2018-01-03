@@ -71,12 +71,12 @@ function _M:show(c, id, fromCode)
         end
         Flash.error('当前文章的作者已被屏蔽，游客与用户将看不到此文章。')
     end
-    if Conf('lxhub.adminBoardCid') and topic.id == Conf('lxhub.adminBoardCid') and (not Auth.check() or not Auth.user():can('access_board')) then
+    if Conf('orhub.adminBoardCid') and topic.id == Conf('orhub.adminBoardCid') and (not Auth.check() or not Auth.user():can('access_board')) then
         Flash.error('您没有权限访问该文章，有疑问请发邮件：all@estgroupe.com')
         
         return redirect():route('topics.index')
     end
-    local replies = topic:getRepliesWithLimit(app:conf('lxhub.repliesPerpage'), request.order_by)
+    local replies = topic:getRepliesWithLimit(app:conf('orhub.repliesPerpage'), request.order_by)
     local votedUsers = topic:votes()
         :orderBy('id', 'desc'):with('user')
         :get():col():pluck(function(item)
@@ -133,7 +133,7 @@ function _M:edit(c, id)
     local topic = Topic.findOrFail(id)
     self:authorize('update', topic)
     topic.body = topic.body_original
-    local categories = Category.where('id', '!=', Conf('lxhub.blogCategoryId')):get()
+    local categories = Category.where('id', '!=', Conf('orhub.blogCategoryId')):get()
     local category = topic('category')
     local tags = Tag.all()
     local topicTags = tb.flip(topic:tagNames(), true)
@@ -181,7 +181,7 @@ end
 function _M:downvote(c, id)
 
     local topic = Topic.find(id)
-    app('lxhub\\Vote\\Voter'):topicDownVote(topic)
+    app('orhub\\Vote\\Voter'):topicDownVote(topic)
     
     return response({status = 200})
 end

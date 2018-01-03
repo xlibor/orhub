@@ -8,7 +8,7 @@ local app, lf, tb, str = lx.kit()
 
 function _M:run()
 
-    app:run('lxhub:calculateActiveUser', {})
+    app:run('orhub:calculateActiveUser', {})
 end
 
 return _M

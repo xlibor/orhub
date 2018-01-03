@@ -63,7 +63,7 @@ function _M:transform(c, id)
         return redirect():route('blogs.create')
     end
     local topic = Topic.find(id)
-    topic:update({category_id = Conf('lxhub.blogCategoryId')})
+    topic:update({category_id = Conf('orhub.blogCategoryId')})
     -- attach blog
     local blog = Auth.user():blogs():first()
     blog:topics():attach(topic.id)

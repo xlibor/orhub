@@ -33,7 +33,7 @@ end
 
 function _M:wiki(c)
 
-    return new(TopicsCtler):show(c, app:conf('lxhub.wikiTopicId'), true)
+    return new(TopicsCtler):show(c, app:conf('orhub.wikiTopicId'), true)
 end
 
 function _M:search(c)
@@ -61,7 +61,7 @@ end
 function _M:feed()
 
     local topics = Topic.excellent():recent():limit(20):get()
-    local channel = {title = 'orhub 社区', description = '我们是 PHP 和 Laravel 的中文社区，在这里我们讨论技术, 分享技术。', link = url(route('feed'))}
+    local channel = {title = 'orhub 社区', description = '我们是 openresty 和 lua 的中文社区，在这里我们讨论技术, 分享技术。', link = url(route('feed'))}
     local feed = Rss.feed('2.0', 'UTF-8')
     feed:channel(channel)
     for _, topic in pairs(topics) do
@@ -78,7 +78,7 @@ end
 
 function _M:sitemap()
 
-    return app('lxhub\\Sitemap\\Builder'):render()
+    return app('orhub\\Sitemap\\Builder'):render()
 end
 
 function _M:hallOfFames()
