@@ -1,5 +1,6 @@
 /vendor
 /tmp
 /node_modules
+/pub/uploads
 env.json
 .DS_Store

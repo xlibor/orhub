@@ -1,9 +1,0 @@
-rock_manifest = {
-   ['discount-0.2.1-1.rockspec'] = "47a941744b8bc15a49c03b71dd9369f3",
-   doc = {
-      ['README.md'] = "9e103efef57d42041779f2e81656668d"
-   },
-   lib = {
-      ['discount.so'] = "e385df01ba503ef38d7b9236787b355b"
-   }
-}

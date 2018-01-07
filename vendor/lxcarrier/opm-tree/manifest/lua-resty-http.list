@@ -1,3 +1,0 @@
-lualib/resty/http.lua
-lualib/resty/http_headers.lua
-pod/lua-resty-http-0.12/lua-resty-http-0.12.pod
