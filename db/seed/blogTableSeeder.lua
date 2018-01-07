@@ -21,8 +21,8 @@ function _M:run()
         subscriber_count = 0,
         is_recommended = 0,
         is_blocked = 0,
-        created_at = '2017-01-17 14:35:47',
-        updated_at = '2017-01-17 14:35:47'
+        created_at = '2017-10-17 10:00:00',
+        updated_at = '2017-10-17 10:00:00'
     },
     {
         id = 2,
@@ -35,8 +35,8 @@ function _M:run()
         subscriber_count = 0,
         is_recommended = 0,
         is_blocked = 0,
-        created_at = '2017-01-17 14:35:47',
-        updated_at = '2017-01-17 14:35:47'
+        created_at = '2017-10-17 10:00:00',
+        updated_at = '2017-10-17 10:00:00'
     },
     {
         id = 3,
@@ -49,8 +49,8 @@ function _M:run()
         subscriber_count = 0,
         is_recommended = 0,
         is_blocked = 0,
-        created_at = '2017-01-17 14:35:47',
-        updated_at = '2017-01-17 14:35:47'
+        created_at = '2017-10-17 10:00:00',
+        updated_at = '2017-10-17 10:00:00'
     },
     {
         id = 4,
@@ -63,8 +63,8 @@ function _M:run()
         subscriber_count = 0,
         is_recommended = 0,
         is_blocked = 0,
-        created_at = '2017-01-17 14:35:47',
-        updated_at = '2017-01-17 14:35:47'
+        created_at = '2017-10-17 10:00:00',
+        updated_at = '2017-10-17 10:00:00'
     },
     {
         id = 5,
@@ -77,8 +77,22 @@ function _M:run()
         subscriber_count = 0,
         is_recommended = 0,
         is_blocked = 0,
-        created_at = '2017-01-17 14:35:47',
-        updated_at = '2017-01-17 14:35:47'
+        created_at = '2017-10-17 10:00:00',
+        updated_at = '2017-10-17 10:00:00'
+    },
+    {
+        id = 6,
+        name = 'lxlib文档',
+        slug = 'lxlib-docs-zh',
+        description = 'lxlib文档',
+        cover = 'https://dn-phphub.qbox.me/uploads/images/201701/16/1/9Il9wyivOg.png',
+        user_id = 2,
+        article_count = 0,
+        subscriber_count = 0,
+        is_recommended = 0,
+        is_blocked = 0,
+        created_at = '2017-10-17 10:00:00',
+        updated_at = '2017-10-17 10:00:00'
     }
     })
 end

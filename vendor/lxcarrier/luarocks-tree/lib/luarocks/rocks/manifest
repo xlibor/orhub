@@ -16,7 +16,7 @@ dependencies = {
       }
    },
    ftcsv = {
-      ['1.1.3-1'] = {
+      ['1.1.4-1'] = {
          {
             constraints = {
                {
@@ -71,7 +71,7 @@ modules = {
       "discount/0.2.1-1"
    },
    ftcsv = {
-      "ftcsv/1.1.3-1"
+      "ftcsv/1.1.4-1"
    },
    lfs = {
       "luafilesystem/1.7.0-2"
@@ -130,7 +130,7 @@ repository = {
       }
    },
    ftcsv = {
-      ['1.1.3-1'] = {
+      ['1.1.4-1'] = {
          {
             arch = "installed",
             commands = {},

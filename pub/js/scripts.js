@@ -7426,7 +7426,7 @@ var QRCode;!function(){function t(t){this.mode=l.MODE_8BIT_BYTE,this.data=t,this
  * Licensed under the MIT license
  */
 ;(function($, window, document, undefined){
-
+    mouseInContainer = false;
     //pluginName
     var pluginName = "navScrollSpy";
     //defaults options
@@ -7447,7 +7447,6 @@ var QRCode;!function(){function t(t){this.mode=l.MODE_8BIT_BYTE,this.data=t,this
         this.$ele = $(element);             //获得$("#nav")
         this.$win = $(window);              //获取window
         this.options = $.extend({}, defaults, options);   //得到参数值
-
         this._defaults = defaults;
         this._name = pluginName;
 
@@ -7459,15 +7458,23 @@ var QRCode;!function(){function t(t){this.mode=l.MODE_8BIT_BYTE,this.data=t,this
         init: function(){
             //得到a元素
             this.$a = this.$ele.find(this.options.navItems);
+            mouseInContainer = false;
             //得到内容区Box的top值
             this.getBoxTop();
 
+            var container = $(this.options.navContainer);
+            container.on('mouseover', function() {
+                mouseInContainer = true;
+            })
+            container.on('mouseout', function() {
+                mouseInContainer = false;
+            })
+            console.log('init');
             //点击切换导航按钮样式,更改上下文this
             this.$a.on("click", $.proxy(this.clickSwitch,this));
 
             //滚动切换导航按钮
             this.$win.on("scroll",$.proxy(this.scrolling,this));
-
             //当页面重置时会发生问题？
             return this;
         },
@@ -7507,7 +7514,7 @@ var QRCode;!function(){function t(t){this.mode=l.MODE_8BIT_BYTE,this.data=t,this
             };
 
             var current = this.$ele.find("."+this.options.current);
-            if (current.length > 0 ) {
+            if (current.length > 0 && !mouseInContainer) {
                 var container = $(this.options.navContainer);
                 var offset = $(current).offset().top - container.offset().top + container.scrollTop();
                 if ($(current).offset().top - container.offset().top < 0) {

@@ -6,7 +6,13 @@ local lx, _M = oo{
     _static_    = {}
 }
 
-local app, lf, tb, str = lx.kit()
+local app, lf, tb, str, new = lx.kit()
+local static
+
+function _M._init_(this)
+
+    static = this.static
+end
 
 function _M:ctor()
 
@@ -26,7 +32,7 @@ function _M.s__.allFromCache(expire)
 
     expire = expire or 1440
     local data = Cache.remember('orhub_sites', 60, function()
-        local raw_sites = Site:orderBy('order', 'desc'):orderBy('created_at', 'desc'):get()
+        local raw_sites = new(Site):orderBy('order', 'desc'):orderBy('created_at', 'desc'):get():col()
         local sorted = {}
         sorted.site = raw_sites:filter(function(item)
             

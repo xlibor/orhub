@@ -9,7 +9,13 @@ local lx, _M = oo{
     _static_    = {}
 }
 
-local app, lf, tb, str = lx.kit()
+local app, lf, tb, str, new = lx.kit()
+local static
+
+function _M._init_(this)
+
+    static = this.static
+end
 
 function _M:ctor()
 
@@ -50,7 +56,7 @@ function _M.s__.allByPosition()
 
     local data = Cache.remember('orhub_banner', 60, function()
         local ret = {}
-        local data = Banner.orderBy({'position', 'desc'}, {'order', 'ASC'}):get()
+        local data = new(Banner):orderBy({'position', 'desc'}, {'order', 'ASC'}):get()
 
         for _, banner in ipairs(data) do
             tb.mapd(ret, banner.position, banner)

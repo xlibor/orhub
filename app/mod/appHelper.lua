@@ -4,11 +4,11 @@ local lx, _M = oo{
 }
 
 local app, lf, tb, str, new = lx.kit()
-local use, lh, env = lx.use, lx.h, lx.env
-local trans = lh.trans
-local SlugTranslate = require('.app.core.handler.slugTranslate')
-local pow = math.pow
-local sfind, slen = string.find, string.len
+local use, lh, env          = lx.use, lx.h, lx.env
+local trans                 = lh.trans
+local SlugTranslate         = require('.app.core.handler.slugTranslate')
+local pow                   = math.pow
+local sfind, slen, sgsub    = string.find, string.len, string.gsub
 
 -- 如：db:seed 或者 清空数据库命令的地方调用
 
@@ -93,7 +93,7 @@ function _M.lang(text, parameters)
 
     parameters = parameters or {}
 
-    return str.replace(trans('orhub.' .. text, parameters), 'orhub.', '')
+    return sgsub(trans('orhub.' .. text, parameters), 'orhub%.', '')
 end
 
 function _M.admin_link(title, path, id)

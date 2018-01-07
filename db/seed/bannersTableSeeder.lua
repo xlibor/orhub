@@ -28,7 +28,7 @@ function _M:run()
         title = 'openresty conf',
         link = '/b/openresty-conf',
         target = '_self',
-        description = 'openresty conf',
+        description = 'openresty conf, meetups资料, 视频汇总',
         created_at = '2017-10-05 11:33:05',
         updated_at = '2017-10-05 15:03:56'
     },
@@ -39,7 +39,7 @@ function _M:run()
         title = 'openresty最佳实践',
         link = '/b/openresty-best-practices',
         target = '_blank',
-        description = 'openresty最佳实践整理',
+        description = 'openresty最佳实践整理, 定时更新',
         created_at = '2017-10-05 11:32:25',
         updated_at = '2017-10-05 11:32:25'
     },
@@ -61,7 +61,7 @@ function _M:run()
         title = 'lua程序设计',
         link = 'b/programming-in-lua',
         target = '_blank',
-        description = 'lua程序设计',
+        description = 'lua程序设计, 中文教程',
         created_at = '2017-10-05 11:33:40',
         updated_at = '2017-10-05 11:33:40'
     },
@@ -91,10 +91,32 @@ function _M:run()
         position = 'website_top',
         order = 8,
         image_url = 'https://dn-phphub.qbox.me/uploads/banners/EptWCkT1qDDvtn5nV2id.png',
-        title = 'luarocks opm包',
-        link = 'http://laravel-china.org/api/5.1/',
+        title = 'resty资源推荐',
+        link = '/topics/2/awesome-resty-zh',
         target = '_blank',
-        description = 'luarocks, opm包整理',
+        description = 'openresty资源推荐汇总',
+        created_at = '2017-10-05 11:34:36',
+        updated_at = '2017-10-05 15:05:09'
+    },
+    {
+        position = 'website_top',
+        order = 9,
+        image_url = 'https://dn-phphub.qbox.me/uploads/banners/EptWCkT1qDDvtn5nV2id.png',
+        title = 'opm,luarocks包推荐',
+        link = '/topics/3/opm-luarocks-modules',
+        target = '_blank',
+        description = 'opm, luarocks组件汇总推荐',
+        created_at = '2017-10-05 11:34:36',
+        updated_at = '2017-10-05 15:05:09'
+    },
+    {
+        position = 'website_top',
+        order = 10,
+        image_url = 'https://dn-phphub.qbox.me/uploads/banners/EptWCkT1qDDvtn5nV2id.png',
+        title = 'lxlib文档',
+        link = '/b/lxlib-docs-zh',
+        target = '_blank',
+        description = 'lxlib文档',
         created_at = '2017-10-05 11:34:36',
         updated_at = '2017-10-05 15:05:09'
     },
