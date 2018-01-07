@@ -44,7 +44,7 @@ local conf = {
         '.app.box.dbBox',
         '.app.box.authBox',
         '.app.box.gatherBox',
-        'lv2lx.box.viewTransBox',
+        -- 'lv2lx.box.viewTransBox',
     },
 
     faces = {
