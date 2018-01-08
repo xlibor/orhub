@@ -15,6 +15,7 @@ local conf = {
             pool        = 5,
             charset     = 'utf8mb4',
             strict      = false,
+            stringSize  = 191,
         },
         sqlite = {
             driver = 'sqlite',
