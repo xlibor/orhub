@@ -48,7 +48,7 @@ function _M:run()
         order = 4,
         image_url = 'https://dn-phphub.qbox.me/uploads/banners/0pyH7UgXhF7PTBkLZRak.png',
         title = 'google groups讨论',
-        link = 'http://orhub.test/c/9',
+        link = '/c/9',
         target = '_blank',
         description = 'google groups讨论贴镜像',
         created_at = '2017-10-05 11:33:40',
