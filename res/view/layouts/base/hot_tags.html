@@ -1,6 +1,6 @@
 
 @if(hotTags)
-    <div class="tag-nav" >
+    <div class="container tag-nav" >
  
     @foreach(hotTags as tag)
         <a href="{{ route('tagged.topics', tag.name) }}" class="normal">{{ tag.name }}</a>

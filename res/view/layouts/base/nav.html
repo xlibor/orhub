@@ -18,7 +18,7 @@
         <li class="{{ Req.is('c/1') and ' active' or '' }}"><a href="{{ route('categories.show', 1) }}">{{ Ah.lang('Jobs') }}</a></li>
         <li class="{{ Req.is('tags*') and ' active' or '' }}"><a href="/tags/all">专题</a></li>
         <li class="{{ Req.is('c/' ..Conf('orhub.qaCategoryId')) and ' active' or '' }}"><a href="{{ route('categories.show',Conf('orhub.qaCategoryId')) }}">问答</a></li>
-        <li ><a href="/b/news" class="no-pjax">资讯</a></li>
+        <li ><a href="/b/openresty-news" class="no-pjax">资讯</a></li>
       </ul>
 
       <div class="navbar-right">

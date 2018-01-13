@@ -34,7 +34,7 @@ end
 function _M:index(c)
 
     local request = c.req
-
+ 
     local topics = new(Topic):getTopicsWithFilter(request:get('filter', 'index'), 40)
 
     local links = Link.allFromCache()

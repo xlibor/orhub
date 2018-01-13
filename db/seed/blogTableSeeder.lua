@@ -93,6 +93,20 @@ function _M:run()
         is_blocked = 0,
         created_at = '2017-10-17 10:00:00',
         updated_at = '2017-10-17 10:00:00'
+    },
+    {
+        id = 7,
+        name = 'openresty资讯',
+        slug = 'openresty-news',
+        description = 'openresty资讯',
+        cover = 'https://dn-phphub.qbox.me/uploads/images/201701/16/1/9Il9wyivOg.png',
+        user_id = 2,
+        article_count = 0,
+        subscriber_count = 0,
+        is_recommended = 0,
+        is_blocked = 0,
+        created_at = '2017-10-17 10:00:00',
+        updated_at = '2017-10-17 10:00:00'
     }
     })
 end
