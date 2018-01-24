@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+		<script type="text/javascript">
+        // chongdingdahui
+        //xiguashipin
+        //zhishichaoren
+			 var socket = io.connect('http://secr.baidu.com/nv/xiguashipin/answer', {
+                        path: '/nv/answer.sock',
+                        transports: ['polling']
+                 });
+                  socket.on('answer', function(data) {
+                    console.log(data);
+                  	console.log(data.question.text);
+                  	console.log(data.tips);
+                });
+		</script>
+	</head>
+	<body>
+		
+		
+	</body>
+</html>

@@ -34,7 +34,13 @@ end
 function _M:index(c)
 
     local request = c.req
- 
+    local t1 = new('datetime', '2018-01-23 20:35:46')
+    local t2 = new('datetime', '2018-01-23 20:35:51')
+    t2 = t2:subSeconds(4)
+
+    echo(t1:lte(t2))
+    echo(t2:toDateTimeString())
+
     local topics = new(Topic):getTopicsWithFilter(request:get('filter', 'index'), 40)
 
     local links = Link.allFromCache()
@@ -55,7 +61,6 @@ function _M:show(c, id, fromCode)
         self:authorize('show_draft', topic)
     end
  
-    -- URL 矫正
     local slug = request:param('slug')
 
     if not lf.isEmpty(topic.slug) and topic.slug ~= slug and not fromCode then
@@ -63,16 +68,15 @@ function _M:show(c, id, fromCode)
         return redirect(topic:link(), 301)
     end
     if topic('user').is_banned == 'yes' then
-        -- 未登录，或者已登录但是没有管理员权限
         if not Auth.check() or Auth.check() and not Auth.user():may('manage_topics') then
-            Flash.error('你访问的文章已被屏蔽，有疑问请发邮件：all@estgroupe.com')
+            Flash.error('Äã·ÃÎÊµÄÎÄÕÂÒÑ±»ÆÁ±Î£¬ÓÐÒÉÎÊÇë·¢ÓÊ¼þ£ºall@estgroupe.com')
             
             return redirect(route('topics.index'))
         end
-        Flash.error('当前文章的作者已被屏蔽，游客与用户将看不到此文章。')
+        Flash.error('µ±Ç°ÎÄÕÂµÄ×÷ÕßÒÑ±»ÆÁ±Î£¬ÓÎ¿ÍÓëÓÃ»§½«¿´²»µ½´ËÎÄÕÂ¡£')
     end
     if Conf('orhub.adminBoardCid') and topic.id == Conf('orhub.adminBoardCid') and (not Auth.check() or not Auth.user():can('access_board')) then
-        Flash.error('您没有权限访问该文章，有疑问请发邮件：all@estgroupe.com')
+        Flash.error('ÄúÃ»ÓÐÈ¨ÏÞ·ÃÎÊ¸ÃÎÄÕÂ£¬ÓÐÒÉÎÊÇë·¢ÓÊ¼þ£ºall@estgroupe.com')
         
         return redirect():route('topics.index')
     end
@@ -273,7 +277,7 @@ end
 
 function _M:creatorFailed(error)
 
-    Flash.error('发布失败：' .. error)
+    Flash.error('create topic failed' .. error)
     
     return redirect('/')
 end

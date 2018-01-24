@@ -6,8 +6,8 @@ local _M = {
     }
 }
 
-local lx = require('lxlib')
-local env = lx.env
+local lx    = require('lxlib')
+local env   = lx.env
 
 function _M:loadCommands(cmder)
 
@@ -20,6 +20,11 @@ function _M:loadCommands(cmder)
             require('orhubtool.cmd')(cmder)
         end)
     end
+end
+
+function _M:loadSchedule(schedule)
+
+    require('.map.task')(schedule)
 end
 
 return _M
