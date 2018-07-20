@@ -5,8 +5,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "luafilesystem": "",
-        "lua-iconv": ""
+        "luafilesystem": ""
     },
     "require-dev": []
 }

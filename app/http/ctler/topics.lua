@@ -34,14 +34,9 @@ end
 function _M:index(c)
 
     local request = c.req
-    local t1 = new('datetime', '2018-01-23 20:35:46')
-    local t2 = new('datetime', '2018-01-23 20:35:51')
-    t2 = t2:subSeconds(4)
 
-    echo(t1:lte(t2))
-    echo(t2:toDateTimeString())
-
-    local topics = new(Topic):getTopicsWithFilter(request:get('filter', 'index'), 40)
+    local topics = new(Topic):getTopicsWithFilter(request:get('filter', 'index'), 40) 
+        or Col()
 
     local links = Link.allFromCache()
     local active_users = ActiveUser.fetchAll()
