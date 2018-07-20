@@ -10,7 +10,7 @@ function _M:getTopicsWithFilter(filter, limit)
     limit = limit or 20
     filter = self:getTopicFilter(filter)
 
-    return self:applyFilter(filter):with('user', 'category', 'lastReplyUser'):paginate(limit)
+    return self:applyFilter(filter):with('user', 'category', 'lastReplyUser'):paginate(limit) or Col()
 end
 
 function _M:getCategoryTopicsWithFilter(filter, category_id, limit)
