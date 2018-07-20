@@ -40,7 +40,7 @@
 
           <div class="clearfix"></div>
         </div>
-
+        {? local topics = Ctx.topics ?}
         @if(not topics:isEmpty())
             <div class="panel-body remove-padding-horizontal">
                 @include('topics.base.topics')
