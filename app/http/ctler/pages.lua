@@ -10,7 +10,7 @@ local use = lx.ns('.app.http.ctler')
 local ActivityCtler, TopicsCtler, BlogsCtler = use('activity', 'topics', 'blogs')
 
 function _M:home(c)
-    
+
     local request = c.req
     local topics = new(Topic):getTopicsWithFilter('excellent') or Col()
     c:view('pages.home', Compact('topics', 'banners'))

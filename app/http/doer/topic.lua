@@ -30,7 +30,7 @@ function _M:create(observer, user, data, socialize, blog)
     if self:isDuplicate(data, user) then
         return observer:creatorFailed('请不要发布重复内容。')
     end
- 
+
     self:saveData(data, user, true)
     local topic = Topic.create(data)
     if not topic then
