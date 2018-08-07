@@ -40,9 +40,11 @@ function _M:index(c)
     local links = Link.allFromCache()
     local active_users = ActiveUser.fetchAll()
     local hot_topics = HotTopic.fetchAll()
-    echo(type(topics))
-    
-    c:view('topics.index', Compact('topics', 'links', 'banners', 'active_users', 'hot_topics'))
+
+    c:view('topics.index', {
+        topics = topics, links = links, banners = banners,
+        active_users = active_users, hot_topics = hot_topics
+    })
 end
 
 function _M:show(c, id, fromCode)
