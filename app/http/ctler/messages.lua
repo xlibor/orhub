@@ -22,7 +22,9 @@ function _M:index(c)
         Auth.user():save()
     end
     
-    return c:view('messages.index', Compact('threads', 'currentUserId'))
+    return c:view('messages.index', {
+        threads = threads, currentUserId = currentUserId
+    })
 end
 
 function _M:show(c, id)
@@ -40,7 +42,10 @@ function _M:show(c, id)
     end
     thread:markAsRead(Auth.id())
     
-    return c:view('messages.show', Compact('thread', 'participant', 'messages', 'unread_message_count'))
+    return c:view('messages.show', {
+        thread = thread, participant = participant,
+        messages = messages, unread_message_count = unread_message_count
+    })
 end
 
 function _M:create(c, id)
@@ -52,7 +57,7 @@ function _M:create(c, id)
         return redirect():route('messages.show', thread.id)
     end
     
-    return c:view('messages.create', Compact('recipient'))
+    return c:view('messages.create', {recipient = recipient})
 end
 
 function _M:store(c)

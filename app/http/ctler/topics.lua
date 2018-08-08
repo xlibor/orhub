@@ -99,11 +99,21 @@ function _M:show(c, id, fromCode)
         user = topic('user')
         blog = topic:blogs():first()
 
-        c:view('articles.show', Compact('blog', 'user', 'topic', 'replies', 'category', 'tags', 'banners', 'cover', 'votedUsers', 'revisionHistory'))
+        c:view('articles.show', {
+            blog = blog, user = user, topic = topic,
+            replies = replies, category = category,
+            tags = tags, banners = banners, cover = cover,
+            votedUsers = votedUsers, revisionHistory = revisionHistory
+        })
     else
         local appends = topic:appendContents():get()
 
-        c:view('topics.show', Compact('topic', 'replies', 'category', 'tags', 'banners', 'cover', 'votedUsers', 'revisionHistory', 'appends'))
+        c:view('topics.show', {
+            topic = topic, replies = replies, category = category,
+            tags = tags, banners = banners, cover = cover,
+            votedUsers = votedUsers, revisionHistory = revisionHistory,
+            appends = appends
+        })
     end
 end
 
@@ -119,7 +129,10 @@ function _M:create(c)
     local tags = Tag.all()
     local topicTags = false
 
-    return c:view('topics.create_edit', Compact('categories', 'tags', 'topicTags', 'category'))
+    return c:view('topics.create_edit', {
+        categories = categories, tags = tags,
+        topicTags = topicTags, category = category
+    })
 end
 
 function _M:store(c)
@@ -139,7 +152,10 @@ function _M:edit(c, id)
     local tags = Tag.all()
     local topicTags = tb.flip(topic:tagNames(), true)
     
-    return c:view('topics.create_edit', Compact('topic', 'categories', 'tags', 'topicTags', 'category'))
+    return c:view('topics.create_edit', {
+        topic = topic, categories = categories, tags = tags,
+        topicTags = topicTags, category = category
+    })
 end
 
 function _M:append(c, id)

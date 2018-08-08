@@ -15,7 +15,7 @@ function _M:index(c)
     local sites = Site.allFromCache()
     local banners = Banner.allByPosition()
 
-    return c:view('sites.index', Compact('sites', 'banners'))
+    return c:view('sites.index', {sites = sites, banners = banners})
 end
 
 return _M

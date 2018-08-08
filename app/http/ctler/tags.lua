@@ -26,7 +26,10 @@ function _M:topics(c, tagName)
     local topics = new(Topic):getTaggedTopicsWithFilter(request:get('filter', 'default'), tag)
     local links = Link.allFromCache()
     
-    c:view('topics.index', Compact('topics', 'tag', 'category', 'links', 'banners'))
+    c:view('topics.index', {
+        topics = topics, tag = tag, category = category,
+        links = links, banners = banners
+    })
 end
 
 function _M:show(c, id, slug)

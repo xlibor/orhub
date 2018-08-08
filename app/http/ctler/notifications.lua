@@ -28,7 +28,7 @@ function _M:index(c)
     Auth.user().notification_count = 0
     Auth.user():save()
     
-    return c:view('notifications.index', Compact('notifications'))
+    return c:view('notifications.index', {notifications = notifications})
 end
 
 function _M:count()

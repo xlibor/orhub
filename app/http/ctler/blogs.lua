@@ -20,7 +20,7 @@ function _M:create(c)
     local user = Auth.user()
     local blog = Blog.firstOrNew({user_id = Auth.id()})
     
-    return c:view('blogs.create_edit', Compact('user', 'blog'))
+    return c:view('blogs.create_edit', {user = user, blog = blog})
 end
 
 function _M:show(c, name)
@@ -31,7 +31,10 @@ function _M:show(c, name)
     local authors = blog('authors')
     blog:update({article_count = topics:total()})
     
-    c:view('blogs.show', Compact('user', 'blog', 'topics', 'authors'))
+    c:view('blogs.show', {
+        user = user, blog = blog,
+        topics = topics, authors = authors
+    })
 end
 
 function _M:store(c)
@@ -70,7 +73,7 @@ function _M:edit(c, id)
     local blog = Blog.findOrFail(id)
     self:validateCreator(blog, user)
 
-    return c:view('blogs.create_edit', Compact('blog', 'user'))
+    return c:view('blogs.create_edit', {blog = blog, user = user})
 end
 
 function _M:update(c, id)
@@ -122,7 +125,7 @@ function _M:editSummary(c, id)
     local user = Auth.user()
     local blog = Blog.findOrFail(id)
 
-    c:view('blogs.summary.create_edit', Compact('blog', 'user'))
+    c:view('blogs.summary.create_edit', {blog = blog, user = user})
 end
 
 function _M:updateSummary(c, id)

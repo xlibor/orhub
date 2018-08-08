@@ -34,7 +34,10 @@ function _M:create(c)
     local tags = Tag.all()
     local topicTags = false
 
-    return c:view('articles.create_edit', Compact('topic', 'user', 'blog', 'tags', 'topicTags'))
+    return c:view('articles.create_edit', {
+        topic = topic, user = user, blog = blog,
+        tags = tags, topicTags = topicTags
+    })
 end
 
 function _M:store(c)
@@ -88,7 +91,9 @@ function _M:edit(c, id)
     local tags = Tag.all()
     local topicTags = tb.flip(topic:tagNames(), true)
 
-    return c:view('articles.create_edit', Compact('topic', 'tags', 'topicTags'))
+    return c:view('articles.create_edit', {
+        topic = topic, tags = tags, topicTags = topicTags
+    })
 end
 
 function _M:update(c, id)

@@ -23,7 +23,7 @@ function _M:index(c)
 
     local users = User.recent():take(48):get()
     
-    c:view('users.index', Compact('users'))
+    c:view('users.index', {users = users})
 end
 
 function _M:show(c, id)
@@ -34,7 +34,10 @@ function _M:show(c, id)
     local blog = user:blogs():first() or false
     local replies = Reply.whose(user.id):recent():limit(20):get()
     
-    c:view('users.show', Compact('user', 'blog', 'articles', 'topics', 'replies'))
+    c:view('users.show', {
+        user = user, blog = blog, articles = articles,
+        topics = topics, replies = replies
+    })
 end
 
 function _M:edit(c)
@@ -42,7 +45,7 @@ function _M:edit(c)
     local user = Auth.user()
     self:authorize('update', user)
     
-    c:view('users.edit', Compact('user', 'topics', 'replies'))
+    c:view('users.edit', {user = user, topics = topics, replies = replies})
 end
 
 function _M:update(c)
@@ -69,7 +72,7 @@ function _M:replies(c, id)
     local user = User.findOrFail(id)
     local replies = Reply.whose(user.id):recent():paginate(15)
     
-    c:view('users.replies', Compact('user', 'replies'))
+    c:view('users.replies', {user = user, replies = replies})
 end
 
 function _M:topics(c, id)
@@ -78,7 +81,7 @@ function _M:topics(c, id)
     local topics = Topic.whose(user.id):withoutArticle()
         :withoutBoardTopics():recent():paginate(30)
 
-    c:view('users.topics', Compact('user', 'topics'))
+    c:view('users.topics', {user = user, topics = topics})
 end
 
 function _M:articles(c, id)
@@ -87,7 +90,7 @@ function _M:articles(c, id)
     local topics = Topic.whose(user.id):onlyArticle():withoutDraft():recent():with('blogs'):paginate(30)
     user:update({article_count = topics:total()})
     
-    c:view('users.articles', Compact('user', 'blog', 'topics'))
+    c:view('users.articles', {user = user, blog = blog, topics = topics})
 end
 
 function _M:drafts(c)
@@ -98,7 +101,7 @@ function _M:drafts(c)
     user.draft_count = user:topics():onlyArticle():draft():count()
     user:save()
     
-    c:view('users.articles', Compact('user', 'blog', 'topics'))
+    c:view('users.articles', {user = user, blog = blog, topics = topics})
 end
 
 function _M:votes(c, id)
@@ -106,7 +109,7 @@ function _M:votes(c, id)
     local user = User.findOrFail(id)
     local topics = user:votedTopics():orderBy('pivot_created_at', 'desc'):paginate(30)
     
-    c:view('users.votes', Compact('user', 'topics'))
+    c:view('users.votes', {user = user, topics = topics})
 end
 
 function _M:following(c, id)
@@ -114,7 +117,7 @@ function _M:following(c, id)
     local user = User.findOrFail(id)
     local users = user:followings():orderBy('users.id', 'desc'):paginate(15)
     
-    c:view('users.following', Compact('user', 'users'))
+    c:view('users.following', {user = user, users = users})
 end
 
 function _M:followers(c, id)
@@ -122,7 +125,7 @@ function _M:followers(c, id)
     local user = User.findOrFail(id)
     local users = user:followers():orderBy('id', 'desc'):paginate(15)
     
-    c:view('users.followers', Compact('user', 'users'))
+    c:view('users.followers', {user = user, users = users})
 end
 
 function _M:accessTokens(c)
@@ -131,7 +134,7 @@ function _M:accessTokens(c)
     local sessions = OAuthSession.where({owner_type = 'user', owner_id = Auth.id()}):with('token'):lists('id') or {}
     local tokens = AccessToken.whereIn('session_id', sessions):get()
     
-    c:view('users.access_tokens', Compact('user', 'tokens'))
+    c:view('users.access_tokens', {user = user, tokens = tokens})
 end
 
 function _M:revokeAccessToken(c, token)
@@ -164,7 +167,7 @@ function _M:editEmailNotify(c)
     local user = Auth.user()
     self:authorize('update', user)
     
-    c:view('users.edit_email_notify', Compact('user'))
+    c:view('users.edit_email_notify', {user = user})
 end
 
 function _M:updateEmailNotify(c)
@@ -184,7 +187,7 @@ function _M:editPassword(c)
     local user = Auth.user()
     self:authorize('update', user)
     
-    c:view('users.edit_password', Compact('user'))
+    c:view('users.edit_password', {user = user})
 end
 
 function _M:updatePassword(c)
@@ -246,7 +249,7 @@ function _M:editAvatar(c)
     local user = Auth.user()
     self:authorize('update', user)
     
-    c:view('users.edit_avatar', Compact('user'))
+    c:view('users.edit_avatar', {user = user})
 end
 
 function _M:updateAvatar(c)
@@ -309,7 +312,7 @@ function _M:editSocialBinding(c)
         end
     end
     
-    c:view('users.edit_social_binding', Compact('user', 'bindings'))
+    c:view('users.edit_social_binding', {user = user, bindings = bindings})
 end
 
 function _M:socialUnbinding(c)

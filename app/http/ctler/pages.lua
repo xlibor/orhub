@@ -13,7 +13,7 @@ function _M:home(c)
 
     local request = c.req
     local topics = new(Topic):getTopicsWithFilter('excellent') or Col()
-    c:view('pages.home', Compact('topics', 'banners'))
+    c:view('pages.home', {topics = topics, banners = banners})
 end
 
 function _M:about(c)
@@ -55,7 +55,10 @@ function _M:search(c)
         topics = Topic.search(query, nil, true):withoutBlocked():withoutBoardTopics():withoutDraft():paginate(30)
     end
     
-    return c:view('pages.search', Compact('users', 'user', 'query', 'topics', 'filterd_noresult'))
+    return c:view('pages.search', {
+        users = users, user = user, query = query,
+        topics = topics, filterd_noresult = filterd_noresult
+    })
 end
 
 function _M:feed()
@@ -81,11 +84,11 @@ function _M:sitemap()
     return app('orhub\\Sitemap\\Builder'):render()
 end
 
-function _M:hallOfFames()
+function _M:hallOfFames(c)
 
     local users = User.byRolesName('HallOfFame')
     
-    return view('pages.hall_of_fame', Compact('users'))
+    return c:view('pages.hall_of_fame', {users = users})
 end
 
 return _M

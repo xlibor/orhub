@@ -70,7 +70,7 @@ function _M:create(c)
     end
     local oauthData = tb.merge(Session.get('oauthData'), Session.get('_old_input', {}))
 
-    c:view('auth.signupconfirm', Compact('oauthData'))
+    c:view('auth.signupconfirm', {oauthData = oauthData})
 end
 
 -- Actually creates the new user account

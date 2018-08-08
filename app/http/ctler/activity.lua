@@ -32,7 +32,11 @@ function _M:index(c)
     local hot_topics = HotTopic.fetchAll()
     local images = Image.fromActivities(activities)
 
-    c:view('activities.index', Compact('activities', 'viewType', 'links', 'banners', 'active_users', 'hot_topics', 'images'))
+    c:view('activities.index', {
+        activities = activities, viewType = viewType, links = links,
+        banners = banners, active_users = active_users,
+        hot_topics = hot_topics, images = images
+    })
 end
 
 return _M
