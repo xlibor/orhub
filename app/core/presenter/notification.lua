@@ -53,7 +53,7 @@ end
 function _M:message()
 
     local message = self.fromUser.name .. ' ⋅ ' .. self:lableUp()
-    if #self.topic then
+    if #self.topic > 0 then
         message = message .. ' ⋅ ' .. self.topic.title
     end
     

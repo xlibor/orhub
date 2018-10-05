@@ -68,7 +68,7 @@ function _M.s__.batchNotify(type, fromUser, users, topic, reply, content)
             toUser:increment('notification_count', 1)
         end
     end
-    if #data then
+    if #data > 0 then
         Notification.inserts(data)
         for _, toUser in ipairs(users) do
             -- todo

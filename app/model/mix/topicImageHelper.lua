@@ -22,7 +22,8 @@ function _M:collectImages()
     -- For update topic logic
     self:images():delete()
     local links = Ah.get_image_links(self.body)
-    if #links then
+    
+    if #links > 0 then
         link = tb.shift(links)
         data = {topic_id = self.id, link = link}
         Image.updateOrCreate(data, data)

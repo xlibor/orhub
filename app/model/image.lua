@@ -16,7 +16,11 @@ function _M:fromActivities(activities)
     local images = {}
     for _, activity in lf.each(activities) do
         if str.strpos(activity.indentifier, 't') then
-            images[activity.indentifier] = self:__new():where('topic_id', str.replace(activity.indentifier, 't', '')):get()
+            local imgList = self:__new():where('topic_id', '=', str.replace(activity.indentifier, 't', '')):get()
+            if #imgList > 0 then
+                local img = imgList[1]
+                images[activity.indentifier] = imgList
+            end
         end
     end
     

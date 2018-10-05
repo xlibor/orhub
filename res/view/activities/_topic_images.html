@@ -1,7 +1,7 @@
 @if(#images and tb.has(images, activity.indentifier))
     <div class="media-body markdown-reply content-body">
         @foreach(images[activity.indentifier] as image)
-            <a href="{{ activity.data['topic_link'] }}"><img src="{{ Ah.img_crop(image.link, 0, 200, 0) }}" alt="" style="max-height:100px; width:auto!important;" class="emoji feed-image"></a>
+            <a href="{{ activity.data['topic_link'] }}"><img src="{{ image.link }}" alt="" style="max-height:100px; width:auto!important;" class="emoji feed-image"></a>
         @endforeach
     </div>
 @endif
